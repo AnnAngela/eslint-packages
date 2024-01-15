@@ -2,9 +2,9 @@
 
 A better ESLint formatter used in GitHub Actions. It can help you to get more human-readable annotation from ESLint. See screenshoots below:
 
-![Secreenshoot 1](https://github.com/AnnAngela/eslint-formatter-gha/assets/9762652/adc092d1-c2ca-44bd-b14e-59f561162e7d)
+![Secreenshoot 1](https://github.com/AnnAngela/eslint-packages/assets/9762652/3d6ee492-4ea6-49c9-852e-076833826b19)
 
-![Secreenshoot 2](https://github.com/AnnAngela/eslint-formatter-gha/assets/9762652/e6d8792d-dec1-48e6-bee5-06aee1c88153)
+![Secreenshoot 2](https://github.com/AnnAngela/eslint-packages/assets/9762652/5e53434d-115e-4882-ac7f-7d69798d8263)
 
 Thess secreenshoots are taken with configuration `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY` as `notice`, so you can see the deprecated rules infomation in Annotation and Summary.
 
@@ -38,6 +38,11 @@ You can use these **environment variables** to configure the formatter:
 
 According to [the blog "Deprecation of formatting rules"](https://eslint.org/blog/2023/10/deprecating-formatting-rules/) and [the release note of ESLint v8.53](https://eslint.org/blog/2023/11/eslint-v8.53.0-released/), a batch of formatting rules have been marked as deprecated in documents.
 
-But in the cli, the deprecation of the rules is only visible after v9. So the default value of environment variable `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY` will remain as `debug` until ESLint v9 is released, to prevent unexpected large amounts of log output.
+But:
+
+* In the cli, the deprecation of the rules is only visible after v9;
+* There are still some deprecated rules being used in the recommended config from `@eslint/js`.
+
+So the default value of environment variable `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY` will remain as `debug` until ESLint v9 is released, to prevent unexpected large amounts of log output.
 
 After that, the default value will be changed to `notice` with the v2 major release of this package.
