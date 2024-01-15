@@ -34,6 +34,9 @@ await fs.promises.writeFile("dist/cjs/package.json", JSON.stringify({ type: "com
     encoding: "utf-8",
 });
 
+console.info("Copying tsconfig.base.json");
+await fs.promises.cp("./src/tsconfig.base.json", "./dist/tsconfig.base.json", { force: true });
+
 console.info("Result:");
 await execCommand("tree -afNshv dist", {
     synchronousStderr: true,

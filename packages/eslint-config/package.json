@@ -11,7 +11,7 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./forkedGlobals.js": "./dist/forkedGlobals.js"
+    "./tsconfig.base.json": "./dist/tsconfig.base.json"
   },
   "files": [
     "./dist"
