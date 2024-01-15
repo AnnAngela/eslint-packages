@@ -37,10 +37,10 @@
   "homepage": "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-formatter-gha#readme",
   "devDependencies": {
     "@actions/core": "^1.10.1",
-    "@annangela/eslint-config": "^3.4.2",
-    "@annangela/eslint-formatter-gha": "^1.1.0",
+    "@annangela/eslint-config": "^4.0.4",
+    "@annangela/eslint-formatter-gha": "^1.1.2",
     "@types/eslint": "^8.56.2",
-    "@types/node": "^20.11.1",
+    "@types/node": "^20.11.3",
     "eslint": "^8.56.0",
     "semver": "^7.5.4",
     "typescript": "^5.3.3"
