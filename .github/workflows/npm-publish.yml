@@ -36,7 +36,7 @@ jobs:
       - name: Get the cwd
         id: cwd
         run: |
-          cwd=packages/$(echo "${{ github.event.release.name || inputs }}" | sed 's/@.*//')
+          cwd=packages/$(echo "${{ github.event.release.name || inputs }}" | sed 's/@v.*//')
           echo "cwd: $cwd"
           if [ -d "$cwd" ]; then
             echo "cwd exists."
