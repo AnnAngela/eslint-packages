@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import execCommand from "../../../scripts/spawnChildProcess.js";
+import execCommand from "../../../scripts/modules/spawnChildProcess.js";
 
 console.info("Preparing to build...");
 for (const dir of [

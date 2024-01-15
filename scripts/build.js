@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import execCommand from "./spawnChildProcess.js";
+import execCommand from "./modules/spawnChildProcess.js";
 
 const scripts = [
     "eslint.config.js",

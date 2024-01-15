@@ -1,7 +1,7 @@
 import { createInterface } from "node:readline";
 import { valid, gt } from "semver";
 import path from "node:path";
-import execCommand from "./spawnChildProcess.js";
+import execCommand from "./modules/spawnChildProcess.js";
 
 const pkg = process.env.npm_package_name;
 const rootDir = path.resolve(process.cwd(), "../..");
