@@ -3,9 +3,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { readPackageJSON, writePackageJSON, resolvePackageJSON } from "pkg-types";
-import exec from "./spawnChildProcess.js";
+import IS_IN_GITHUB_ACTIONS from "./modules/IS_IN_GITHUB_ACTIONS.js";
+import git from "./modules/git.js";
 
-const IS_IN_GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === "true";
 const IS_DRY_RUN = process.argv.includes("--dry-run");
 
 /**
@@ -73,8 +73,8 @@ if (unusedDependencies.size > 0) {
 }
 if (IS_IN_GITHUB_ACTIONS && globalChanged) {
     console.info("Running in GitHub Actions, commit the changes.");
-    await exec("git add .", { synchronousStderr: true, synchronousStdout: true });
-    await exec("git commit -m \"chore: update dependencies\"", { synchronousStderr: true, synchronousStdout: true });
-    await exec("git push", { synchronousStderr: true, synchronousStdout: true });
+    await git.add(".")
+        .commit("chore: update dependencies")
+        .push();
 }
 console.info("Done.");

@@ -49,6 +49,7 @@
     "mocha": "^10.2.0",
     "pkg-types": "^1.0.3",
     "semver": "^7.5.4",
+    "simple-git": "^3.22.0",
     "typescript": "^5.3.3"
   }
 }
