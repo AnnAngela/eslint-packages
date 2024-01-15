@@ -24,7 +24,9 @@
     "lib"
   ],
   "scripts": {
+    "package": "node scripts/build.js",
     "preversion": "eslint --exit-on-fatal-error --max-warnings 0 ./src",
+    "version": "npm run package",
     "tag": "node ../../scripts/newTag.js"
   },
   "devDependencies": {
