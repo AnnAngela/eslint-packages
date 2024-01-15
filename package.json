@@ -10,7 +10,8 @@
     "lint:write": "eslint --fix .",
     "ci": "rm -rf node_modules && npm ci",
     "eslint-plugin-prefer-reflect:test": "mocha packages/eslint-plugin-prefer-reflect/tests --recursive",
-    "postinstall": "node scripts/postinstall.js"
+    "postinstall": "node scripts/postinstall.js",
+    "package": "node scripts/package.js"
   },
   "engines": {
     "node": "^20.9"

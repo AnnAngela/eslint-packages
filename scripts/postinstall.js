@@ -25,7 +25,8 @@ console.info("Start to update the package.json of packages/");
 const unusedDependencies = new Set(Object.keys(packageJSON.dependencies));
 for (const pkg of packages) {
     console.info(`[${pkg}]`, "Start to update package.json");
-    const pkgPackageJSONPath = await resolvePackageJSON(path.resolve("./packages", pkg));
+    const pkgPath = path.resolve("./packages", pkg);
+    const pkgPackageJSONPath = await resolvePackageJSON(pkgPath);
     const pkgPackageJSON = await readPackageJSON(pkgPackageJSONPath);
     let pkgChanged = false;
     for (const property of ["dependencies", "devDependencies"]) {
