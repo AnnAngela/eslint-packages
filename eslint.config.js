@@ -11,23 +11,22 @@ const ignores = [
  * @type { import("eslint").Linter.FlatConfig[] }
  */
 const config = [
+    // base
     {
         ...configs.base,
+        files: [
+            "**/*.js",
+            "**/*.ts",
+        ],
         ignores,
     },
     {
         ...configs.node,
-        ignores,
-    },
-    // formatter still requires CommonJS, so there is no top-level async/await and we have to use `Sync` methods
-    {
         files: [
-            "packages/eslint-formatter-gha/**",
+            "**/*.js",
+            "**/*.ts",
         ],
         ignores,
-        rules: {
-            "n/no-sync": "off",
-        },
     },
     // plugins
     {
@@ -55,25 +54,21 @@ const config = [
     },
     // For TypeScript files
     {
-        ...configs.base,
-        files: [
-            "**/*.ts",
-        ],
-        ignores,
-    },
-    {
-        ...configs.node,
-        files: [
-            "**/*.ts",
-        ],
-        ignores,
-    },
-    {
         ...configs.typescript,
         files: [
             "**/*.ts",
         ],
         ignores,
+    },
+    // formatter still requires CommonJS, so there is no top-level async/await and we have to use `Sync` methods
+    {
+        files: [
+            "packages/eslint-formatter-gha/**",
+        ],
+        ignores,
+        rules: {
+            "n/no-sync": "off",
+        },
     },
 ];
 export default config;
