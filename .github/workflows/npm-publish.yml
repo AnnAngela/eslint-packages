@@ -35,16 +35,9 @@ jobs:
       
       - name: Get the cwd
         id: cwd
-        run: |
-          cwd=packages/$(echo "${{ github.event.release.name || inputs.package }}" | sed 's/@v.*//')
-          echo "cwd: $cwd"
-          if [ -d "$cwd" ]; then
-            echo "cwd exists."
-            echo "cwd=$cwd" >> $GITHUB_OUTPUT
-          else
-            echo "cwd does not exist."
-            exit 1
-          fi
+        run: node scripts/getCwd.js
+        env:
+          INPUT: ${{ github.event.release.name || inputs.package }}
       - name: Build the package
         working-directory: ${{ steps.cwd.outputs.cwd }}
         run: npm run package
