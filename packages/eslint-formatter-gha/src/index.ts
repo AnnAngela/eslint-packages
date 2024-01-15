@@ -1,7 +1,11 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable security/detect-object-injection */
 import path from "path";
 import type { ESLint } from "eslint";
 import ActionsSummary from "./ActionsSummary.js";
 import { logSeverity, annotationPropertiesType, eslintSeverityToAnnotationSeverity, log } from "./command.js";
+
+const GITHUB_SHA = process.env.GITHUB_SHA;
 
 const generateESLintRuleLink = (ruleId: string) => `https://eslint.org/docs/latest/rules/${ruleId}`;
 
@@ -35,7 +39,14 @@ const formatter: ESLint.Formatter["format"] = (results) => {
                 continue;
             }
             deprecatedRules.push(ruleId);
-            const deprecatedRuleMessage = `Deprecated rule: ${ruleId}${replacedBy.length > 0 ? `, replaced by ${replacedBy.join(" / ")} instead` : ""} - ${generateESLintRuleLink(ruleId)}`;
+            const deprecatedRuleMessageArr = [
+                `Deprecated rule: ${ruleId}`,
+            ];
+            if (replacedBy.length > 0) {
+                deprecatedRuleMessageArr.push(`, replaced by ${replacedBy.join(" / ")} instead`);
+            }
+            deprecatedRuleMessageArr.push(` - ${generateESLintRuleLink(ruleId)}`);
+            const deprecatedRuleMessage = deprecatedRuleMessageArr.join("");
             if (deprecatedRulesSeverity === "debug") {
                 log("debug", deprecatedRuleMessage);
             } else {
@@ -50,11 +61,53 @@ const formatter: ESLint.Formatter["format"] = (results) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             messageId, nodeType, fatal, source, suggestions,
         } of messages) {
-            const fileName = `${path.relative(process.cwd(), filePath)}#L${line}${endLine && line !== endLine && (endColumn ? endColumn !== 1 : true) ? `-L${endLine}` : ""}`;
-            const fileLink = process.env.GITHUB_SHA ? `https://github.com/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA.slice(0, 7)}/${encodeURI(fileName)}` : "";
-            const msg = `${message} ${fix ? "[maybe fixable]" : ""} ${ruleId ? `(${ruleId}) - ${generateESLintRuleLink(ruleId)}` : ""} @ ${process.env.GITHUB_SHA ? fileLink : fileName}`;
-            // eslint-disable-next-line security/detect-object-injection
-            annotationSummary.push(`${ActionsSummary.EMOJI[eslintSeverityToAnnotationSeverity[severity]]} ${fix ? ActionsSummary.EMOJI.fixable : ""} ${message} ${ruleId ? `([${ruleId}](${generateESLintRuleLink(ruleId)}))` : ""} @ ${process.env.GITHUB_SHA ? `[${fileName}](${fileLink})` : fileName}`);
+            let hash = "";
+            if (typeof line === "number") {
+                hash += `#L${line}`;
+                if (typeof endLine === "number") {
+                    let actuallyEndLine = endLine;
+                    if (typeof endColumn === "number" && endColumn === 1) {
+                        actuallyEndLine--;
+                    }
+                    if (actuallyEndLine !== line) {
+                        hash += `-L${actuallyEndLine}`;
+                    }
+                }
+            }
+            const fileName = `${path.relative(process.cwd(), filePath)}${hash}`;
+            const fileLink = GITHUB_SHA ? `https://github.com/${process.env.GITHUB_REPOSITORY}/blob/${GITHUB_SHA.slice(0, 7)}/${encodeURI(fileName)}` : "";
+            const msgArr = [
+                message,
+            ];
+            if (fix) {
+                msgArr.push("[maybe fixable]");
+            }
+            if (typeof ruleId === "string") {
+                msgArr.push(`(${ruleId}) - ${generateESLintRuleLink(ruleId)}`);
+            }
+            msgArr.push("@");
+            if (GITHUB_SHA) {
+                msgArr.push(fileLink);
+            } else {
+                msgArr.push(fileName);
+            }
+            const msg = msgArr.join(" ");
+            const summaryLineArr = [
+                ActionsSummary.EMOJI[eslintSeverityToAnnotationSeverity[severity]],
+            ];
+            if (fix) {
+                summaryLineArr.push(ActionsSummary.EMOJI.fixable);
+            }
+            summaryLineArr.push(message);
+            if (typeof ruleId === "string") {
+                summaryLineArr.push(`([${ruleId}](${generateESLintRuleLink(ruleId)}))`);
+            }
+            if (GITHUB_SHA) {
+                msgArr.push(`[${fileName}](${fileLink})`);
+            } else {
+                msgArr.push(fileName);
+            }
+            annotationSummary.push(summaryLineArr.join(" "));
             const annotationProperties: annotationPropertiesType = {
                 title: "ESLint Annotation",
                 file: filePath,
@@ -64,7 +117,6 @@ const formatter: ESLint.Formatter["format"] = (results) => {
                 endColumn,
             };
             log("debug", JSON.stringify({ msg, ...annotationProperties }, null, 4));
-            // eslint-disable-next-line security/detect-object-injection
             log(eslintSeverityToAnnotationSeverity[severity], msg, annotationProperties);
         }
     }
@@ -72,7 +124,6 @@ const formatter: ESLint.Formatter["format"] = (results) => {
         actionsSummary.addRaw("Nothing is broken, everything is fine.");
     }
     if (deprecatedRulesSummary.length > 0) {
-        // eslint-disable-next-line security/detect-object-injection
         actionsSummary.addHeading({ text: `${ActionsSummary.EMOJI[deprecatedRulesSeverity]} Deprecated Rules`, level: 2 });
         actionsSummary.addList({ items: deprecatedRulesSummary });
     }
