@@ -37,9 +37,9 @@ for (const pkg of packages) {
              */
             const lockInfo = packageLockJSON.packages[`node_modules/${dependencyName}`];
             if (lockInfo?.version && dependencyVersionString !== `^${lockInfo.version}`) {
-                console.warn(`[${pkg}]`, `[${property}]`, `Version mismatch for ${dependencyName}: ${dependencyVersionString} vs ${lockInfo.version}`);
+                console.warn(`[${pkg}]`, `[${property}]`, `Version mismatch for ${dependencyName}: ${dependencyVersionString} vs ^${lockInfo.version}`);
                 pkgChanged = true;
-                pkgPackageJSON[property][dependencyName] = lockInfo.version;
+                pkgPackageJSON[property][dependencyName] = `^${lockInfo.version}`;
             }
         }
     }
