@@ -143,6 +143,10 @@ const config = { // `baseConfig`: Default config
         ...promisePluginRules,
         "promise/no-multiple-resolved": "error",
         "promise/prefer-await-to-callbacks": "error",
+        "promise/always-return": [
+            "error",
+            { ignoreLastCallback: true },
+        ],
         "promise/prefer-await-to-then": "error",
         "promise/param-names": [
             "error",
