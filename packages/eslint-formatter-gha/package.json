@@ -1,0 +1,48 @@
+{
+  "name": "@annangela/eslint-formatter-gha",
+  "version": "1.1.0",
+  "description": "A better ESLint formatter used in GitHub Actions",
+  "main": "./dist/index.cjs",
+  "exports": {
+    ".": "./dist/index.cjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "scripts": {
+    "package": "node scripts/build.js",
+    "preversion": "eslint --exit-on-fatal-error --max-warnings 0 ./src",
+    "version": "npm run package",
+    "tag": "node ../../scripts/newTag.js"
+  },
+  "engines": {
+    "node": "^20.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnnAngela/eslint-packages.git",
+    "directory": "packages/eslint-formatter-gha"
+  },
+  "keywords": [
+    "eslint",
+    "eslint-formatter",
+    "eslintformatter"
+  ],
+  "author": "AnnAngela",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AnnAngela/eslint-packages/issues"
+  },
+  "homepage": "https://github.com/AnnAngela/eslint-packages/packages/eslint-formatter-gha#readme",
+  "devDependencies": {
+    "@actions/core": "^1.10.1",
+    "@annangela/eslint-config": "^3.4.2",
+    "@annangela/eslint-formatter-gha": "^1.0.2",
+    "@types/eslint": "^8.56.1",
+    "@types/node": "^20.10.8",
+    "eslint": "^8.56.0",
+    "semver": "^7.5.4",
+    "typescript": "^5.3.3"
+  }
+}

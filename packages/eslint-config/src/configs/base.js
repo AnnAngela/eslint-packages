@@ -1,0 +1,173 @@
+import stylistic from "@stylistic/eslint-plugin";
+import { rules as preferReflectPluginRules } from "@annangela/eslint-plugin-prefer-reflect";
+import preferArrowFunctionsPlugin from "eslint-plugin-prefer-arrow-functions";
+import eslintJS from "@eslint/js";
+import promiseLegacyPlugin from "eslint-plugin-promise";
+import commentsLegacyPlugin from "@eslint-community/eslint-plugin-eslint-comments";
+
+import globals from "globals";
+
+const transferLegacyPluginIntoFlatConfig = (legacyPlugin) => {
+    const rules = {
+        ...legacyPlugin.configs.recommended.rules,
+    };
+    Reflect.deleteProperty(legacyPlugin, "configs");
+    return [
+        legacyPlugin,
+        rules,
+    ];
+};
+
+const stylisticPlugin = stylistic.configs.customize({
+    flat: true,
+    indent: 4,
+    quotes: "double",
+    semi: true,
+    jsx: false,
+    arrowParens: true,
+    braceStyle: "1tbs",
+    commaDangle: "always-multiline",
+    quoteProps: "as-needed",
+});
+const [promisePlugin, promisePluginRules] = transferLegacyPluginIntoFlatConfig(promiseLegacyPlugin);
+const [commentsPlugin, commentsPluginRules] = transferLegacyPluginIntoFlatConfig(commentsLegacyPlugin);
+/**
+ * @type { Omit<import("eslint").Linter.FlatConfig, "files" | "ignores"> }
+ */
+const config = { // `baseConfig`: Default config
+    linterOptions: {
+        reportUnusedDisableDirectives: "error",
+    },
+    languageOptions: {
+        ecmaVersion: 2022, // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        parserOptions: {
+            ecmaVersion: 2022, // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        },
+        globals: {
+            ...globals.builtin,
+            ...globals.es5,
+            ...globals.es2015,
+            ...globals.es2017,
+            ...globals.es2020,
+            ...globals.es2021,
+        },
+    },
+    plugins: {
+        ...stylisticPlugin.plugins,
+        promise: promisePlugin,
+        "@eslint-community/eslint-comments": commentsPlugin,
+        "@annangela/prefer-reflect": {
+            rules: preferReflectPluginRules,
+        },
+        "prefer-arrow-functions": preferArrowFunctionsPlugin,
+    },
+    rules: {
+        // eslintJS
+        ...eslintJS.configs.recommended.rules,
+        camelcase: "error",
+        curly: "error",
+        "dot-notation": "error",
+        eqeqeq: "error",
+        "logical-assignment-operators": "error",
+        "no-console": "off",
+        "no-else-return": "error",
+        "no-empty": [
+            "error",
+            {
+                allowEmptyCatch: true,
+            },
+        ],
+        "no-extra-bind": "error",
+        "no-inner-declarations": "off",
+        "no-labels": "error",
+        "no-lone-blocks": "error",
+        "no-loop-func": "error",
+        "no-magic-numbers": "off",
+        "no-new-func": "error",
+        "no-new-wrappers": "error",
+        "no-object-constructor": "error",
+        "no-param-reassign": "error",
+        "no-template-curly-in-string": "error",
+        "no-unused-vars": [
+            "error",
+            {
+                varsIgnorePattern: "^_",
+            },
+        ],
+        "no-use-before-define": "error",
+        "no-var": "error",
+        "prefer-arrow-callback": "error",
+        "prefer-const": "error",
+        "prefer-exponentiation-operator": "error",
+        "prefer-rest-params": "error",
+        "prefer-spread": "error",
+        "prefer-template": "error",
+        "require-atomic-updates": "error",
+        "require-await": "error",
+        strict: [
+            "error",
+            "global",
+        ],
+
+        // stylisticPlugin
+        ...stylisticPlugin.rules,
+        "@stylistic/indent": [
+            "warn",
+            4,
+            {
+                SwitchCase: 1,
+            },
+        ],
+        "@stylistic/linebreak-style": "error",
+        "@stylistic/lines-between-class-members": "off",
+        "@stylistic/no-extra-parens": "error",
+        "@stylistic/quote-props": [
+            "error",
+            "as-needed",
+            {
+                keywords: true,
+                unnecessary: true,
+                numbers: false,
+            },
+        ],
+        "@stylistic/quotes": [
+            "error",
+            "double",
+            {
+                avoidEscape: true,
+                allowTemplateLiterals: false,
+            },
+        ],
+
+        // promisePlugin
+        ...promisePluginRules,
+        "promise/no-multiple-resolved": "error",
+        "promise/prefer-await-to-callbacks": "error",
+        "promise/prefer-await-to-then": "error",
+        "promise/param-names": [
+            "error",
+            {
+                resolvePattern: "^_?res(?:olve)?$",
+                rejectPattern: "^_?rej(?:ect)?$",
+            },
+        ],
+
+        // commentsPlugin
+        ...commentsPluginRules,
+
+        // @annangela/prefer-reflect
+        "@annangela/prefer-reflect/prefer-reflect": "error",
+
+        // prefer-arrow-functions
+        "prefer-arrow-functions/prefer-arrow-functions": [
+            "error",
+            {
+                classPropertiesAllowed: true,
+                disallowPrototype: true,
+                returnStyle: "implicit",
+                singleReturnOnly: false,
+            },
+        ],
+    },
+};
+export default config;

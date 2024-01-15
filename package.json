@@ -1,0 +1,54 @@
+{
+  "name": "@annangela/eslint-package",
+  "version": "1.0.0",
+  "description": "AnnAngela's ESLint packages Monorepo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint:check": "eslint .",
+    "lint:check-ci": "eslint --exit-on-fatal-error -f ./node_modules/@annangela/eslint-formatter-gha/dist/index.js --max-warnings 0 .",
+    "lint:write": "eslint --fix .",
+    "ci": "rm -rf node_modules && npm ci",
+    "eslint-plugin-prefer-reflect:test": "mocha packages/eslint-plugin-prefer-reflect/tests --recursive",
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "engines": {
+    "node": "^20.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnnAngela/eslint-packages.git"
+  },
+  "author": "AnnAngela",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AnnAngela/eslint-packages/issues"
+  },
+  "homepage": "https://github.com/AnnAngela/eslint-packages#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@annangela/eslint-config": "^3.4.2",
+    "@annangela/eslint-formatter-gha": "^1.0.2",
+    "@annangela/eslint-plugin-prefer-reflect": "^2",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.1.0",
+    "@eslint/js": "^8.56.0",
+    "@stylistic/eslint-plugin": "^1.5.3",
+    "@stylistic/eslint-plugin-migrate": "^1.5.3",
+    "@types/eslint": "^8.56.1",
+    "@types/node": "^20.10.8",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-eslint-plugin": "^5.2.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prefer-arrow-functions": "^3.2.4",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-security": "^2.1.0",
+    "globals": "^13.24.0",
+    "mocha": "^10.2.0",
+    "pkg-types": "^1.0.3",
+    "semver": "^7.5.4",
+    "typescript": "^5.3.3"
+  }
+}

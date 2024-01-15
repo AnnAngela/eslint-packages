@@ -1,0 +1,55 @@
+name: Node.js Package Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package name'
+        required: true
+        type: string
+  release:
+    types: 
+      - published
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          check-latest: true
+          registry-url: https://registry.npmjs.org/
+          cache: npm
+
+      - name: Installing the dependencies
+        uses: AnnAngela/cached_node-modules@v1
+          
+      - name: Check environment
+        run: npx eslint --env-info
+      - name: Run eslint
+        run: npm run lint:check-ci
+      
+      - name: Get the cwd
+        id: cwd
+        run: |
+          cwd=packages/$(echo "${{ github.event.release.name || inputs }}" | sed 's/@.*//')
+          echo "cwd: $cwd"
+          if [ -d "$cwd" ]; then
+            echo "cwd exists."
+            echo "cwd=$cwd" >> $GITHUB_OUTPUT
+          else
+            echo "cwd does not exist."
+            exit 1
+          fi
+      - name: Build the package
+        working-directory: ${{ steps.cwd.outputs.cwd }}
+        run: npm run package
+      - name: Publish the package
+        working-directory: ${{ steps.cwd.outputs.cwd }}
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

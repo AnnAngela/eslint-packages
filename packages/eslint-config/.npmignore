@@ -1,0 +1,7 @@
+.cache
+.github
+node_modules
+src
+tsconfig.*.json
+*.js
+scripts
