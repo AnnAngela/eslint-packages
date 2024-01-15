@@ -1,5 +1,5 @@
 import stylistic from "@stylistic/eslint-plugin";
-import { rules as preferReflectPluginRules } from "@annangela/eslint-plugin-prefer-reflect";
+import preferReflectPlugin from "@annangela/eslint-plugin-prefer-reflect";
 import preferArrowFunctionsPlugin from "eslint-plugin-prefer-arrow-functions";
 import eslintJS from "@eslint/js";
 import promiseLegacyPlugin from "eslint-plugin-promise";
@@ -56,9 +56,7 @@ const config = { // `baseConfig`: Default config
         ...stylisticPlugin.plugins,
         promise: promisePlugin,
         "@eslint-community/eslint-comments": commentsPlugin,
-        "@annangela/prefer-reflect": {
-            rules: preferReflectPluginRules,
-        },
+        "@annangela/prefer-reflect": preferReflectPlugin,
         "prefer-arrow-functions": preferArrowFunctionsPlugin,
     },
     rules: {

@@ -20,6 +20,35 @@ npm install @annangela/eslint-plugin-prefer-reflect --save-dev
 
 ## Usage
 
+### `eslint.config.js` - flat config
+
+Use the plugin:
+
+```js
+import preferReflectPlugin from "@annangela/eslint-plugin-prefer-reflect";
+
+// ...
+
+export default {
+    // ...
+    plugins: {
+        // ...
+        "@annangela/prefer-reflect": preferReflectPlugin,
+        // ...
+    },
+    rules: {
+        // ...
+
+        // @annangela/prefer-reflect
+        "@annangela/prefer-reflect/prefer-reflect": "error",
+
+        // ...
+    },
+};
+```
+
+### `.eslintrc` (Deprecated)
+
 Add `@annangela/eslint-plugin-prefer-reflect` to the plugins section of your `.eslintrc` configuration file:
 
 ```json
@@ -44,4 +73,4 @@ I know this repeated words looks stupid, but the eslint requires this format.
 
 ## Supported Rules
 
-- [`@annangela/prefer-reflect/prefer-reflect`](docs/rules/prefer-reflect.md): Please look up [the doc link](docs/rules/prefer-reflect.md).
+- [`@annangela/prefer-reflect/prefer-reflect`](packages/eslint-plugin-prefer-reflect/docs/rules/prefer-reflect.md): Please look up [the doc link](packages/eslint-plugin-prefer-reflect/docs/rules/prefer-reflect.md).
