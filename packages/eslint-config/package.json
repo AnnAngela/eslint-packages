@@ -43,13 +43,13 @@
   },
   "homepage": "https://github.com/AnnAngela/eslint-packages/packages/eslint-config#readme",
   "devDependencies": {
-    "@annangela/eslint-formatter-gha": "1.1.0",
+    "@annangela/eslint-formatter-gha": "^1.1.0",
     "@types/node": "^20.10.8",
     "semver": "^7.5.4",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@annangela/eslint-plugin-prefer-reflect": "2.1.3",
+    "@annangela/eslint-plugin-prefer-reflect": "^2.2.1",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.1.0",
     "@eslint/js": "^8.56.0",
     "@stylistic/eslint-plugin": "^1.5.3",
