@@ -7,7 +7,7 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-import rule from "../../../lib/rules/prefer-reflect.js";
+import rule from "../../../src/rules/prefer-reflect.js";
 import { RuleTester } from "eslint";
 
 // ------------------------------------------------------------------------------
