@@ -49,8 +49,10 @@ draftReleaseURL.hash = "";
 draftReleaseURL.pathname += "/releases/new";
 console.log("Draft release URL:", draftReleaseURL.toString());
 console.log("Release title:", `${pkg}@${tag}`);
-console.log("Example changelog:");
-console.log("-".repeat(73));
-await execCommand(`git log --reverse --pretty=format:"* %s (%h)" ${pkg}@v${oldTag}...${pkg}@${tag}`, { synchronousStderr: true, synchronousStdout: true, cwd: rootDir }).catch();
+await execCommand(`git log --reverse --pretty=format:"* %s (%h)" ${pkg}@v${oldTag}...${pkg}@${tag}`).then((changelog) => {
+    console.log("Example changelog:");
+    console.info(changelog);
+    console.log("-".repeat(73));
+}).catch(() => void 0);
 console.info("");
 console.log("-".repeat(73));
