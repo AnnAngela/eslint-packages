@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       package:
-        description: 'Package name'
+        description: Package name
         required: true
         type: string
   release:
@@ -36,7 +36,7 @@ jobs:
       - name: Get the cwd
         id: cwd
         run: |
-          cwd=packages/$(echo "${{ github.event.release.name || inputs }}" | sed 's/@v.*//')
+          cwd=packages/$(echo "${{ github.event.release.name || inputs.package }}" | sed 's/@v.*//')
           echo "cwd: $cwd"
           if [ -d "$cwd" ]; then
             echo "cwd exists."
