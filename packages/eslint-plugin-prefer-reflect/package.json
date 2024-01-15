@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/AnnAngela/eslint-packages/issues"
   },
-  "homepage": "https://github.com/AnnAngela/eslint-packages/packages/eslint-prefer-reflect#readme",
+  "homepage": "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-prefer-reflect#readme",
   "exports": {
     ".": {
       "types": "./dist/esm/index.d.ts",

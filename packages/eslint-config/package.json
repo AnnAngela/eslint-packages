@@ -41,7 +41,7 @@
   "bugs": {
     "url": "https://github.com/AnnAngela/eslint-packages/issues"
   },
-  "homepage": "https://github.com/AnnAngela/eslint-packages/packages/eslint-config#readme",
+  "homepage": "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-config#readme",
   "devDependencies": {
     "@annangela/eslint-formatter-gha": "^1.1.0",
     "@types/node": "^20.11.1",
