@@ -58,6 +58,9 @@ console.info("Parsing the scripts to exclude used dependencies");
 for (const file of ["./eslint.config.js", ...(await fs.promises.readdir("./scripts", { withFileTypes: true, recursive: true })).filter((dirent) => dirent.isFile()).map((dirent) => path.resolve(dirent.path, dirent.name))]) {
     const content = `\n${await fs.promises.readFile(file, { encoding: "utf-8" })}`;
     const matches = content.match(/(?<=\nimport)[^\n]+? from "[^\n"]+";?\n/g);
+    if (!matches) {
+        continue;
+    }
     for (const match of matches) {
         const dependencyName = match.match(/(?<= from ")[^"]+/)?.[0];
         if (dependencyName && !/^node:|^\./.test(dependencyName)) {
