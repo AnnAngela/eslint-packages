@@ -39,7 +39,7 @@ console.log(`tag: ${tag}`);
 
 console.log("Bump the package version");
 await execCommand(`npm version ${tag.replace(/^v/, "")} -m "release: ${pkg}@v%s"`, { synchronousStderr: true, synchronousStdout: true });
-await execCommand(`git tag -s -m "release: ${pkg}@v%s" ${pkg}@${tag}`, { synchronousStderr: true, synchronousStdout: true, cwd: rootDir });
+await execCommand(`git tag -s -m "release: ${pkg}@v${tag}" ${pkg}@v${tag}`, { synchronousStderr: true, synchronousStdout: true, cwd: rootDir });
 
 console.log("Pushing...");
 await execCommand("git push --follow-tags", { synchronousStderr: true, synchronousStdout: true, cwd: rootDir });
@@ -51,6 +51,6 @@ console.log("Draft release URL:", draftReleaseURL.toString());
 console.log("Release title:", `${pkg}@${tag}`);
 console.log("Example changelog:");
 console.log("-".repeat(73));
-await execCommand(`git log --reverse --pretty=format:"* %s (%h)" v${oldTag}...${tag}`, { synchronousStderr: true, synchronousStdout: true, cwd: rootDir });
+await execCommand(`git log --reverse --pretty=format:"* %s (%h)" ${pkg}@v${oldTag}...${pkg}@${tag}`, { synchronousStderr: true, synchronousStdout: true, cwd: rootDir }).catch();
 console.info("");
 console.log("-".repeat(73));
