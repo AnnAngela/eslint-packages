@@ -78,16 +78,20 @@ if (unusedDependencies.size > 0) {
 } else {
     console.info("There is no unused dependency");
 }
-if (IS_IN_GITHUB_ACTIONS && globalChanged) {
-    if (!upstreamExist) {
-        console.info("Running in GitHub Actions, but the upstream does not exist, skip.");
-    } else {
-        console.info("Running in GitHub Actions, commit the changes.");
-        await git.add(".")
-            .commit("chore: update dependencies")
-            .push();
-    }
+
+if (!globalChanged) {
+    console.info("There is no change in package.json.");
+} else if (!IS_IN_GITHUB_ACTIONS) {
+    console.info("Not running in GitHub Actions, skip.");
+} else if (!upstreamExist) {
+    console.info("Running in GitHub Actions, but the upstream does not exist, skip.");
+} else {
+    console.info("Running in GitHub Actions, commit the changes.");
+    await git.add(".")
+        .commit("chore: update dependencies")
+        .push();
 }
+
 console.info("Done.");
 
 console.info("-".repeat(73));
