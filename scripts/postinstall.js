@@ -7,6 +7,7 @@ import path from "node:path";
 import { readPackageJSON, writePackageJSON, resolvePackageJSON } from "pkg-types";
 import IS_IN_GITHUB_ACTIONS from "./modules/IS_IN_GITHUB_ACTIONS.js";
 import git from "./modules/git.js";
+import upstreamExist from "./modules/getUpstream.js";
 
 const IS_DRY_RUN = process.argv.includes("--dry-run");
 
@@ -78,10 +79,14 @@ if (unusedDependencies.size > 0) {
     console.info("There is no unused dependency");
 }
 if (IS_IN_GITHUB_ACTIONS && globalChanged) {
-    console.info("Running in GitHub Actions, commit the changes.");
-    await git.add(".")
-        .commit("chore: update dependencies")
-        .push();
+    if (!upstreamExist) {
+        console.info("Running in GitHub Actions, but the upstream does not exist, skip.");
+    } else {
+        console.info("Running in GitHub Actions, commit the changes.");
+        await git.add(".")
+            .commit("chore: update dependencies")
+            .push();
+    }
 }
 console.info("Done.");
 
