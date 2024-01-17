@@ -40,7 +40,7 @@
     "@annangela/eslint-config": "^4.0.4",
     "@annangela/eslint-formatter-gha": "^1.1.2",
     "@types/eslint": "^8.56.2",
-    "@types/node": "^20.11.3",
+    "@types/node": "^20.11.4",
     "eslint": "^8.56.0",
     "semver": "^7.5.4",
     "typescript": "^5.3.3"
