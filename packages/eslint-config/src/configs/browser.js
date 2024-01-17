@@ -9,6 +9,12 @@ const config = { // `browserConfig`: For files used in browser
         reportUnusedDisableDirectives: "error",
     },
     languageOptions: {
+        ecmaVersion: "latest",
+        sourceType: "script",
+        parserOptions: {
+            ecmaVersion: "latest",
+            sourceType: "module",
+        },
         globals: {
             ...globals.browser,
             ...forkedGlobals.jquery,
