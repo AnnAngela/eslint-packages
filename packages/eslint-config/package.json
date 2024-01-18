@@ -44,7 +44,7 @@
   "homepage": "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-config#readme",
   "devDependencies": {
     "@annangela/eslint-formatter-gha": "^1.1.2",
-    "@types/node": "^20.11.4",
+    "@types/node": "^20.11.5",
     "semver": "^7.5.4",
     "typescript": "^5.3.3"
   },
@@ -52,8 +52,8 @@
     "@annangela/eslint-plugin-prefer-reflect": "^2.2.2",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.1.0",
     "@eslint/js": "^8.56.0",
-    "@stylistic/eslint-plugin": "^1.5.3",
-    "@stylistic/eslint-plugin-migrate": "^1.5.3",
+    "@stylistic/eslint-plugin": "^1.5.4",
+    "@stylistic/eslint-plugin-migrate": "^1.5.4",
     "@types/eslint": "^8.56.2",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
