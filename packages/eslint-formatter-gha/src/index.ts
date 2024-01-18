@@ -102,9 +102,9 @@ const formatter: ESLint.Formatter["format"] = (results) => {
                 summaryLineArr.push(`([${ruleId}](${generateESLintRuleLink(ruleId)}))`);
             }
             if (GITHUB_SHA) {
-                msgArr.push(`[${fileName}](${fileLink})`);
+                summaryLineArr.push(`[${fileName}](${fileLink})`);
             } else {
-                msgArr.push(fileName);
+                summaryLineArr.push(fileName);
             }
             annotationSummary.push(summaryLineArr.join(" "));
             const annotationProperties: annotationPropertiesType = {
