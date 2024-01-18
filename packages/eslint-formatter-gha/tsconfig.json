@@ -1,14 +1,12 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
     "extends": [
-        "../eslint-config/src/tsconfig.base.json"
+        "../eslint-config/src/tsconfigs/tsconfig.node20.cjs.json"
     ],
     "compilerOptions": {
         "rootDir": "./src",
         "baseUrl": "./",
         "outDir": "./dist",
-        "module": "commonjs",
-        "moduleResolution": "node",
     },
     "include": [
         "src",

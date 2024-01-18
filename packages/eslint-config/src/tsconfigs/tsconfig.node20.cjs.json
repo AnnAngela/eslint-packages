@@ -1,0 +1,14 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        // Modules
+        "module": "commonjs",
+        "moduleResolution": "node10",
+        // Language and Environment
+        "lib": [
+            "es2023", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        ],
+        "target": "ES2022", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+    },
+}

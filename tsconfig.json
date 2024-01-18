@@ -1,7 +1,7 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
     "extends": [
-        "./packages/eslint-config/src/tsconfig.base.json"
+        "./packages/eslint-config/src/tsconfigs/tsconfig.node20.json"
     ],
     "compilerOptions": {
         "rootDir": "./",

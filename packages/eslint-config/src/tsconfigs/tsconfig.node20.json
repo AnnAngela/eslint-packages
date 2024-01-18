@@ -1,0 +1,16 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        // Modules
+        "module": "Node16", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        "moduleResolution": "Node16", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        "resolveJsonModule": true,
+        "resolvePackageJsonExports": true,
+        // Language and Environment
+        "lib": [
+            "es2023", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        ],
+        "target": "ES2022", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+    },
+}

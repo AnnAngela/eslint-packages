@@ -35,7 +35,7 @@ await fs.promises.writeFile("dist/cjs/package.json", JSON.stringify({ type: "com
 });
 
 console.info("Copying tsconfig.base.json");
-await fs.promises.cp("./src/tsconfig.base.json", "./dist/tsconfig.base.json", { force: true });
+await fs.promises.cp("./src/tsconfigs", "./dist/tsconfigs", { force: true, recursive: true });
 
 console.info("Result:");
 await execCommand("tree -afNshv dist", {

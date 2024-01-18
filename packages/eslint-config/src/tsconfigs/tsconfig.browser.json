@@ -1,0 +1,14 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        // Modules
+        "module": "none",
+        // Language and Environment
+        "lib": [
+            "ESNext",
+            "DOM",
+        ],
+        "target": "ESNext",
+    },
+}

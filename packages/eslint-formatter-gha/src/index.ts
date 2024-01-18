@@ -30,8 +30,7 @@ const formatter: ESLint.Formatter["format"] = (results) => {
     const annotationSummary: string[] = [];
     for (const {
         filePath, messages, usedDeprecatedRules,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        suppressedMessages, errorCount, fatalErrorCount, warningCount, fixableErrorCount, fixableWarningCount, output, source,
+        // suppressedMessages, errorCount, fatalErrorCount, warningCount, fixableErrorCount, fixableWarningCount, output, source,
     } of results) {
         for (const { ruleId, replacedBy } of usedDeprecatedRules) {
             if (deprecatedRules.includes(ruleId)) {
@@ -57,8 +56,7 @@ const formatter: ESLint.Formatter["format"] = (results) => {
         }
         for (const {
             message, severity, line, column, endLine, endColumn, ruleId, fix,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            messageId, nodeType, fatal, source, suggestions,
+            // messageId, nodeType, fatal, source, suggestions,
         } of messages) {
             let hash = "";
             if (typeof line === "number") {
@@ -111,10 +109,14 @@ const formatter: ESLint.Formatter["format"] = (results) => {
                 title: "ESLint Annotation",
                 file: filePath,
                 startLine: line,
-                endLine,
                 startColumn: column,
-                endColumn,
             };
+            if (typeof endLine === "number") {
+                annotationProperties.endLine = endLine;
+            }
+            if (typeof endColumn === "number") {
+                annotationProperties.endColumn = endColumn;
+            }
             log("debug", JSON.stringify({ msg, ...annotationProperties }, null, 4));
             log(eslintSeverityToAnnotationSeverity[severity], msg, annotationProperties);
         }

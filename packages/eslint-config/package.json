@@ -11,7 +11,8 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./tsconfig.base.json": "./dist/tsconfig.base.json"
+    "./tsconfig.node20.json": "./dist/tsconfigs/tsconfig.node20.json",
+    "./tsconfig.browser.json": "./dist/tsconfigs/tsconfig.browser.json"
   },
   "files": [
     "./dist"
