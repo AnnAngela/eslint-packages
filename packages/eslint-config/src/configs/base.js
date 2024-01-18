@@ -136,6 +136,10 @@ const config = { // `baseConfig`: Default config
                 allowTemplateLiterals: false,
             },
         ],
+        "@stylistic/multiline-ternary": [
+            "error",
+            "always-multiline",
+        ],
 
         // promisePlugin
         ...promisePluginRules,
@@ -156,6 +160,10 @@ const config = { // `baseConfig`: Default config
 
         // commentsPlugin
         ...commentsPluginRules,
+        "@eslint-community/eslint-comments/disable-enable-pair": [
+            "error",
+            { allowWholeFile: true },
+        ],
 
         // @annangela/prefer-reflect
         "@annangela/prefer-reflect/prefer-reflect": "error",
