@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable security/detect-object-injection, security/detect-non-literal-fs-filename */
 console.info("-".repeat(73));
 
