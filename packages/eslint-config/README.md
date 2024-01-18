@@ -24,3 +24,4 @@ The package also exported these files:
 
 * [./tsconfig.browser.json](src/tsconfigs/tsconfig.browser.json)
 * [./tsconfig.node20.json](src/tsconfigs/tsconfig.node20.json)
+* [./tsconfig.node20.cjs.json](src/tsconfigs/tsconfig.node20.cjs.json)

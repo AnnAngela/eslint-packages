@@ -12,6 +12,7 @@
       "require": "./dist/cjs/index.js"
     },
     "./tsconfig.node20.json": "./dist/tsconfigs/tsconfig.node20.json",
+    "./tsconfig.node20.cjs.json": "./dist/tsconfigs/tsconfig.node20.cjs.json",
     "./tsconfig.browser.json": "./dist/tsconfigs/tsconfig.browser.json"
   },
   "files": [
