@@ -1,72 +1,72 @@
-import fs from "fs";
-import os from "os";
+import fs from "node:fs";
+import os from "node:os";
 
 interface ActionsSummaryWrapOptions {
-    tag: string
-    content?: string
-    attributes?: Record<string, string | undefined | null>
+    tag: string;
+    content?: string;
+    attributes?: Record<string, string | undefined | null>;
     /**
      * The default value is `false`
      */
-    contentOnSeparateLine?: boolean
+    contentOnSeparateLine?: boolean;
 }
 export interface ActionsSummaryWriteOptions {
     /**
      * The default value is `false`
      */
-    overwrite?: boolean
+    overwrite?: boolean;
 }
 export interface ActionsSummaryCodeBlockOptions {
-    code: string
-    lang?: string
+    code: string;
+    lang?: string;
 }
 export interface ActionsSummaryListOptions {
-    items: string[]
+    items: string[];
     /**
      * The default value is `false`
      */
-    ordered?: boolean
+    ordered?: boolean;
     /**
      * The default value is `0`
      */
-    start?: number
+    start?: number;
 }
 export interface ActionsSummaryDetailsOptions {
-    label: string
-    content: string
+    label: string;
+    content: string;
 }
 export interface ActionsSummaryWrapImageOptions {
-    src: string
-    alt?: string
+    src: string;
+    alt?: string;
     /**
      * Should be a positive integer
      */
-    width?: number
+    width?: number;
     /**
      * Should be a positive integer
      */
-    height?: number
+    height?: number;
 }
 export interface ActionsSummaryAddImageOptions extends ActionsSummaryWrapImageOptions {
     /**
      * The default value is same as `src`
      */
-    link?: string
+    link?: string;
 }
 export interface ActionsSummaryLinkOptions {
-    text: string
-    href: string
+    text: string;
+    href: string;
 }
 export interface ActionsSummaryHeadingOptions {
-    text: string
+    text: string;
     /**
      * The default value is `1`
      */
-    level?: 1 | 2 | 3 | 4 | 5 | 6
+    level?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 export interface ActionsSummaryQuoteOptions {
-    text: string
-    cite?: string
+    text: string;
+    cite?: string;
 }
 export default class ActionsSummary {
     static readonly SUMMARY_ENV_VAR = "GITHUB_STEP_SUMMARY";

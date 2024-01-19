@@ -1,16 +1,18 @@
 /* eslint-disable security/detect-object-injection */
-import path from "path";
+import path from "node:path";
 import type { ESLint } from "eslint";
 import ActionsSummary from "./ActionsSummary.js";
 import { logSeverity, annotationPropertiesType, eslintSeverityToAnnotationSeverity, log } from "./command.js";
 
 const GITHUB_SHA = process.env.GITHUB_SHA;
 
-const generateESLintRuleLink = (ruleId: string) => `https://eslint.org/docs/latest/rules/${ruleId}`;
-
 const actionsSummary = new ActionsSummary();
 
-const formatter: ESLint.Formatter["format"] = (results) => {
+const formatter: ESLint.Formatter["format"] = (results, data) => {
+    const generateESLintRuleLink = (ruleId: string, md: boolean) => {
+        const url = data?.rulesMeta[ruleId]?.docs?.url;
+        return url ? md ? actionsSummary.wrapLink({ text: ruleId, href: url }) : url : ruleId;
+    };
     actionsSummary.addEOL();
     actionsSummary.addHeading({ text: "ESLint Annotation", level: 1 });
     actionsSummary.addRaw(`ESLint Annotation from ${actionsSummary.wrapLink({ text: "@annangela/eslint-formatter-gha", href: "https://www.npmjs.com/package/@annangela/eslint-formatter-gha" })}`);
@@ -43,12 +45,12 @@ const formatter: ESLint.Formatter["format"] = (results) => {
             if (replacedBy.length > 0) {
                 deprecatedRuleMessageArr.push(`, replaced by ${replacedBy.join(" / ")} instead`);
             }
-            deprecatedRuleMessageArr.push(` - ${generateESLintRuleLink(ruleId)}`);
+            deprecatedRuleMessageArr.push(` - ${generateESLintRuleLink(ruleId, false)}`);
             const deprecatedRuleMessage = deprecatedRuleMessageArr.join("");
             if (deprecatedRulesSeverity === "debug") {
                 log("debug", deprecatedRuleMessage);
             } else {
-                deprecatedRulesSummary.push(`[${ruleId}](${generateESLintRuleLink(ruleId)})${replacedBy.length > 0 ? `: replaced by ${replacedBy.map((ruleId) => `[${ruleId}](${generateESLintRuleLink(ruleId)})`).join(" / ")} ` : ""}`);
+                deprecatedRulesSummary.push(`${generateESLintRuleLink(ruleId, true)}${replacedBy.length > 0 ? `: replaced by ${replacedBy.map((ruleId) => generateESLintRuleLink(ruleId, true)).join(" / ")} ` : ""}`);
                 log(deprecatedRulesSeverity, deprecatedRuleMessage, {
                     title: "ESLint Annotation",
                 });
@@ -80,7 +82,7 @@ const formatter: ESLint.Formatter["format"] = (results) => {
                 msgArr.push("[maybe fixable]");
             }
             if (typeof ruleId === "string") {
-                msgArr.push(`(${ruleId}) - ${generateESLintRuleLink(ruleId)}`);
+                msgArr.push(`(${ruleId}) - ${generateESLintRuleLink(ruleId, false)}`);
             }
             msgArr.push("@");
             if (GITHUB_SHA) {
@@ -97,7 +99,7 @@ const formatter: ESLint.Formatter["format"] = (results) => {
             }
             summaryLineArr.push(message);
             if (typeof ruleId === "string") {
-                summaryLineArr.push(`([${ruleId}](${generateESLintRuleLink(ruleId)}))`);
+                summaryLineArr.push(generateESLintRuleLink(ruleId, true));
             }
             if (GITHUB_SHA) {
                 summaryLineArr.push(`[${fileName}](${fileLink})`);
