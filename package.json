@@ -10,7 +10,8 @@
     "lint:check-ci": "eslint --exit-on-fatal-error -f ./node_modules/@annangela/eslint-formatter-gha/dist/index.js --max-warnings 0 .",
     "lint:write": "eslint --fix .",
     "ci": "rm -rf node_modules && npm ci",
-    "eslint-plugin-prefer-reflect:test": "mocha packages/eslint-plugin-prefer-reflect/tests --recursive",
+    "test:eslint-plugin-prefer-reflect": "mocha packages/eslint-plugin-prefer-reflect/tests --recursive",
+    "test:eslint-formatter-gha:lint": "bash scripts/eslint-formatter-gha.test.sh",
     "postinstall": "node scripts/postinstall.js",
     "package": "node scripts/package.js"
   },
