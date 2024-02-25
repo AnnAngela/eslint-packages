@@ -53,7 +53,7 @@
   "dependencies": {
     "@annangela/eslint-plugin-prefer-reflect": "^2.2.2",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.1.0",
-    "@eslint/js": "^8.56.0",
+    "@eslint/js": "^8.57.0",
     "@stylistic/eslint-plugin": "^1.6.2",
     "@stylistic/eslint-plugin-migrate": "^1.6.2",
     "@types/eslint": "^8.56.3",
@@ -61,7 +61,7 @@
     "@typescript-eslint/parser": "^7.0.2",
     "eslint-plugin-eslint-plugin": "^5.3.0",
     "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-prefer-arrow-functions": "^3.2.4",
+    "eslint-plugin-prefer-arrow-functions": "^3.3.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-security": "^2.1.1",
     "globals": "^14.0.0"
