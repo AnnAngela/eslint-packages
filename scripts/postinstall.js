@@ -84,6 +84,8 @@ if (!globalChanged) {
     console.info("Not running in GitHub Actions, skip.");
 } else if (!upstreamExist) {
     console.info("Running in GitHub Actions, but the upstream does not exist, skip.");
+} else if (!process.env.GITHUB_REF?.startsWith("refs/heads/")) {
+    console.info("Running in GitHub Actions, but the current ref is not a branch, skip.");
 } else {
     console.info("Running in GitHub Actions, commit the changes.");
     await git.add(".")
