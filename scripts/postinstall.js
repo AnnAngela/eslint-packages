@@ -78,6 +78,8 @@ if (unusedDependencies.size > 0) {
     console.info("There is no unused dependency");
 }
 
+console.info("process.env.GITHUB_REF:", process.env.GITHUB_REF);
+
 if (!globalChanged) {
     console.info("There is no change in package.json.");
 } else if (!IS_IN_GITHUB_ACTIONS) {
