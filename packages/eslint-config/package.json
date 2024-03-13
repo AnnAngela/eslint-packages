@@ -46,7 +46,7 @@
   "homepage": "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-config#readme",
   "devDependencies": {
     "@annangela/eslint-formatter-gha": "^1.1.4",
-    "@types/node": "^20.11.26",
+    "@types/node": "^20.11.27",
     "semver": "^7.6.0",
     "typescript": "^5.4.2"
   },
