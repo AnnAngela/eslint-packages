@@ -78,7 +78,6 @@ if (unusedDependencies.size > 0) {
     console.info("There is no unused dependency");
 }
 
-
 if (!globalChanged) {
     console.info("There is no change in package.json.");
 } else if (!IS_IN_GITHUB_ACTIONS) {
