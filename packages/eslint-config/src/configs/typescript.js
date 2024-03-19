@@ -29,6 +29,12 @@ const config = { // `typescriptConfig`: For TypeScript files
                 ignoreConditionalTests: true,
             },
         ],
+        "@typescript-eslint/restrict-template-expressions": [
+            "error",
+            {
+                allowNumber: true,
+            },
+        ],
     },
 };
 export default config;
