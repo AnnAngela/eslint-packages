@@ -31,8 +31,13 @@ const config = { // `typescriptConfig`: For TypeScript files
         ],
         "@typescript-eslint/restrict-template-expressions": [
             "error",
-            {
+            { // 除 allowNumber 外均为默认选项
+                allowAny: false,
+                allowBoolean: false,
+                allowNullish: false,
                 allowNumber: true,
+                allowRegExp: false,
+                allowNever: false,
             },
         ],
     },
