@@ -53,6 +53,6 @@
     "pkg-types": "^1.0.3",
     "semver": "^7.6.0",
     "simple-git": "^3.23.0",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.3"
   }
 }
