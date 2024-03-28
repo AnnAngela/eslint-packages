@@ -52,7 +52,7 @@
     "mocha": "^10.4.0",
     "pkg-types": "^1.0.3",
     "semver": "^7.6.0",
-    "simple-git": "^3.23.0",
+    "simple-git": "^3.24.0",
     "typescript": "^5.4.3"
   }
 }
