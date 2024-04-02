@@ -8,10 +8,10 @@ const config = {
         reportUnusedDisableDirectives: "error",
     },
     plugins: {
-        [eslintPlugin.configs.recommended.plugins[0]]: eslintPlugin,
+        [eslintPlugin.configs["flat/recommended"].plugins[0]]: eslintPlugin,
     },
     rules: {
-        ...eslintPlugin.configs.recommended.rules,
+        ...eslintPlugin.configs["flat/recommended"].rules,
     },
 };
 export default config;
