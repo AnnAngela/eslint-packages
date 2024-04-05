@@ -48,7 +48,7 @@
     "@annangela/eslint-formatter-gha": "^1.1.4",
     "@types/node": "^20.12.4",
     "semver": "^7.6.0",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.4"
   },
   "dependencies": {
     "@annangela/eslint-plugin-prefer-reflect": "^2.2.2",
