@@ -53,7 +53,7 @@ export const meta = {
 };
 
 /**
- * @type { import('eslint').Rule.RuleListener }
+ * @param { import('eslint').Rule.RuleContext } context
  */
 export const create = (context) => {
     const existingNames = {
@@ -80,7 +80,7 @@ export const create = (context) => {
         setPrototypeOf: "setPrototypeOf",
     };
 
-    const exceptions = (context.options[0] || {}).exceptions || [];
+    const exceptions = context.options[0]?.exceptions || [];
 
     /**
      * Reports the Reflect violation based on the `existing` and `substitute`
@@ -102,8 +102,8 @@ export const create = (context) => {
 
     return {
         CallExpression: (node) => {
-            const methodName = (node.callee.property || {}).name;
-            const isReflectCall = (node.callee.object || {}).name === "Reflect";
+            const methodName = node.callee.property?.name;
+            const isReflectCall = node.callee.object?.name === "Reflect";
             const hasReflectSubstitute = typeof reflectSubstitutes[methodName] === "string";
             const userConfiguredException = exceptions.includes(reflectSubstitutes[methodName]);
 
