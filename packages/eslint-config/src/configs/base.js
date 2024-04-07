@@ -89,7 +89,13 @@ const config = { // `baseConfig`: Default config
         "no-unused-vars": [
             "error",
             {
+                vars: "all",
                 varsIgnorePattern: "^_",
+                args: "all",
+                argsIgnorePattern: "^_",
+                caughtErrors: "all",
+                caughtErrorsIgnorePattern: "^_",
+                ignoreRestSiblings: true,
             },
         ],
         "no-use-before-define": "error",
