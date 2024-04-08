@@ -44,6 +44,9 @@
     "url": "https://github.com/AnnAngela/eslint-packages/issues"
   },
   "homepage": "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-config#readme",
+  "peerDependencies": {
+    "eslint": "^8.57.0"
+  },
   "devDependencies": {
     "@annangela/eslint-formatter-gha": "^1.1.4",
     "@types/node": "^20.12.4",
