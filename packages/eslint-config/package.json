@@ -1,6 +1,6 @@
 {
   "name": "@annangela/eslint-config",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "ESLint config for AnnAngela's projects",
   "publishConfig": {
     "access": "public"
