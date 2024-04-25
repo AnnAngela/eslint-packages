@@ -11,6 +11,10 @@ on:
     types: 
       - published
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -43,6 +47,6 @@ jobs:
         run: npm run package
       - name: Publish the package
         working-directory: ${{ steps.cwd.outputs.cwd }}
-        run: npm publish --access public
+        run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

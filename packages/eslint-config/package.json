@@ -3,7 +3,8 @@
   "version": "5.2.0",
   "description": "ESLint config for AnnAngela's projects",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "exports": {
     ".": {
