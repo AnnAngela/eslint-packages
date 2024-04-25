@@ -51,6 +51,7 @@ const config = { // `nodeConfig`: For files used in Node.js
         ],
         "n/prefer-promises/dns": "error",
         "n/prefer-promises/fs": "error",
+        "n/prefer-node-protocol": "error",
 
         // securityPlugin
         ...securityPlugin.configs.recommended.rules,
