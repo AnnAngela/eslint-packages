@@ -99,14 +99,15 @@ const formatter: ESLint.Formatter["format"] = (results, data) => {
             }
             summaryLineArr.push(message);
             if (typeof ruleId === "string") {
-                summaryLineArr.push(generateESLintRuleLink(ruleId, true));
+                summaryLineArr.push(`\n  Rule: ${generateESLintRuleLink(ruleId, true)}`);
             }
+            summaryLineArr.push("\n File:");
             if (GITHUB_SHA) {
                 summaryLineArr.push(`[${fileName}](${fileLink})`);
             } else {
                 summaryLineArr.push(fileName);
             }
-            annotationSummary.push(summaryLineArr.join(" "));
+            annotationSummary.push(summaryLineArr.join(" ").replace(/ +(?=\n)/g, ""));
             const annotationProperties: annotationPropertiesType = {
                 title: "ESLint Annotation",
                 file: filePath,
