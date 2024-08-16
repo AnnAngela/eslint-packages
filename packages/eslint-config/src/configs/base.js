@@ -32,7 +32,7 @@ const stylisticPlugin = stylistic.configs.customize({
 const [promisePlugin, promisePluginRules] = transferLegacyPluginIntoFlatConfig(promiseLegacyPlugin);
 const [commentsPlugin, commentsPluginRules] = transferLegacyPluginIntoFlatConfig(commentsLegacyPlugin);
 /**
- * @type { Omit<import("eslint").Linter.FlatConfig, "files" | "ignores"> }
+ * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> }
  */
 const config = { // `baseConfig`: Default config
     linterOptions: {
@@ -99,6 +99,7 @@ const config = { // `baseConfig`: Default config
             },
         ],
         "no-use-before-define": "error",
+        "no-useless-computed-key": "error",
         "no-var": "error",
         "prefer-arrow-callback": "error",
         "prefer-const": "error",

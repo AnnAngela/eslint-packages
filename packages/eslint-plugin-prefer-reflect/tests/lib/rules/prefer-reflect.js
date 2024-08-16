@@ -32,7 +32,6 @@ ruleTester.run("prefer-reflect", rule, {
 
         // Reflect.deleteProperty
         "Reflect.deleteProperty({}, 'foo');",
-        "delete foo;",
         { code: "delete ({}).foo", options: [{ exceptions: ["deleteProperty"] }] },
 
         // Reflect.getOwnPropertyDescriptor

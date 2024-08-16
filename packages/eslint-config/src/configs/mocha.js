@@ -1,7 +1,7 @@
 import forkedGlobals from "../forkedGlobals.js";
 
 /**
- * @type { Omit<import("eslint").Linter.FlatConfig, "files" | "ignores"> }
+ * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> }
  */
 const config = {
     linterOptions: {

@@ -3,7 +3,7 @@ import securityPlugin from "eslint-plugin-security";
 
 import globals from "globals";
 /**
- * @type { Omit<import("eslint").Linter.FlatConfig, "files" | "ignores"> }
+ * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> }
  */
 const config = { // `nodeConfig`: For files used in Node.js
     linterOptions: {

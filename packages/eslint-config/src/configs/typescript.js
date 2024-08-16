@@ -1,7 +1,7 @@
 import typescriptPlugin from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
 /**
- * @type { Omit<import("eslint").Linter.FlatConfig, "files" | "ignores"> }
+ * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> }
  */
 const config = { // `typescriptConfig`: For TypeScript files
     linterOptions: {
