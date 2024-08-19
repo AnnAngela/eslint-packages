@@ -3,7 +3,8 @@
   "version": "5.2.0",
   "description": "ESLint config for AnnAngela's projects",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "exports": {
     ".": {
@@ -45,7 +46,7 @@
   },
   "homepage": "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-config#readme",
   "peerDependencies": {
-    "eslint": "^8.57.0 || ^9"
+    "eslint": "^8.57.0 || ^9.0.0"
   },
   "devDependencies": {
     "@annangela/eslint-formatter-gha": "^1.1.4",

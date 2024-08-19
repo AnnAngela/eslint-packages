@@ -3,7 +3,7 @@ import securityPlugin from "eslint-plugin-security";
 
 import globals from "globals";
 /**
- * @type { Omit<import("eslint").Linter.FlatConfig, "files" | "ignores"> }
+ * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> }
  */
 const config = { // `nodeConfig`: For files used in Node.js
     linterOptions: {
@@ -51,6 +51,8 @@ const config = { // `nodeConfig`: For files used in Node.js
         ],
         "n/prefer-promises/dns": "error",
         "n/prefer-promises/fs": "error",
+        "n/prefer-node-protocol": "error",
+        "n/no-unsupported-features/node-builtins": "off",
 
         // securityPlugin
         ...securityPlugin.configs.recommended.rules,

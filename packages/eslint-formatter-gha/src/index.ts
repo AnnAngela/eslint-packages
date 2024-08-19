@@ -10,7 +10,7 @@ const actionsSummary = new ActionsSummary();
 
 const formatter: ESLint.Formatter["format"] = (results, data) => {
     const generateESLintRuleLink = (ruleId: string, md: boolean) => {
-        const url = data?.rulesMeta[ruleId]?.docs?.url;
+        const url = data.rulesMeta[ruleId].docs?.url;
         return url ? md ? actionsSummary.wrapLink({ text: ruleId, href: url }) : url : ruleId;
     };
     actionsSummary.addEOL();
@@ -99,14 +99,15 @@ const formatter: ESLint.Formatter["format"] = (results, data) => {
             }
             summaryLineArr.push(message);
             if (typeof ruleId === "string") {
-                summaryLineArr.push(generateESLintRuleLink(ruleId, true));
+                summaryLineArr.push(`\n  Rule: ${generateESLintRuleLink(ruleId, true)}`);
             }
+            summaryLineArr.push("\n File:");
             if (GITHUB_SHA) {
                 summaryLineArr.push(`[${fileName}](${fileLink})`);
             } else {
                 summaryLineArr.push(fileName);
             }
-            annotationSummary.push(summaryLineArr.join(" "));
+            annotationSummary.push(summaryLineArr.join(" ").split("\n").map((str) => str.trim()).join("\n"));
             const annotationProperties: annotationPropertiesType = {
                 title: "ESLint Annotation",
                 file: filePath,

@@ -1,7 +1,7 @@
 import eslintPlugin from "eslint-plugin-eslint-plugin";
 
 /**
- * @type { Omit<import("eslint").Linter.FlatConfig, "files" | "ignores"> }
+ * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> }
  */
 const config = {
     linterOptions: {

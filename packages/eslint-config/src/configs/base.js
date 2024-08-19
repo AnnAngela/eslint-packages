@@ -32,7 +32,7 @@ const stylisticPlugin = stylistic.configs.customize({
 const [promisePlugin, promisePluginRules] = transferLegacyPluginIntoFlatConfig(promiseLegacyPlugin);
 const [commentsPlugin, commentsPluginRules] = transferLegacyPluginIntoFlatConfig(commentsLegacyPlugin);
 /**
- * @type { Omit<import("eslint").Linter.FlatConfig, "files" | "ignores"> }
+ * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> }
  */
 const config = { // `baseConfig`: Default config
     linterOptions: {
@@ -45,11 +45,7 @@ const config = { // `baseConfig`: Default config
         },
         globals: {
             ...globals.builtin,
-            ...globals.es5,
-            ...globals.es2015,
-            ...globals.es2017,
-            ...globals.es2020,
-            ...globals.es2021,
+            ...globals.es2022,
         },
     },
     plugins: {
@@ -99,6 +95,7 @@ const config = { // `baseConfig`: Default config
             },
         ],
         "no-use-before-define": "error",
+        "no-useless-computed-key": "error",
         "no-var": "error",
         "prefer-arrow-callback": "error",
         "prefer-const": "error",
