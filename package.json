@@ -5,14 +5,15 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prelint:check": "node scripts/packagesDownloader.js",
     "lint:check": "eslint .",
-    "prelint:check-ci": "node scripts/eslintFormatterGhaDownloader.js && tree -afNshv ./node_modules/@annangela/eslint-formatter-gha",
+    "prelint:check-ci": "node scripts/packagesDownloader.js",
     "lint:check-ci": "eslint --exit-on-fatal-error -f ./node_modules/@annangela/eslint-formatter-gha/dist/index.js --max-warnings 0 .",
     "lint:write": "eslint --fix .",
     "ci": "rm -rf node_modules && npm ci",
     "test:eslint-plugin-prefer-reflect": "mocha packages/eslint-plugin-prefer-reflect/tests --recursive",
     "test:eslint-formatter-gha:lint": "bash scripts/eslint-formatter-gha.test.sh",
-    "postinstall": "node scripts/postinstall.js",
+    "postinstall": "node scripts/packagesDownloader.js && node scripts/postinstall.js",
     "package": "node scripts/package.js"
   },
   "engines": {
