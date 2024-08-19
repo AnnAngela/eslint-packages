@@ -107,7 +107,7 @@ const formatter: ESLint.Formatter["format"] = (results, data) => {
             } else {
                 summaryLineArr.push(fileName);
             }
-            annotationSummary.push(summaryLineArr.join(" ").replace(/ +(?=\n)/g, ""));
+            annotationSummary.push(summaryLineArr.join(" ").split("\n").map((str) => str.trim()).join("\n"));
             const annotationProperties: annotationPropertiesType = {
                 title: "ESLint Annotation",
                 file: filePath,
