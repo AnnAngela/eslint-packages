@@ -1,6 +1,6 @@
 import { configs } from "./packages/eslint-config/src/index.js";
 /**
- * @type { import("eslint").Linter.FlatConfigFileSpec }
+ * @type { import("eslint").Linter.Config["ignores"] }
  */
 const ignores = [
     "**/dist/**",
@@ -8,7 +8,7 @@ const ignores = [
     "node_modules",
 ];
 /**
- * @type { import("eslint").Linter.FlatConfig[] }
+ * @type { import("eslint").Linter.Config[] }
  */
 const config = [
     // base
