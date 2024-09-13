@@ -141,13 +141,17 @@ export default class ActionsSummary {
         this.summary.push(`\`\`\`${lang}`, code, "```");
         return this.addEOL();
     }
-    wrapList = ({ items, ordered = false, start = 0 }: ActionsSummaryListOptions) => items.map((item, index) => `${ordered ? Math.max(0, start) + index : "-"} ${item}`).join(os.EOL);
+    wrapList = ({ items, ordered = false, start = 0 }: ActionsSummaryListOptions) => items.map((item, index) => `${ordered ? `${Math.max(0, start) + index}.` : "-"} ${item}`).join(os.EOL);
     addList(options: ActionsSummaryListOptions) {
         this.summary.push(this.wrapList(options));
         return this.addEOL();
     }
     addDetails({ label, content }: ActionsSummaryDetailsOptions) {
-        this.summary.push(`<details>${this.wrap({ tag: "summary", content: label })}`, "", content, "", "</details>");
+        this.summary.push(this.wrap({
+            tag: "details",
+            content: `${this.wrap({ tag: "summary", content: label })}${os.EOL.repeat(2)}${content}`,
+            contentOnSeparateLine: true,
+        }));
         return this.addEOL();
     }
     wrapImage = ({ src, alt, width, height }: ActionsSummaryWrapImageOptions) => {
@@ -178,7 +182,7 @@ export default class ActionsSummary {
         return this.addEOL();
     }
     addSeperator() {
-        this.summary.push("*******");
+        this.summary.push("*".repeat(7));
         return this.addEOL();
     }
     addQuote({ text, cite }: ActionsSummaryQuoteOptions) {
