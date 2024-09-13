@@ -81,11 +81,11 @@ if (unusedDependencies.size > 0) {
 if (!globalChanged) {
     console.info("There is no change in package.json.");
 } else if (!IS_IN_GITHUB_ACTIONS) {
-    console.info("Not running in GitHub Actions, skip.");
+    console.info("Not running in GitHub Actions, skip committing.");
 } else if (!upstreamExist) {
-    console.info("Running in GitHub Actions, but the upstream does not exist, skip.");
+    console.info("Running in GitHub Actions, but the upstream does not exist, skip committing.");
 } else if (process.env.GITHUB_REF !== "refs/heads/master") {
-    console.info("Running in GitHub Actions, but the current ref is not a branch, skip.");
+    console.info("Running in GitHub Actions, but the current ref is not a branch, skip committing.");
 } else {
     console.info("Running in GitHub Actions, commit the changes.");
     await git.add(".")
