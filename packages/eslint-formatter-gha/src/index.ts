@@ -13,9 +13,10 @@ const formatter: ESLint.Formatter["format"] = (results, data) => {
         const url = data?.rulesMeta[ruleId].docs?.url;
         return url ? md ? actionsSummary.wrapLink({ text: ruleId, href: url }) : url : ruleId;
     };
-    actionsSummary.addEOL();
-    actionsSummary.addHeading({ text: "ESLint Annotation", level: 1 });
-    actionsSummary.addRaw(`ESLint Annotation from ${actionsSummary.wrapLink({ text: "@annangela/eslint-formatter-gha", href: "https://www.npmjs.com/package/@annangela/eslint-formatter-gha" })}`);
+    actionsSummary
+        .addEOL()
+        .addHeading({ text: "ESLint Annotation", level: 1 })
+        .addRaw(`ESLint Annotation from ${actionsSummary.wrapLink({ text: "@annangela/eslint-formatter-gha", href: "https://www.npmjs.com/package/@annangela/eslint-formatter-gha" })}`);
     const deprecatedRulesSeverityFromEnv = process.env.ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY?.toLowerCase();
     const deprecatedRulesSeverities = ["debug", "notice", "warning", "error"];
     // @TODO: Switch to `warning` when eslint 9 is released
@@ -128,12 +129,14 @@ const formatter: ESLint.Formatter["format"] = (results, data) => {
         actionsSummary.addRaw("Nothing is broken, everything is fine.");
     }
     if (deprecatedRulesSummary.length > 0) {
-        actionsSummary.addHeading({ text: `${ActionsSummary.EMOJI[deprecatedRulesSeverity]} Deprecated Rules`, level: 2 });
-        actionsSummary.addList({ items: deprecatedRulesSummary });
+        actionsSummary
+            .addHeading({ text: `${ActionsSummary.EMOJI[deprecatedRulesSeverity]} Deprecated Rules`, level: 2 })
+            .addList({ items: deprecatedRulesSummary });
     }
     if (annotationSummary.length > 0) {
-        actionsSummary.addHeading({ text: "Annotations", level: 2 });
-        actionsSummary.addList({ items: annotationSummary });
+        actionsSummary
+            .addHeading({ text: "Annotations", level: 2 })
+            .addList({ items: annotationSummary });
     }
     actionsSummary.write();
     return "";
