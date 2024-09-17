@@ -4,6 +4,7 @@ console.info("-".repeat(73));
 import fs from "node:fs";
 import path from "node:path";
 import { readPackageJSON, writePackageJSON, resolvePackageJSON } from "pkg-types";
+import { startGroup, endGroup } from "@actions/core";
 import IS_IN_GITHUB_ACTIONS from "./modules/IS_IN_GITHUB_ACTIONS.js";
 import git from "./modules/git.js";
 import upstreamExist from "./modules/getUpstream.js";
@@ -88,9 +89,15 @@ if (!globalChanged) {
     console.info("Running in GitHub Actions, but the current ref is not a branch, skip committing.");
 } else {
     console.info("Running in GitHub Actions, commit the changes.");
-    await git.add(".")
-        .commit("chore: update dependencies")
-        .push();
+    startGroup("Add result:");
+    console.info(await git.add("."));
+    endGroup();
+    startGroup("Commit result:");
+    console.info(await git.commit("chore: update dependencies"));
+    endGroup();
+    startGroup("Push result:");
+    console.info( await git.push());
+    endGroup();
 }
 
 console.info("Done.");
