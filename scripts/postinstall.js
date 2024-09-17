@@ -96,7 +96,7 @@ if (!globalChanged) {
     console.info(await git.commit("chore: update dependencies"));
     endGroup();
     startGroup("Push result:");
-    console.info( await git.push());
+    console.info(await git.push());
     endGroup();
 }
 
