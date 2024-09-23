@@ -8,9 +8,9 @@ const { GITHUB_SHA, GITHUB_REPOSITORY } = process.env;
 
 const actionsSummary = new ActionsSummary();
 
-const formatter: ESLint.Formatter["format"] = (results, data) => {
+const formatter: ESLint.FormatterFunction = (results, data) => {
     const generateESLintRuleLink = (ruleId: string, md: boolean) => {
-        const url = data?.rulesMeta[ruleId].docs?.url;
+        const url = data.rulesMeta[ruleId].docs?.url;
         return url ? md ? actionsSummary.wrapLink({ text: ruleId, href: url }) : url : ruleId;
     };
     actionsSummary
