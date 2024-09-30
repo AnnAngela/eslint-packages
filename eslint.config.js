@@ -70,5 +70,21 @@ const config = [
             "n/no-sync": "off",
         },
     },
+    {
+        files: [
+            "scripts/**/*",
+            "eslint.config.js",
+        ],
+        rules: {
+            // Running in trusted environment
+            "security/detect-unsafe-regex": "off",
+            "security/detect-object-injection": "off",
+            "security/detect-non-literal-fs-filename": "off",
+            "security/detect-non-literal-regexp": "off",
+            "security/detect-child-process": "off",
+            "n/no-extraneous-import": "off",
+            "n/no-process-exit": "off",
+        },
+    },
 ];
 export default config;
