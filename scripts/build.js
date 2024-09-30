@@ -19,7 +19,7 @@ for (const dir of [
         recursive: true,
     });
     console.info("\tMaking", dir, "...");
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+
     await fs.promises.mkdir(dir, {
         recursive: true,
     });

@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
 console.info("-".repeat(73));
 
 import fs from "node:fs";

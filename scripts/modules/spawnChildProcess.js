@@ -9,7 +9,7 @@ const execCommand = (command, options) => new Promise((res, rej) => {
     if (typeof options?.cwd === "string") {
         opt.cwd = options.cwd;
     }
-    // eslint-disable-next-line security/detect-child-process, promise/prefer-await-to-callbacks
+    // eslint-disable-next-line promise/prefer-await-to-callbacks
     const childProcess = exec(command, opt, (error, stdout) => {
         if (error) {
             rej(error);
