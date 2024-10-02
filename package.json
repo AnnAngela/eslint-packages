@@ -45,7 +45,7 @@
     "eslint-plugin-prefer-arrow-functions": "^3.3.2",
     "eslint-plugin-promise": "^7.1.0",
     "eslint-plugin-security": "^3.0.0",
-    "globals": "^15.0.0",
+    "globals": "^15.10.0",
     "mocha": "^10.4.0",
     "pkg-types": "^1.2.0",
     "semver": "^7.6.0",
