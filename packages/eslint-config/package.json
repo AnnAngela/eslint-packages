@@ -57,9 +57,9 @@
   "dependencies": {
     "@annangela/eslint-plugin-prefer-reflect": "^2.2.2",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.4.0",
-    "@eslint/js": "^9.11.1",
-    "@stylistic/eslint-plugin": "^2.8.0",
-    "@stylistic/eslint-plugin-migrate": "^2.8.0",
+    "@eslint/js": "^9.12.0",
+    "@stylistic/eslint-plugin": "^2.9.0",
+    "@stylistic/eslint-plugin-migrate": "^2.9.0",
     "@typescript-eslint/eslint-plugin": "^8.8.0",
     "@typescript-eslint/parser": "^8.8.0",
     "eslint-plugin-eslint-plugin": "^6.2.0",

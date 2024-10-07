@@ -36,11 +36,11 @@
   },
   "homepage": "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-formatter-gha#readme",
   "devDependencies": {
-    "@actions/core": "^1.11.0",
+    "@actions/core": "^1.11.1",
     "@annangela/eslint-config": "^5.1.0",
     "@annangela/eslint-formatter-gha": "^1.1.4",
     "@types/node": "^22.7.4",
-    "eslint": "^9.11.1",
+    "eslint": "^9.12.0",
     "semver": "^7.6.3",
     "typescript": "^5.6.2"
   }
