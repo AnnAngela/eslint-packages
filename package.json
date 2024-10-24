@@ -39,7 +39,7 @@
     "@typescript-eslint/eslint-plugin": "^8.11.0",
     "@typescript-eslint/parser": "^8.11.0",
     "eslint": "^9.13.0",
-    "eslint-plugin-eslint-plugin": "^6.0.0",
+    "eslint-plugin-eslint-plugin": "^6.3.0",
     "eslint-plugin-n": "^17.11.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prefer-arrow-functions": "^3.3.2",
