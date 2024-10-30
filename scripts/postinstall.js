@@ -46,6 +46,11 @@ for (const pkg of packages) {
             }
         }
     }
+    if (pkgPackageJSON.engines.node !== packageJSON.engines.node) {
+        console.warn(`[${pkg}]`, `Node version mismatch: ${pkgPackageJSON.engines.node} vs ${packageJSON.engines.node}`);
+        pkgChanged = true;
+        pkgPackageJSON.engines.node = packageJSON.engines.node;
+    }
     if (pkgChanged) {
         globalChanged = true;
         console.info(`[${pkg}]`, "There are some changes in package.json, write it back");
