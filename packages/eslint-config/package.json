@@ -27,7 +27,7 @@
     "tag": "node ../../scripts/newTag.js"
   },
   "engines": {
-    "node": "^20.9"
+    "node": "^20.9 || ^22.11"
   },
   "repository": {
     "type": "git",
