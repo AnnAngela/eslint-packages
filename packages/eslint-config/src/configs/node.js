@@ -52,9 +52,9 @@ const config = { // `nodeConfig`: For files used in Node.js
         "n/prefer-promises/dns": "error",
         "n/prefer-promises/fs": "error",
         "n/prefer-node-protocol": "error",
-        "n/no-unsupported-features/node-builtins": "off",
-        "n/no-unsupported-features/es-builtins": ["error", { version: "^20.1" }],
-        "n/no-unsupported-features/es-syntax": ["error", { version: "^20.1", ignores: ["modules"] }],
+        "n/no-unsupported-features/node-builtins": ["error", { version: "^20.11 || ^22.11" }],
+        "n/no-unsupported-features/es-builtins": ["error", { version: "^20.11 || ^22.11" }],
+        "n/no-unsupported-features/es-syntax": ["error", { version: "^20.11 || ^22.11" }],
 
         // securityPlugin
         ...securityPlugin.configs.recommended.rules,
