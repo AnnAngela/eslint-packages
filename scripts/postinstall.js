@@ -18,44 +18,66 @@ const packageLockJSON = JSON.parse(await fs.promises.readFile("./package-lock.js
  * @type { import("../package.json") }
  */
 const packageJSON = await readPackageJSON();
-const packages = await fs.promises.readdir("./packages");
 
 let globalChanged = false;
 console.info("Start to update the package.json of packages/");
 const unusedDependencies = new Set(Object.keys(packageJSON.dependencies));
-for (const pkg of packages) {
-    console.info(`[${pkg}]`, "Start to update package.json");
+/**
+ * @type { Record<string, { pkgPath, pkgJSONPath: string, pkgJSON: Awaited<ReturnType<readPackageJSON>> }> }
+ */
+const packagesList = Object.fromEntries(await Promise.all((await fs.promises.readdir("./packages")).map(async (pkg) => {
     const pkgPath = path.resolve("./packages", pkg);
-    const pkgPackageJSONPath = await resolvePackageJSON(pkgPath);
-    const pkgPackageJSON = await readPackageJSON(pkgPackageJSONPath);
+    return [
+        pkg,
+        {
+            pkgJSONPath: await resolvePackageJSON(pkgPath),
+            pkgJSON: await readPackageJSON(await resolvePackageJSON(pkgPath)),
+        },
+    ];
+})));
+for (const [pkg, { pkgJSONPath, pkgJSON }] of Object.entries(packagesList)) {
+    console.info(`[${pkg}]`, "Start to update package.json");
     let pkgChanged = false;
     for (const property of ["dependencies", "devDependencies"]) {
-        if (!Reflect.has(pkgPackageJSON, property)) {
+        if (!Reflect.has(pkgJSON, property)) {
             continue;
         }
-        for (const [dependencyName, dependencyVersionString] of Object.entries(pkgPackageJSON[property])) {
+        for (const [dependencyName, dependencyVersionString] of Object.entries(pkgJSON[property])) {
             unusedDependencies.delete(dependencyName);
             /**
              * @type { { version: string } | undefined }
              */
             const lockInfo = packageLockJSON.packages[`node_modules/${dependencyName}`];
-            if (lockInfo?.version && dependencyVersionString !== `^${lockInfo.version}`) {
-                console.warn(`[${pkg}]`, `[${property}]`, `Version mismatch for ${dependencyName}: ${dependencyVersionString} vs ^${lockInfo.version}`);
-                pkgChanged = true;
-                pkgPackageJSON[property][dependencyName] = `^${lockInfo.version}`;
+            if (typeof lockInfo?.version === "string") {
+                const targetVersion = `^${lockInfo.version}`;
+                if (dependencyVersionString !== `^${lockInfo.version}`) {
+                    console.warn(`[${pkg}]`, `[${property}]`, `Version mismatch for ${dependencyName}: ${dependencyVersionString} vs ${targetVersion} by dependency`);
+                    pkgChanged = true;
+                    pkgJSON[property][dependencyName] = targetVersion;
+                }
+            } else {
+                const localPackageName = dependencyName.replace(/^@[^/]+\//, "");
+                if (Reflect.has(packagesList, localPackageName)) {
+                    const targetVersion = `^${packagesList[localPackageName].pkgJSON.version}`;
+                    if (dependencyVersionString !== targetVersion) {
+                        console.warn(`[${pkg}]`, `[${property}]`, `Version mismatch for ${dependencyName}: ${dependencyVersionString} vs ${targetVersion} by local package`);
+                        pkgChanged = true;
+                        pkgJSON[property][dependencyName] = targetVersion;
+                    }
+                }
             }
         }
     }
-    if (pkgPackageJSON.engines.node !== packageJSON.engines.node) {
-        console.warn(`[${pkg}]`, `Node version mismatch: ${pkgPackageJSON.engines.node} vs ${packageJSON.engines.node}`);
+    if (pkgJSON.engines.node !== packageJSON.engines.node) {
+        console.warn(`[${pkg}]`, `Node version mismatch: ${pkgJSON.engines.node} vs ${packageJSON.engines.node}`);
         pkgChanged = true;
-        pkgPackageJSON.engines.node = packageJSON.engines.node;
+        pkgJSON.engines.node = packageJSON.engines.node;
     }
     if (pkgChanged) {
         globalChanged = true;
         console.info(`[${pkg}]`, "There are some changes in package.json, write it back");
         if (!IS_DRY_RUN) {
-            await writePackageJSON(pkgPackageJSONPath, pkgPackageJSON);
+            await writePackageJSON(pkgJSONPath, pkgJSON);
         }
     } else {
         console.info(`[${pkg}]`, "There is no change in package.json");
