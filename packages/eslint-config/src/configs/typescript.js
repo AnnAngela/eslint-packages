@@ -10,7 +10,7 @@ const config = { // `typescriptConfig`: For TypeScript files
     languageOptions: {
         parser: typescriptParser,
         parserOptions: {
-            project: "tsconfig.json",
+            projectService: true,
             lib: [
                 "es2023", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
             ],
