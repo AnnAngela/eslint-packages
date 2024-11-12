@@ -1,0 +1,4 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "extends": "./tsconfig.node20.json", // Node.js 22 just like Node.js 20
+}
