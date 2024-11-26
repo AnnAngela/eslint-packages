@@ -160,6 +160,7 @@ const config = { // `baseConfig`: Default config
                 rejectPattern: "^_?rej(?:ect)?$",
             },
         ],
+        "promise/prefer-catch": "error",
 
         // commentsPlugin
         ...commentsPluginRules,
