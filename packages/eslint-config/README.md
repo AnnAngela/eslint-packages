@@ -13,7 +13,7 @@ There are 2 exported variables, both via named export and default export:
   * `typescript`: additional config for typescript files;
   * `eslintPlugin`: additional config for eslint-plugin files;
   * `mocha`: additional config for mocha test files.
-* `forkedGlobals`: contains these forked globals from [globals](https://github.com/sindresorhus/globals/blob/v13.24.0/globals.json) (see [forkedGlobals.js](src/forkedGlobals.js)):
+* `forkedGlobals`: contains these forked globals from [globals](https://github.com/sindresorhus/globals/blob/v15.14.0/globals.json) (see [forkedGlobals.js](src/forkedGlobals.js)):
   * `jquery`;
   * `greasemonkey`;
   * `mocha`;
@@ -25,3 +25,5 @@ The package also exported these files:
 * [./tsconfig.browser.json](src/tsconfigs/tsconfig.browser.json)
 * [./tsconfig.node20.json](src/tsconfigs/tsconfig.node20.json)
 * [./tsconfig.node20.cjs.json](src/tsconfigs/tsconfig.node20.cjs.json)
+* [./tsconfig.node22.json](src/tsconfigs/tsconfig.node22.json)
+* [./tsconfig.node22.cjs.json](src/tsconfigs/tsconfig.node22.cjs.json)
