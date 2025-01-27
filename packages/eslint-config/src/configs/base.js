@@ -37,6 +37,7 @@ const [commentsPlugin, commentsPluginRules] = transferLegacyPluginIntoFlatConfig
 const config = { // `baseConfig`: Default config
     linterOptions: {
         reportUnusedDisableDirectives: "error",
+        reportUnusedInlineConfigs: "error",
     },
     languageOptions: {
         ecmaVersion: 2022, // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
