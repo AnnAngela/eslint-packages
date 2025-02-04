@@ -4,7 +4,7 @@ import type { ESLint } from "eslint";
 import ActionsSummary from "./ActionsSummary.js";
 import { logSeverity, annotationPropertiesType, eslintSeverityToAnnotationSeverity, log } from "./command.js";
 
-const { GITHUB_SHA, GITHUB_REPOSITORY } = process.env;
+const { GITHUB_SHA, GITHUB_REPOSITORY, GITHUB_SERVER_URL } = process.env;
 
 const actionsSummary = new ActionsSummary();
 
@@ -75,7 +75,7 @@ const formatter: ESLint.FormatterFunction = (results, data) => {
                 }
             }
             const fileName = `${path.relative(process.cwd(), filePath)}${hash}`;
-            const fileLink = GITHUB_SHA && GITHUB_REPOSITORY ? `https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_SHA.slice(0, 7)}/${encodeURI(fileName)}` : "";
+            const fileLink = GITHUB_SHA && GITHUB_REPOSITORY ? `${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/${GITHUB_SHA.slice(0, 7)}/${encodeURI(fileName)}` : "";
             const msgArr = [
                 message,
             ];
