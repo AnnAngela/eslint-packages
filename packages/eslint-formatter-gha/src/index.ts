@@ -75,7 +75,7 @@ const formatter: ESLint.FormatterFunction = (results, data) => {
                 }
             }
             const fileName = `${path.relative(process.cwd(), filePath)}${hash}`;
-            const fileLink = GITHUB_SHA && GITHUB_REPOSITORY ? `${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/${GITHUB_SHA.slice(0, 7)}/${encodeURI(fileName)}` : "";
+            const fileLink = GITHUB_SHA && GITHUB_REPOSITORY ? `${GITHUB_SERVER_URL ?? "https://github.com"}/${GITHUB_REPOSITORY}/blob/${GITHUB_SHA.slice(0, 7)}/${encodeURI(fileName)}` : "";
             const msgArr = [
                 message,
             ];
