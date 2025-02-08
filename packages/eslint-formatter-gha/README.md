@@ -30,19 +30,16 @@ You can use these **environment variables** to configure the formatter:
 
 * `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY`:
 
-  Valid value is `debug` (default in v1), `notice`, `warning`, `error`.
+  Valid value is `debug` ~~(default in v1 and v2)~~, `notice`, `warning` (**default in v3**), `error`.
 
   If the value is `debug`, the report of the deprecated rules will be only logged as debug log, which you have to enable [debug logging](https://docs.github.com/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging) to see it.
 
-## Upcoming v2
+## Migrating to v3
 
 According to [the blog "Deprecation of formatting rules"](https://eslint.org/blog/2023/10/deprecating-formatting-rules/) and [the release note of ESLint v8.53](https://eslint.org/blog/2023/11/eslint-v8.53.0-released/), a batch of formatting rules have been marked as deprecated in documents.
 
-But:
+So in v3, the default value of environment variable `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY` will be changed to `warning`, to make the deprecated rules more noticeable.
 
-* In the cli, the deprecation of the rules is only visible after v9;
-* There are still some deprecated rules being used in the recommended config from `@eslint/js@8`.
+If you want to keep the old behavior, you can set the environment variable `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY` to `debug`.
 
-So the default value of environment variable `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY` will remain as `debug` until ESLint v9 is released, to prevent unexpected large amounts of log output.
-
-After that, the default value will be changed to `notice` with the v2 major release of this package.
+And this is the only breaking change in v3.

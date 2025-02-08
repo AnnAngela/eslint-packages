@@ -19,8 +19,7 @@ const formatter: ESLint.FormatterFunction = (results, data) => {
         .addRaw(`ESLint Annotation from ${actionsSummary.wrapLink({ text: "@annangela/eslint-formatter-gha", href: "https://www.npmjs.com/package/@annangela/eslint-formatter-gha" })}`);
     const deprecatedRulesSeverityFromEnv = process.env.ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY?.toLowerCase();
     const deprecatedRulesSeverities = ["debug", "notice", "warning", "error"];
-    // @TODO: Switch to `warning` when eslint 9 is released
-    let deprecatedRulesSeverity: logSeverity = "debug";
+    let deprecatedRulesSeverity: logSeverity = "warning";
     if (deprecatedRulesSeverityFromEnv) {
         if (deprecatedRulesSeverities.includes(deprecatedRulesSeverityFromEnv)) {
             deprecatedRulesSeverity = deprecatedRulesSeverityFromEnv as logSeverity;
