@@ -77,7 +77,7 @@ export default class ActionsSummary {
         warning: ":warning:",
         error: ":no_entry:",
         fixable: ":wrench:",
-    };
+    } as const;
     private summary: string[] = [];
     private _filePath?: string;
     private get filePath(): string {

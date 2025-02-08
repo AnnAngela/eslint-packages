@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
-import path from "node:path";
 import type { ESLint } from "eslint";
+import path from "node:path";
 import ActionsSummary from "./ActionsSummary.js";
-import { logSeverity, annotationPropertiesType, eslintSeverityToAnnotationSeverity, log } from "./command.js";
+import { annotationPropertiesType, eslintSeverityToAnnotationSeverity, log, logSeverity } from "./command.js";
 
 const { GITHUB_SHA, GITHUB_REPOSITORY, GITHUB_SERVER_URL } = process.env;
 
@@ -92,7 +92,7 @@ const formatter: ESLint.FormatterFunction = (results, data) => {
                 msgArr.push(fileName);
             }
             const msg = msgArr.join(" ");
-            const summaryLineArr = [
+            const summaryLineArr: string[] = [
                 ActionsSummary.EMOJI[eslintSeverityToAnnotationSeverity[severity]],
             ];
             if (fix) {
