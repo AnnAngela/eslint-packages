@@ -37,8 +37,8 @@
   "homepage": "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-formatter-gha#readme",
   "devDependencies": {
     "@actions/core": "^1.11.1",
-    "@types/node": "^22.13.4",
-    "eslint": "^9.20.1",
+    "@types/node": "^22.13.5",
+    "eslint": "^9.21.0",
     "semver": "^7.7.1",
     "typescript": "^5.7.3"
   }
