@@ -38,8 +38,8 @@
   "devDependencies": {
     "@actions/core": "^1.11.1",
     "@types/node": "^22.14.0",
-    "eslint": "^9.23.0",
+    "eslint": "^9.24.0",
     "semver": "^7.7.1",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   }
 }
