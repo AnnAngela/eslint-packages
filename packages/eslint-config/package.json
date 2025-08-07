@@ -51,9 +51,9 @@
     "eslint": "^8.57.0 || ^9.0.0"
   },
   "devDependencies": {
-    "@types/node": "^24.1.0",
+    "@types/node": "^24.2.0",
     "semver": "^7.7.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "dependencies": {
     "@annangela/eslint-plugin-prefer-reflect": "^3.1.0",
@@ -61,9 +61,9 @@
     "@eslint/js": "^9.32.0",
     "@stylistic/eslint-plugin": "^5.2.2",
     "@stylistic/eslint-plugin-migrate": "^4.4.1",
-    "@typescript-eslint/eslint-plugin": "^8.38.0",
-    "@typescript-eslint/parser": "^8.38.0",
-    "eslint-plugin-eslint-plugin": "^6.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
+    "eslint-plugin-eslint-plugin": "^7.0.0",
     "eslint-plugin-n": "^17.21.3",
     "eslint-plugin-prefer-arrow-functions": "^3.4.2",
     "eslint-plugin-promise": "^7.2.1",
