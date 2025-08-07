@@ -46,6 +46,11 @@ export const meta = {
             additionalProperties: false,
         },
     ],
+	defaultOptions: [
+		{
+			exceptions: [],
+		},
+	],
 
     messages: {
         preferReflect: "Avoid using {{existing}}, instead use {{substitute}}.",
