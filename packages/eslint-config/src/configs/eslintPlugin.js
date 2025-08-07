@@ -7,9 +7,9 @@ const config = {
     linterOptions: {
         reportUnusedDisableDirectives: "error",
     },
-    plugins: eslintPlugin.configs["flat/recommended"].plugins,
+    plugins: eslintPlugin.configs.recommended.plugins,
     rules: {
-        ...eslintPlugin.configs["flat/recommended"].rules,
+        ...eslintPlugin.configs.recommended.rules,
     },
 };
 export default config;
