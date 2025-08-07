@@ -41,9 +41,16 @@ export const meta = {
                         ],
                     },
                     uniqueItems: true,
+                    description: "Execptions",
                 },
             },
             additionalProperties: false,
+            description: "Options",
+        },
+    ],
+    defaultOptions: [
+        {
+            exceptions: [],
         },
     ],
 
