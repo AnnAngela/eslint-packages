@@ -36,7 +36,7 @@
     "@stylistic/eslint-plugin": "^5.2.3",
     "@stylistic/eslint-plugin-migrate": "^4.4.1",
     "@types/node": "^24.2.1",
-    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.1",
     "@typescript-eslint/parser": "^8.32.1",
     "eslint": "^9.33.0",
     "eslint-plugin-eslint-plugin": "^7.0.0",
