@@ -137,7 +137,7 @@ const config = { // `baseConfig`: Default config
             "double",
             {
                 avoidEscape: true,
-                allowTemplateLiterals: false,
+                allowTemplateLiterals: "never",
             },
         ],
         "@stylistic/multiline-ternary": [
