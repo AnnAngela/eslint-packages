@@ -29,7 +29,7 @@ await execCommand("tsc --project tsconfig.cjs.json", {
 });
 
 console.info("Marking dist/cjs as CommonJS module ...");
-await fs.promises.writeFile("dist/cjs/package.json", JSON.stringify({ type: "commonjs" }), {
+await fs.promises.writeFile("dist/cjs/package.json", JSON.stringify({ "type": "commonjs" }), {
     encoding: "utf-8",
 });
 

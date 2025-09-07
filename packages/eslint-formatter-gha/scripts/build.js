@@ -19,7 +19,7 @@ await execCommand("tsc", {
 });
 
 console.info("Marking as CommonJS module ...");
-await fs.promises.writeFile("dist/package.json", JSON.stringify({ type: "commonjs" }), {
+await fs.promises.writeFile("dist/package.json", JSON.stringify({ "type": "commonjs" }), {
     encoding: "utf-8",
 });
 await fs.promises.appendFile("dist/index.js", "\n;module.exports=module.exports.default;", {
