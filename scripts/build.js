@@ -53,7 +53,7 @@ for (const file of scripts) {
 }
 
 console.info("Marking lib/cjs as CommonJS module ...");
-await fs.promises.writeFile("lib/cjs/package.json", JSON.stringify({ "type": "commonjs" }), {
+await fs.promises.writeFile("lib/cjs/package.json", JSON.stringify({ type: "commonjs" }), {
     encoding: "utf-8",
 });
 

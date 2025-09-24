@@ -12,7 +12,7 @@
  * @type { import('eslint').Rule.RuleMetaData }
  */
 export const meta = {
-    "type": "suggestion",
+    type: "suggestion",
 
     docs: {
         description: "Modern version of original `prefer-reflect` rules in eslint",
@@ -22,10 +22,10 @@ export const meta = {
 
     schema: [
         {
-            "type": "object",
+            type: "object",
             properties: {
                 exceptions: {
-                    "type": "array",
+                    type: "array",
                     items: {
                         "enum": [
                             "apply",
