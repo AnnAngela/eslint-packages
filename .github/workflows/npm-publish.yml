@@ -28,7 +28,8 @@ jobs:
           check-latest: true
           registry-url: https://registry.npmjs.org/
           cache: npm
-
+      - name: Update npm
+        run: npm install -g npm@latest
       - name: Installing the dependencies
         uses: AnnAngela/cached_node-modules@v3
           
@@ -47,6 +48,4 @@ jobs:
         run: npm run package
       - name: Publish the package
         working-directory: ${{ steps.cwd.outputs.cwd }}
-        run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
