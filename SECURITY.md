@@ -84,7 +84,7 @@ The `@annangela/eslint-config` package includes `eslint-plugin-security` which h
 
 ### Node.js Version Support
 
-We support only actively maintained LTS versions of Node.js (currently `^20.11 || ^22.11`), ensuring you're using versions with the latest security updates.
+We support only actively maintained LTS versions of Node.js (currently `^20.19 || ^22.21 || ^24.11`), ensuring you're using versions with the latest security updates.
 
 ## Disclosure Policy
 

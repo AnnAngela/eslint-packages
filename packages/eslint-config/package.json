@@ -29,7 +29,7 @@
     "tag": "node ../../scripts/newTag.js"
   },
   "engines": {
-    "node": "^20.11 || ^22.11"
+    "node": "^20.19 || ^22.21 || ^24.11"
   },
   "repository": {
     "type": "git",
@@ -51,7 +51,7 @@
     "eslint": "^8.57.0 || ^9.0.0"
   },
   "devDependencies": {
-    "@types/node": "^24.9.1",
+    "@types/node": "^24.9.2",
     "semver": "^7.7.3",
     "typescript": "^5.9.3"
   },
@@ -63,7 +63,7 @@
     "@stylistic/eslint-plugin-migrate": "^4.4.1",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
-    "eslint-plugin-eslint-plugin": "^7.0.0",
+    "eslint-plugin-eslint-plugin": "^7.2.0",
     "eslint-plugin-n": "^17.23.1",
     "eslint-plugin-prefer-arrow-functions": "^3.9.1",
     "eslint-plugin-promise": "^7.2.1",

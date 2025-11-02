@@ -17,7 +17,7 @@
     "tag": "node ../../scripts/newTag.js"
   },
   "engines": {
-    "node": "^20.11 || ^22.11"
+    "node": "^20.19 || ^22.21 || ^24.11"
   },
   "repository": {
     "type": "git",
@@ -37,7 +37,7 @@
   "homepage": "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-formatter-gha#readme",
   "devDependencies": {
     "@actions/core": "^1.11.1",
-    "@types/node": "^24.9.1",
+    "@types/node": "^24.9.2",
     "eslint": "^9.38.0",
     "semver": "^7.7.3",
     "typescript": "^5.9.3"
