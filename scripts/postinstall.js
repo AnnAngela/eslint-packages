@@ -1,12 +1,12 @@
 console.info("-".repeat(73));
 
+import { endGroup, startGroup } from "@actions/core";
 import fs from "node:fs";
 import path from "node:path";
-import { readPackageJSON, writePackageJSON, resolvePackageJSON } from "pkg-types";
-import { startGroup, endGroup } from "@actions/core";
+import { readPackageJSON, resolvePackageJSON, writePackageJSON } from "pkg-types";
 import IS_IN_GITHUB_ACTIONS from "./modules/IS_IN_GITHUB_ACTIONS.js";
-import git from "./modules/git.js";
 import upstreamExist from "./modules/getUpstream.js";
+import git from "./modules/git.js";
 
 const IS_DRY_RUN = process.argv.includes("--dry-run");
 
@@ -85,7 +85,9 @@ for (const [pkg, { pkgJSONPath, pkgJSON }] of Object.entries(packagesList)) {
 }
 
 console.info("Parsing the scripts to exclude used dependencies");
-for (const file of ["./eslint.config.js", ...(await fs.promises.readdir("./scripts", { withFileTypes: true, recursive: true })).filter((dirent) => dirent.isFile()).map((dirent) => path.resolve(dirent.path, dirent.name))]) {
+const dir = (await fs.promises.readdir("./scripts", { withFileTypes: true, recursive: true })).filter((dirent) => dirent.isFile());
+console.info(`Found ${dir.length} files in scripts/`, dir);
+for (const file of ["./eslint.config.js", ...dir.map((dirent) => path.resolve(dirent.path, dirent.name))]) {
     const content = `\n${await fs.promises.readFile(file, { encoding: "utf-8" })}`;
     const matches = content.match(/(?<=\nimport)[^\n]+? from "[^\n"]+";?\n/g);
     if (!matches) {
