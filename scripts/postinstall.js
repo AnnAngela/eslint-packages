@@ -86,11 +86,7 @@ for (const [pkg, { pkgJSONPath, pkgJSON }] of Object.entries(packagesList)) {
 
 console.info("Parsing the scripts to exclude used dependencies");
 const dir = (await fs.promises.readdir("./scripts", { withFileTypes: true, recursive: true })).filter((dirent) => dirent.isFile());
-console.info(`Found ${dir.length} files in scripts/`, dir.map((dirent) => ({
-    path: dirent.path,
-    name: dirent.name,
-})));
-for (const file of ["./eslint.config.js", ...dir.map((dirent) => path.resolve(dirent.path, dirent.name))]) {
+for (const file of ["./eslint.config.js", ...dir.map((dirent) => path.resolve(dirent.parentPath, dirent.name))]) {
     const content = `\n${await fs.promises.readFile(file, { encoding: "utf-8" })}`;
     const matches = content.match(/(?<=\nimport)[^\n]+? from "[^\n"]+";?\n/g);
     if (!matches) {
