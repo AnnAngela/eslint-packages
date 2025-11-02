@@ -86,9 +86,9 @@ const config = [
             "n/no-extraneous-import": "off",
             "n/no-process-exit": "off",
 
-            /* "n/no-unsupported-features/node-builtins": ["error", { version: "^22.11" }],
-            "n/no-unsupported-features/es-builtins": ["error", { version: "^22.11" }],
-            "n/no-unsupported-features/es-syntax": ["error", { version: "^22.11" }], */
+            "n/no-unsupported-features/node-builtins": ["error", { version: "^24.11" }],
+            "n/no-unsupported-features/es-builtins": ["error", { version: "^24.11" }],
+            "n/no-unsupported-features/es-syntax": ["error", { version: "^24.11" }],
         },
     },
 ];

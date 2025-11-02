@@ -1,20 +1,20 @@
 console.info("-".repeat(73));
 
-import fs from "node:fs";
-import path from "node:path";
-import os from "node:os";
-import util from "node:util";
+import { endGroup, startGroup } from "@actions/core";
 import childProcess from "node:child_process";
 import crypto from "node:crypto";
-const exec = util.promisify(childProcess.exec);
-import { startGroup, endGroup } from "@actions/core";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import util from "node:util";
 import IS_IN_GITHUB_ACTIONS from "./modules/IS_IN_GITHUB_ACTIONS.js";
+const exec = util.promisify(childProcess.exec);
 
 const registryResult = await exec("npm config get registry");
-if (registryResult.stderr.trim().length > 0) {
+const registry = registryResult.stdout.trim();
+if (registry.length === 0) {
     throw new Error(`Error getting npm registry: ${registryResult.stderr}`);
 }
-const registry = registryResult.stdout.trim();
 for (const packageName of [
     "@annangela/eslint-formatter-gha",
     "@annangela/eslint-plugin-prefer-reflect",
