@@ -6,7 +6,7 @@
     "compilerOptions": {
         // Modules
         "module": "commonjs",
-        "moduleResolution": "node16",
+        "moduleResolution": "node10",
         // Language and Environment
         "lib": [ // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
             "es2023",
