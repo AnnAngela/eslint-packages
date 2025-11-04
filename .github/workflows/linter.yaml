@@ -12,12 +12,12 @@ on:
   merge_group:
   pull_request:
     paths:
-        - "**.js"
-        - "**.ts"
-        - .*.yaml
-        - .github/workflows/linter.yaml
-        - package.json
-        - package-lock.json
+      - "**.js"
+      - "**.ts"
+      - .*.yaml
+      - .github/workflows/linter.yaml
+      - package.json
+      - package-lock.json
   workflow_dispatch:
   schedule:
     - cron: 0 23 * * * # Every 07:00 CST
@@ -46,10 +46,32 @@ jobs:
   linter_test:
     runs-on: ubuntu-latest
     steps:
+      - name: Detect release commit
+        id: release_check
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message || '' }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "push" ] || [ "$EVENT_NAME" = "merge_group" ]; then
+            pattern='^release: @annangela/[^@\s]+@v[1-9][0-9]*\.[0-9]+\.[0-9]+$'
+            if printf '%s' "$COMMIT_MESSAGE" | grep -Eq "$pattern"; then
+              echo "skip_steps=true" >> "$GITHUB_OUTPUT"
+              echo "Release commit detected; skipping remaining steps."
+            else
+              echo "skip_steps=false" >> "$GITHUB_OUTPUT"
+              echo "Regular run; continuing."
+            fi
+          else
+            echo "skip_steps=false" >> "$GITHUB_OUTPUT"
+            echo "Event '$EVENT_NAME' does not need to skip linting steps; continuing."
+          fi
       - uses: actions/checkout@v5
+        if: steps.release_check.outputs.skip_steps != 'true'
         with:
           show-progress: false
       - name: Use Node.js
+        if: steps.release_check.outputs.skip_steps != 'true'
         uses: actions/setup-node@v6
         with:
           node-version: lts/*
@@ -57,13 +79,17 @@ jobs:
           cache: npm
 
       - name: Installing the dependencies
+        if: steps.release_check.outputs.skip_steps != 'true'
         uses: AnnAngela/cached_node-modules@v3
         with:
           command: npm run ci
 
       - name: Check environment
+        if: steps.release_check.outputs.skip_steps != 'true'
         run: npx eslint --env-info
       - name: Run eslint
+        if: steps.release_check.outputs.skip_steps != 'true'
         run: npm run lint:check-ci
       - name: Test packaging
+        if: steps.release_check.outputs.skip_steps != 'true'
         run: npm run package
