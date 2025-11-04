@@ -1,13 +1,15 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
     "extends": "./tsconfig.base.json",
+    "display": "Node 20 (commonjs)",
+    "_version": "20.0.0",
     "compilerOptions": {
         // Modules
         "module": "commonjs",
-        "moduleResolution": "node10",
+        "moduleResolution": "node16",
         // Language and Environment
-        "lib": [
-            "es2023", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        "lib": [ // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+            "es2023",
         ],
         "target": "ES2022", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
     },

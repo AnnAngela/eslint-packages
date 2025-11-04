@@ -1,15 +1,17 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
     "extends": "./tsconfig.base.json",
+    "display": "Node 22",
+    "_version": "22.0.0",
     "compilerOptions": {
         // Modules
-        "module": "Node16", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        "module": "nodenext", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
         "moduleResolution": "Node16", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
         "resolveJsonModule": true,
         "resolvePackageJsonExports": true,
         // Language and Environment
-        "lib": [
-            "es2023", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        "lib": [ // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+            "es2023",
         ],
         "target": "ES2022", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
     },

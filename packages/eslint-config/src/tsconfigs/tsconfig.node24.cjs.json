@@ -1,19 +1,20 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
     "extends": "./tsconfig.base.json",
-    "display": "Node 22 (commonjs)",
+    "display": "Node 24 (commonjs)",
     "_version": "22.0.0",
     "compilerOptions": {
         // Modules
         "module": "commonjs",
         "moduleResolution": "node16",
         // Language and Environment
-        "lib": [ // Node 22 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        "lib": [ // Node 24 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
             "es2024",
             "ESNext.Array",
             "ESNext.Collection",
             "ESNext.Iterator",
+            "ESNext.Promise",
         ],
-        "target": "ES2022", // Node 22 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        "target": "es2024", // Node 24 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
     },
 }

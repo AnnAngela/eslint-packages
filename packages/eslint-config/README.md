@@ -27,3 +27,5 @@ The package also exported these files:
 * [./tsconfig.node20.cjs.json](src/tsconfigs/tsconfig.node20.cjs.json)
 * [./tsconfig.node22.json](src/tsconfigs/tsconfig.node22.json)
 * [./tsconfig.node22.cjs.json](src/tsconfigs/tsconfig.node22.cjs.json)
+* [./tsconfig.node24.json](src/tsconfigs/tsconfig.node24.json)
+* [./tsconfig.node24.cjs.json](src/tsconfigs/tsconfig.node24.cjs.json)

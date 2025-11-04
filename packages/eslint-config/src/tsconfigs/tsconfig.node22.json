@@ -1,4 +1,21 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
-    "extends": "./tsconfig.node20.json", // Node.js 22 just like Node.js 20
+    "extends": "./tsconfig.base.json",
+    "display": "Node 22",
+    "_version": "22.0.0",
+    "compilerOptions": {
+        // Modules
+        "module": "nodenext", // Node 22 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        "moduleResolution": "Node16", // Node 22 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        "resolveJsonModule": true,
+        "resolvePackageJsonExports": true,
+        // Language and Environment
+        "lib": [ // Node 22 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+            "es2024",
+            "ESNext.Array",
+            "ESNext.Collection",
+            "ESNext.Iterator",
+        ],
+        "target": "ES2022", // Node 22 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+    },
 }
