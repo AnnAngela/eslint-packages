@@ -61,7 +61,7 @@
     "@annangela/eslint-plugin-prefer-reflect": "^4.0.0",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.5.0",
     "@eslint/js": "^9.39.1",
-    "@stylistic/eslint-plugin": "^5.6.0",
+    "@stylistic/eslint-plugin": "^5.6.1",
     "@stylistic/eslint-plugin-migrate": "^4.4.1",
     "@typescript-eslint/eslint-plugin": "^8.47.0",
     "@typescript-eslint/parser": "^8.47.0",
