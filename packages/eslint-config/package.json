@@ -65,7 +65,7 @@
     "@stylistic/eslint-plugin-migrate": "^4.4.1",
     "@typescript-eslint/eslint-plugin": "^8.52.0",
     "@typescript-eslint/parser": "^8.52.0",
-    "eslint-plugin-eslint-plugin": "^7.2.0",
+    "eslint-plugin-eslint-plugin": "^7.3.0",
     "eslint-plugin-n": "^17.23.1",
     "eslint-plugin-prefer-arrow-functions": "^3.9.1",
     "eslint-plugin-promise": "^7.2.1",
