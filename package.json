@@ -54,7 +54,7 @@
   },
   "overrides": {
     "eslint-plugin-promise": {
-      "eslint": "$eslint"
+      "eslint": "^10.0.3"
     }
   }
 }
