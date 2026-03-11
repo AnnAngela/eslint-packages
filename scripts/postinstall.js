@@ -11,6 +11,27 @@ import git from "./modules/git.js";
 const IS_DRY_RUN = process.argv.includes("--dry-run");
 
 /**
+ * @param { NonNullable<Awaited<ReturnType<readPackageJSON>>["overrides"]> | undefined } overrides
+ * @param { Awaited<ReturnType<readPackageJSON>> } pkgJSON
+ */
+const getRelevantOverrides = (overrides, pkgJSON) => {
+    if (!overrides) {
+        return undefined;
+    }
+    const relatedDependencies = new Set([
+        ...Object.keys(pkgJSON.dependencies ?? {}),
+        ...Object.keys(pkgJSON.devDependencies ?? {}),
+        ...Object.keys(pkgJSON.peerDependencies ?? {}),
+        ...Object.keys(pkgJSON.optionalDependencies ?? {}),
+    ]);
+    const relevantOverrides = Object.fromEntries(Object.entries(overrides).filter(([dependencySelector]) => {
+        const dependencyName = dependencySelector.match(/^(@[^/]+\/[^@]+|[^@]+)/)?.[0];
+        return dependencyName && relatedDependencies.has(dependencyName);
+    }));
+    return Object.keys(relevantOverrides).length > 0 ? relevantOverrides : undefined;
+};
+
+/**
  * @type { import("../package-lock.json") }
  */
 const packageLockJSON = JSON.parse(await fs.promises.readFile("./package-lock.json", "utf8"));
@@ -72,6 +93,16 @@ for (const [pkg, { pkgJSONPath, pkgJSON }] of Object.entries(packagesList)) {
         console.warn(`[${pkg}]`, `Node version mismatch: ${pkgJSON.engines.node} vs ${packageJSON.engines.node}`);
         pkgChanged = true;
         pkgJSON.engines.node = packageJSON.engines.node;
+    }
+    const relevantOverrides = getRelevantOverrides(packageJSON.overrides, pkgJSON);
+    if (JSON.stringify(pkgJSON.overrides) !== JSON.stringify(relevantOverrides)) {
+        console.warn(`[${pkg}]`, "Overrides mismatch with root package.json");
+        pkgChanged = true;
+        if (relevantOverrides) {
+            pkgJSON.overrides = structuredClone(relevantOverrides);
+        } else {
+            Reflect.deleteProperty(pkgJSON, "overrides");
+        }
     }
     if (pkgChanged) {
         globalChanged = true;
