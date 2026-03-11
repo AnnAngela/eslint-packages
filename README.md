@@ -25,6 +25,7 @@ ESLint configuration for AnnAngela's projects, supporting the latest Node.js LTS
 - Mocha test files
 
 **Installation:**
+
 ```bash
 npm install --save-dev @annangela/eslint-config
 ```
@@ -43,11 +44,13 @@ A better ESLint formatter specifically designed for GitHub Actions. Provides hum
 - Summary views in workflow runs
 
 **Installation:**
+
 ```bash
 npm install --save-dev @annangela/eslint-formatter-gha
 ```
 
 **Usage:**
+
 ```bash
 npx eslint -f @annangela/eslint-formatter-gha src
 ```
@@ -61,11 +64,13 @@ npx eslint -f @annangela/eslint-formatter-gha src
 Modern version of the original `prefer-reflect` rules in ESLint. Encourages the use of Reflect API methods over traditional Object methods.
 
 **Installation:**
+
 ```bash
 npm install --save-dev @annangela/eslint-plugin-prefer-reflect
 ```
 
 **Usage:**
+
 ```javascript
 import preferReflectPlugin from "@annangela/eslint-plugin-prefer-reflect";
 
@@ -110,12 +115,14 @@ Refer to individual package documentation for detailed usage instructions.
 ### Setting Up the Development Environment
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/AnnAngela/eslint-packages.git
    cd eslint-packages
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -186,9 +193,8 @@ This project is licensed under the MIT License - see the individual package dire
 
 ## 👤 Author
 
-**AnnAngela**
-
-- GitHub: [@AnnAngela](https://github.com/AnnAngela)
+- **AnnAngela**
+  - GitHub: [@AnnAngela](https://github.com/AnnAngela)
 
 ## ⭐ Support
 
@@ -196,4 +202,4 @@ If you find these packages helpful, please consider giving the repository a star
 
 ---
 
-*Made with ❤️ for better ESLint configurations*
+> *Made with ❤️ for better ESLint configurations*
