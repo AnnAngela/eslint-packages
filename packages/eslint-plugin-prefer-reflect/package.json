@@ -35,8 +35,8 @@
     "tag": "node ../../scripts/newTag.js"
   },
   "devDependencies": {
-    "eslint": "^9.39.2",
-    "eslint-plugin-eslint-plugin": "^7.3.0",
+    "eslint": "^10.0.3",
+    "eslint-plugin-eslint-plugin": "^7.3.2",
     "eslint-plugin-node": "^11.1.0",
     "mocha": "^11.7.5"
   },
