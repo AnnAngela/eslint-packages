@@ -1,7 +1,7 @@
 import typescriptPlugin from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
 /**
- * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> }
+ * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> & { languageOptions: import("eslint").Linter.Config["languageOptions"] & { parserOptions: import("@typescript-eslint/parser").ParserOptions } } }
  */
 const config = { // `typescriptConfig`: For TypeScript files
     linterOptions: {
@@ -11,8 +11,15 @@ const config = { // `typescriptConfig`: For TypeScript files
         parser: typescriptParser,
         parserOptions: {
             projectService: true,
-            lib: [
-                "es2023", // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+            ecmaVersion: 2024,
+            jsDocParsingMode: "all",
+            lib: [ // Node 24 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+                "es2024",
+                "ESNext.Array",
+                "ESNext.Collection",
+                "ESNext.Error",
+                "ESNext.Iterator",
+                "ESNext.Promise",
             ],
         },
     },
