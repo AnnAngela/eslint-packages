@@ -31,7 +31,7 @@ jobs:
       - name: Update npm
         run: npm install -g npm@latest
       - name: Installing the dependencies
-        uses: AnnAngela/cached_node-modules@v3
+        uses: AnnAngela/cached_node-modules@v4
           
       - name: Check environment
         run: npx eslint --env-info
