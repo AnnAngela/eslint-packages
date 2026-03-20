@@ -80,7 +80,7 @@ jobs:
 
       - name: Installing the dependencies
         if: steps.release_check.outputs.skip_steps != 'true'
-        uses: AnnAngela/cached_node-modules@v3
+        uses: AnnAngela/cached_node-modules@v4
         with:
           command: npm run ci
 
