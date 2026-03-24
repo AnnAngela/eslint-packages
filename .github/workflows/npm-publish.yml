@@ -8,12 +8,13 @@ on:
         required: true
         type: string
   release:
-    types: 
+    types:
       - published
 
 permissions:
   id-token: write
   contents: write
+  actions: write
 
 jobs:
   publish:
@@ -32,12 +33,12 @@ jobs:
         run: npm install -g npm@latest
       - name: Installing the dependencies
         uses: AnnAngela/cached_node-modules@v5
-          
+
       - name: Check environment
         run: npx eslint --env-info
       - name: Run eslint
         run: npm run lint:check-ci
-      
+
       - name: Get the cwd
         id: cwd
         run: node scripts/getCwd.js
