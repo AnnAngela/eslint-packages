@@ -1,11 +1,10 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
     "extends": [
-        "../eslint-config/src/tsconfigs/tsconfig.node20.cjs.json"
+        "../eslint-config/src/tsconfigs/tsconfig.node24.cjs.json"
     ],
     "compilerOptions": {
         "rootDir": "./src",
-        "baseUrl": "./",
         "outDir": "./dist",
     },
     "include": [
