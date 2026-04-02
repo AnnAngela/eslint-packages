@@ -25,7 +25,6 @@
         // Emit
         "declaration": true,
         "declarationMap": true,
-        "downlevelIteration": true,
         "newLine": "lf",
         "removeComments": true,
         // JavaScript Support
