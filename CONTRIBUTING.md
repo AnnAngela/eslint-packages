@@ -304,7 +304,7 @@ npm run version
 
 ## 9. 发布流程
 
-发布由 `.github/workflows/npm-publish.yml` 驱动。
+发布由 [`.github/workflows/npm-publish.yml`](.github/workflows/npm-publish.yml) 驱动。
 
 ### 9.1 `master` 上的自动流程
 
