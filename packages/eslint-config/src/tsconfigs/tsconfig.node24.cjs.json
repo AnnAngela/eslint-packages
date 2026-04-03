@@ -2,7 +2,7 @@
     "$schema": "https://json.schemastore.org/tsconfig",
     "extends": "./tsconfig.base.json",
     "display": "Node 24 (commonjs)",
-    "_version": "22.0.0",
+    "_version": "24.0.0",
     "compilerOptions": {
         // Modules
         "module": "commonjs",
