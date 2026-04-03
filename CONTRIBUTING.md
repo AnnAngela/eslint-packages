@@ -2,11 +2,11 @@
 
 感谢你参与 `AnnAngela/eslint-packages` 的维护与贡献。
 
-本文档面向仓库维护者与贡献者，说明仓库架构、workspace 使用方式、脚本职责、Changesets 工作流、发布流程、CI 校验方式，以及日常维护时需要注意的事项。各包面向使用者的说明保留在各自目录的 README 中；这里重点描述“如何维护这个 monorepo”。
+本文档面向仓库维护者与贡献者，说明仓库架构、workspace 使用方式、脚本职责、Changesets 工作流、发布流程、CI 校验方式，以及日常维护时需要注意的事项。
 
 ## 1. 环境要求
 
-- Node.js：`^20.19 || ^22.21 || ^24.11`
+- Node.js：当前 LTS 版本（2026 年 4 月：`^20.19 || ^22.21 || ^24.11`）
 - npm：使用与受支持 Node.js 版本配套的 npm 即可
 - 命令执行目录：除非特别说明，仓库级命令都应在仓库根目录执行
 
@@ -153,7 +153,7 @@ npm run verify
 | `npm run lint:check` | `lint` 的兼容别名 | 兼容旧调用方式 |
 | `npm run lint:check-ci` | `lint:ci` 的兼容别名 | 兼容旧调用方式 |
 | `npm run lint:write` | 在根目录执行 ESLint 自动修复 | 修复可自动处理的问题 |
-| `npm run ci` | 尽量模拟 CI 的安装流程 | 排查 CI 安装或 registry 相关问题 |
+| `npm run ci` | 检测多个 npm 镜像的延迟并自动选择最优镜像供 clean-install 使用 | 主要用于优化安装速度 |
 | `npm run package` | `build` 的兼容别名 | 兼容旧调用方式 |
 | `npm run test:eslint-plugin-prefer-reflect` | 仅运行 prefer-reflect 包测试 | 精确定位该包问题 |
 | `npm run test:eslint-formatter-gha:lint` | 仅运行 formatter 的测试脚本 | 精确定位 formatter 问题 |
