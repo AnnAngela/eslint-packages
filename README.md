@@ -127,13 +127,16 @@ Refer to individual package documentation for detailed usage instructions.
    npm install
    ```
 
-3. The postinstall script will automatically run to set up the workspace.
+3. If package metadata drifts, run `npm run sync:packages` to synchronize workspace package metadata.
 
 ### Available Scripts
 
 - **`npm run lint:check`** - Run ESLint on the entire monorepo
 - **`npm run lint:write`** - Run ESLint with auto-fix
 - **`npm run lint:check-ci`** - Run ESLint in CI mode with GitHub Actions formatter
+- **`npm run sync:packages`** - Synchronize derived workspace package metadata
+- **`npm run check:packages`** - Check workspace package metadata drift without writing files
+- **`npm run verify:packages`** - CI-friendly package metadata verification entry
 - **`npm run test:eslint-plugin-prefer-reflect`** - Run tests for the prefer-reflect plugin
 - **`npm run test:eslint-formatter-gha:lint`** - Run tests for the GHA formatter
 - **`npm run package`** - Build all packages
@@ -174,7 +177,7 @@ Contributions are welcome! This project follows the [Contributor Covenant Code o
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Run tests and linting (`npm run lint:check`)
+4. Run package checks, tests, and linting (`npm run verify:packages && npm run lint:check`)
 5. Commit your changes (`git commit -m 'Add amazing feature'`)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request

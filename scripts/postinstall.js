@@ -1,14 +1,60 @@
 console.info("-".repeat(73));
 
-import { endGroup, startGroup } from "@actions/core";
 import fs from "node:fs";
 import path from "node:path";
 import { readPackageJSON, resolvePackageJSON, writePackageJSON } from "pkg-types";
-import IS_IN_GITHUB_ACTIONS from "./modules/IS_IN_GITHUB_ACTIONS.js";
-import upstreamExist from "./modules/getUpstream.js";
-import git from "./modules/git.js";
 
-const IS_DRY_RUN = process.argv.includes("--dry-run");
+const IS_CHECK = process.argv.includes("--check") || process.argv.includes("--dry-run");
+
+/**
+ * @typedef {{
+ *     repositoryDirectory?: string
+ *     homepage?: string
+ *     exports?: Awaited<ReturnType<readPackageJSON>>["exports"]
+ * }} DerivedPackageMetadata
+ */
+
+/**
+ * @type { Record<string, DerivedPackageMetadata> }
+ */
+const derivedPackageMetadata = {
+    "eslint-config": {
+        repositoryDirectory: "packages/eslint-config",
+        homepage: "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-config#readme",
+        exports: {
+            ".": {
+                types: "./dist/esm/index.d.ts",
+                import: "./dist/esm/index.js",
+                require: "./dist/cjs/index.js",
+            },
+            "./tsconfig.node20.json": "./dist/tsconfigs/tsconfig.node20.json",
+            "./tsconfig.node20.cjs.json": "./dist/tsconfigs/tsconfig.node20.cjs.json",
+            "./tsconfig.node22.json": "./dist/tsconfigs/tsconfig.node22.json",
+            "./tsconfig.node22.cjs.json": "./dist/tsconfigs/tsconfig.node22.cjs.json",
+            "./tsconfig.node24.json": "./dist/tsconfigs/tsconfig.node24.json",
+            "./tsconfig.node24.cjs.json": "./dist/tsconfigs/tsconfig.node24.cjs.json",
+            "./tsconfig.browser.json": "./dist/tsconfigs/tsconfig.browser.json",
+        },
+    },
+    "eslint-formatter-gha": {
+        repositoryDirectory: "packages/eslint-formatter-gha",
+        homepage: "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-formatter-gha#readme",
+        exports: {
+            ".": "./dist/index.js",
+        },
+    },
+    "eslint-plugin-prefer-reflect": {
+        repositoryDirectory: "packages/eslint-plugin-prefer-reflect",
+        homepage: "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-plugin-prefer-reflect#readme",
+        exports: {
+            ".": {
+                types: "./dist/esm/index.d.ts",
+                import: "./dist/esm/index.js",
+                require: "./dist/cjs/index.js",
+            },
+        },
+    },
+};
 
 /**
  * @param { NonNullable<Awaited<ReturnType<readPackageJSON>>["overrides"]> | undefined } overrides
@@ -32,6 +78,38 @@ const getRelevantOverrides = (overrides, pkgJSON) => {
 };
 
 /**
+ * @param { string } pkg
+ * @param { Awaited<ReturnType<readPackageJSON>> } pkgJSON
+ */
+const syncDerivedMetadata = (pkg, pkgJSON) => {
+    let pkgChanged = false;
+    const derivedMetadata = derivedPackageMetadata[pkg];
+    if (!derivedMetadata) {
+        return pkgChanged;
+    }
+    if (typeof derivedMetadata.repositoryDirectory === "string" && pkgJSON.repository?.directory !== derivedMetadata.repositoryDirectory) {
+        console.warn(`[${pkg}]`, `Repository directory mismatch: ${pkgJSON.repository?.directory ?? "(missing)"} vs ${derivedMetadata.repositoryDirectory}`);
+        pkgChanged = true;
+        pkgJSON.repository ??= {
+            type: "git",
+            url: "git+https://github.com/AnnAngela/eslint-packages.git",
+        };
+        pkgJSON.repository.directory = derivedMetadata.repositoryDirectory;
+    }
+    if (typeof derivedMetadata.homepage === "string" && pkgJSON.homepage !== derivedMetadata.homepage) {
+        console.warn(`[${pkg}]`, `Homepage mismatch: ${pkgJSON.homepage ?? "(missing)"} vs ${derivedMetadata.homepage}`);
+        pkgChanged = true;
+        pkgJSON.homepage = derivedMetadata.homepage;
+    }
+    if (derivedMetadata.exports && JSON.stringify(pkgJSON.exports) !== JSON.stringify(derivedMetadata.exports)) {
+        console.warn(`[${pkg}]`, "Exports mismatch with derived metadata");
+        pkgChanged = true;
+        pkgJSON.exports = structuredClone(derivedMetadata.exports);
+    }
+    return pkgChanged;
+};
+
+/**
  * @type { import("../package-lock.json") }
  */
 const packageLockJSON = JSON.parse(await fs.promises.readFile("./package-lock.json", "utf8"));
@@ -41,24 +119,25 @@ const packageLockJSON = JSON.parse(await fs.promises.readFile("./package-lock.js
 const packageJSON = await readPackageJSON();
 
 let globalChanged = false;
-console.info("Start to update the package.json of packages/");
+console.info(`Start to ${IS_CHECK ? "check" : "sync"} the package.json of packages/`);
 const unusedDependencies = new Set(Object.keys(packageJSON.dependencies));
 /**
- * @type { Record<string, { pkgPath, pkgJSONPath: string, pkgJSON: Awaited<ReturnType<readPackageJSON>> }> }
+ * @type { Record<string, { pkgPath: string, pkgJSONPath: string, pkgJSON: Awaited<ReturnType<readPackageJSON>> }> }
  */
 const packagesList = Object.fromEntries(await Promise.all((await fs.promises.readdir("./packages")).map(async (pkg) => {
     const pkgPath = path.resolve("./packages", pkg);
     return [
         pkg,
         {
+            pkgPath,
             pkgJSONPath: await resolvePackageJSON(pkgPath),
             pkgJSON: await readPackageJSON(await resolvePackageJSON(pkgPath)),
         },
     ];
 })));
 for (const [pkg, { pkgJSONPath, pkgJSON }] of Object.entries(packagesList)) {
-    console.info(`[${pkg}]`, "Start to update package.json");
-    let pkgChanged = false;
+    console.info(`[${pkg}]`, `Start to ${IS_CHECK ? "check" : "sync"} package.json`);
+    let pkgChanged = syncDerivedMetadata(pkg, pkgJSON);
     for (const property of ["dependencies", "devDependencies"]) {
         if (!Reflect.has(pkgJSON, property)) {
             continue;
@@ -71,7 +150,7 @@ for (const [pkg, { pkgJSONPath, pkgJSON }] of Object.entries(packagesList)) {
             const lockInfo = packageLockJSON.packages[`node_modules/${dependencyName}`];
             if (typeof lockInfo?.version === "string") {
                 const targetVersion = `^${lockInfo.version}`;
-                if (dependencyVersionString !== `^${lockInfo.version}`) {
+                if (dependencyVersionString !== targetVersion) {
                     console.warn(`[${pkg}]`, `[${property}]`, `Version mismatch for ${dependencyName}: ${dependencyVersionString} vs ${targetVersion} by dependency`);
                     pkgChanged = true;
                     pkgJSON[property][dependencyName] = targetVersion;
@@ -106,8 +185,8 @@ for (const [pkg, { pkgJSONPath, pkgJSON }] of Object.entries(packagesList)) {
     }
     if (pkgChanged) {
         globalChanged = true;
-        console.info(`[${pkg}]`, "There are some changes in package.json, write it back");
-        if (!IS_DRY_RUN) {
+        console.info(`[${pkg}]`, `There are some changes in package.json${IS_CHECK ? "" : ", write it back"}`);
+        if (!IS_CHECK) {
             await writePackageJSON(pkgJSONPath, pkgJSON);
         }
     } else {
@@ -139,23 +218,11 @@ if (unusedDependencies.size > 0) {
 
 if (!globalChanged) {
     console.info("There is no change in package.json.");
-} else if (!IS_IN_GITHUB_ACTIONS) {
-    console.info("Not running in GitHub Actions, skip committing.");
-} else if (!upstreamExist) {
-    console.info("Running in GitHub Actions, but the upstream does not exist, skip committing.");
-} else if (process.env.GITHUB_REF !== "refs/heads/master") {
-    console.info("Running in GitHub Actions, but the current ref is not a branch, skip committing.");
+} else if (IS_CHECK) {
+    console.error("Package metadata drift detected. Run `npm run sync:packages` to update package.json files.");
+    process.exitCode = 1;
 } else {
-    console.info("Running in GitHub Actions, commit the changes.");
-    startGroup("Add result:");
-    console.info(await git.add("."));
-    endGroup();
-    startGroup("Commit result:");
-    console.info(await git.commit("chore: update dependencies"));
-    endGroup();
-    startGroup("Push result:");
-    console.info(await git.push());
-    endGroup();
+    console.info("Package metadata synchronized.");
 }
 
 console.info("Done.");
