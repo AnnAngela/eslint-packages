@@ -24,7 +24,7 @@ const derivedPackageMetadata = {
         exports: {
             ".": {
                 types: "./dist/esm/index.d.ts",
-                import: "./dist/esm/index.js",
+                "import": "./dist/esm/index.js",
                 require: "./dist/cjs/index.js",
             },
             "./tsconfig.node20.json": "./dist/tsconfigs/tsconfig.node20.json",
@@ -49,7 +49,7 @@ const derivedPackageMetadata = {
         exports: {
             ".": {
                 types: "./dist/esm/index.d.ts",
-                import: "./dist/esm/index.js",
+                "import": "./dist/esm/index.js",
                 require: "./dist/cjs/index.js",
             },
         },
