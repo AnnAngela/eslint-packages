@@ -76,7 +76,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Function.prototype.apply", substitute: "Reflect.apply" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -87,7 +86,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Function.prototype.apply", substitute: "Reflect.apply" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -97,7 +95,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Function.prototype.call", substitute: "Reflect.apply" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -108,7 +105,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Function.prototype.call", substitute: "Reflect.apply" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -118,7 +114,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.defineProperty", substitute: "Reflect.defineProperty" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -129,7 +124,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.defineProperty", substitute: "Reflect.defineProperty" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -139,7 +133,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.getOwnPropertyDescriptor", substitute: "Reflect.getOwnPropertyDescriptor" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -150,7 +143,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.getOwnPropertyDescriptor", substitute: "Reflect.getOwnPropertyDescriptor" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -160,7 +152,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.getPrototypeOf", substitute: "Reflect.getPrototypeOf" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -171,7 +162,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.getPrototypeOf", substitute: "Reflect.getPrototypeOf" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -181,7 +171,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.setPrototypeOf", substitute: "Reflect.setPrototypeOf" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -192,7 +181,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.setPrototypeOf", substitute: "Reflect.setPrototypeOf" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -202,7 +190,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.isExtensible", substitute: "Reflect.isExtensible" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -213,7 +200,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.isExtensible", substitute: "Reflect.isExtensible" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -223,7 +209,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.getOwnPropertyNames", substitute: "Reflect.ownKeys" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -234,7 +219,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.getOwnPropertyNames", substitute: "Reflect.ownKeys" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -244,7 +228,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.preventExtensions", substitute: "Reflect.preventExtensions" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -255,7 +238,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "Object.preventExtensions", substitute: "Reflect.preventExtensions" },
-                    type: "CallExpression",
                 },
             ],
         },
@@ -265,7 +247,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "the delete keyword", substitute: "Reflect.deleteProperty" },
-                    type: "UnaryExpression",
                 },
             ],
         },
@@ -276,7 +257,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "the delete keyword", substitute: "Reflect.deleteProperty" },
-                    type: "UnaryExpression",
                 },
             ],
         },
@@ -286,7 +266,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "the in keyword", substitute: "Reflect.has" },
-                    type: "BinaryExpression",
                 },
             ],
         },
@@ -297,7 +276,6 @@ ruleTester.run("prefer-reflect", rule, {
                 {
                     messageId: "preferReflect",
                     data: { existing: "the in keyword", substitute: "Reflect.has" },
-                    type: "BinaryExpression",
                 },
             ],
         },
