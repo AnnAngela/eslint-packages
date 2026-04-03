@@ -1,112 +1,118 @@
-# 安全策略
+# Security Policy
 
-## 受支持版本
+## Supported Versions
 
-我们会为以下版本提供安全漏洞修复：
+We release patches for security vulnerabilities in the following versions:
 
-| 版本 | 是否支持 |
-| --- | --- |
-| 最新版本 | ✅ |
-| 旧于最新版本 | ❌ |
+| Version | Supported          |
+| ------- | ------------------ |
+| Latest  | :white_check_mark: |
+| < Latest| :x:                |
 
-建议始终使用最新版本，以便及时获得安全修复。
+We recommend always using the latest version of our packages to ensure you have the latest security fixes.
 
-## 漏洞报告方式
+## Reporting a Vulnerability
 
-我们非常重视这些包的安全性。如果你发现了安全漏洞，请使用以下方式报告。
+We take the security of our packages seriously. If you discover a security vulnerability, please report it to us as follows:
 
-### 在哪里报告
+### Where to Report
 
-请通过 GitHub 创建 [Security Advisory](https://github.com/AnnAngela/eslint-packages/security/advisories/new)，或直接联系维护者 [@AnnAngela](https://github.com/AnnAngela)。
+Please report security vulnerabilities by creating a [Security Advisory](https://github.com/AnnAngela/eslint-packages/security/advisories/new) on GitHub, or by contacting the maintainer [@AnnAngela](https://github.com/AnnAngela) directly.
 
-**请不要通过公开 Issue 报告安全漏洞。**
+**Please do not report security vulnerabilities through public GitHub issues.**
 
-### 报告时建议包含的信息
+### What to Include
 
-- 漏洞类型（例如 XSS、SQL 注入等）
-- 受影响的包及版本
-- 可复现问题的步骤
-- PoC 或利用代码（如有）
-- 漏洞影响范围
-- 你已知的临时缓解方案（如有）
+When reporting a vulnerability, please include the following information:
 
-### 你可以期待什么
+- Type of vulnerability (e.g., XSS, SQL injection, etc.)
+- Affected package(s) and version(s)
+- Step-by-step instructions to reproduce the issue
+- Proof-of-concept or exploit code (if possible)
+- Impact of the vulnerability
+- Any potential mitigations you've identified
 
-- **已收到确认**：48 小时内确认收到报告
-- **初步评估**：评估漏洞严重性与影响范围
-- **处理进度更新**：在修复过程中持续同步进展
-- **问题解决**：修复后发布补丁，并在适当时公开披露（如你愿意，可附带致谢）
+### What to Expect
 
-### 响应时间目标
+- **Acknowledgment**: We will acknowledge receipt of your vulnerability report within 48 hours.
+- **Assessment**: We will assess the vulnerability and determine its severity and impact.
+- **Updates**: We will keep you informed about the progress of fixing the vulnerability.
+- **Resolution**: Once the vulnerability is fixed, we will release a patch and publicly disclose the vulnerability (with credit to you, if desired).
 
-- **首次响应**：48 小时内
-- **状态更新**：7 天内
-- **修复时间**：根据严重程度而定
-  - Critical：7 天内
-  - High：14 天内
-  - Medium：30 天内
-  - Low：90 天内
+### Response Timeline
 
-## 安全最佳实践
+- **Initial Response**: Within 48 hours
+- **Status Update**: Within 7 days
+- **Fix Timeline**: Depends on severity
+  - Critical: Within 7 days
+  - High: Within 14 days
+  - Medium: Within 30 days
+  - Low: Within 90 days
 
-### 面向包使用者
+## Security Best Practices
 
-1. **及时升级**：尽量保持在最新版本，以获取安全补丁
-2. **检查配置**：确认 ESLint 配置符合你的安全要求
-3. **启用安全规则**：`@annangela/eslint-config` 内置了 `eslint-plugin-security`
-4. **审计依赖**：定期执行 `npm audit` 或同类工具检查依赖风险
+When using our ESLint packages, we recommend following these security best practices:
 
-### 面向贡献者与维护者
+### For Package Users
 
-1. **代码评审**：所有代码改动都应经过审查后再合并
-2. **依赖更新**：定期关注依赖升级与安全公告
-3. **安全编码**：避免引入新的漏洞模式
-4. **测试覆盖**：对安全敏感逻辑补充必要测试
-5. **敏感信息保护**：不要提交任何密钥、凭据或敏感数据
+1. **Keep packages updated**: Regularly update to the latest versions to get security patches.
+2. **Review configurations**: Ensure your ESLint configurations follow security best practices.
+3. **Use security plugins**: Our `@annangela/eslint-config` includes the `eslint-plugin-security` plugin to help catch common security issues.
+4. **Audit dependencies**: Regularly run `npm audit` or `yarn audit` to check for vulnerabilities in dependencies.
 
-## 仓库中的安全相关能力
+### For Contributors
 
-### `eslint-plugin-security`
+1. **Code review**: All code changes must go through peer review before merging.
+2. **Dependency updates**: Keep dependencies up to date and review security advisories.
+3. **Secure coding**: Follow secure coding practices and avoid introducing vulnerabilities.
+4. **Testing**: Write tests that cover security-relevant code paths.
+5. **Secrets**: Never commit secrets, credentials, or sensitive information to the repository.
 
-`@annangela/eslint-config` 集成了 `eslint-plugin-security`，可帮助发现例如以下问题：
+## Security Features
 
-- 潜在的安全热点
-- 不安全的正则表达式
-- 不安全的 `eval()` 使用
-- Buffer 使用问题
-- 以及其他常见风险模式
+Our packages include several security-focused features:
 
-### Node.js 版本支持
+### eslint-plugin-security
 
-仓库仅支持仍在维护中的 Node.js LTS 版本（当前为 `^20.19 || ^22.21 || ^24.11`），以尽量确保运行环境具备最新安全更新。
+The `@annangela/eslint-config` package includes `eslint-plugin-security` which helps detect:
 
-## 披露策略
+- Potential security hotspots
+- Unsafe regular expressions
+- Unsafe uses of `eval()`
+- Buffer usage issues
+- And more...
 
-- 我们会与报告者协同安排漏洞披露时间
-- 更倾向于协调披露，以便先完成修复与验证，再公开说明
-- 对负责任披露漏洞的研究者，我们会在其同意的前提下给予致谢
-- 安全公告会发布在 GitHub 与相关发布说明中
+### Node.js Version Support
 
-## 安全致谢
+We support only actively maintained LTS versions of Node.js (currently `^20.19 || ^22.21 || ^24.11`), ensuring you're using versions with the latest security updates.
 
-我们感谢帮助提升项目安全性的研究者与贡献者。对于有效的安全漏洞报告，我们会在获得许可后在此致谢。
+## Disclosure Policy
 
-*当前还没有已公开记录的安全漏洞报告。*
+- We will coordinate the disclosure of security vulnerabilities with the reporter.
+- We prefer coordinated disclosure, allowing us time to develop and test a fix before public disclosure.
+- We will credit security researchers who responsibly disclose vulnerabilities (unless they prefer to remain anonymous).
+- Security advisories will be published on GitHub and in release notes.
 
-## 联系方式
+## Security Hall of Fame
 
-如有安全相关问题，请联系：
+We appreciate the efforts of security researchers who help keep our packages secure. Contributors who report valid security vulnerabilities will be acknowledged here (with their permission).
 
-- GitHub：[@AnnAngela](https://github.com/AnnAngela)
-- Security Advisories：[新建安全公告](https://github.com/AnnAngela/eslint-packages/security/advisories/new)
+*No vulnerabilities have been reported yet.*
 
-## 相关资源
+## Contact
 
-- [行为准则](CODE_OF_CONDUCT.md)
-- [贡献与维护指南](CONTRIBUTING.md)
-- [npm 安全最佳实践](https://docs.npmjs.com/packages-and-modules/securing-your-code)
-- [GitHub 安全功能](https://docs.github.com/en/code-security)
+For security-related questions or concerns, please contact:
+
+- GitHub: [@AnnAngela](https://github.com/AnnAngela)
+- Security Advisories: [Create a new advisory](https://github.com/AnnAngela/eslint-packages/security/advisories/new)
+
+## Additional Resources
+
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Contributing Guidelines](https://github.com/AnnAngela/eslint-packages#readme)
+- [npm Security Best Practices](https://docs.npmjs.com/packages-and-modules/securing-your-code)
+- [GitHub Security Features](https://docs.github.com/en/code-security)
 
 ---
 
-*本安全策略可能随着项目维护情况调整，请以仓库中的最新版本为准。*
+*This security policy is subject to change. Please check back regularly for updates.*
