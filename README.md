@@ -112,74 +112,37 @@ Refer to individual package documentation for detailed usage instructions.
 
 ## 🛠️ Development
 
-### Setting Up the Development Environment
+For contributor-facing setup, script reference, Changesets usage, release flow, and CI notes, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/AnnAngela/eslint-packages.git
-   cd eslint-packages
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. If package metadata drifts, run `npm run sync:packages` to synchronize workspace package metadata.
-
-### Available Scripts
-
-- **`npm run changeset`** - Create an interactive changeset entry for the packages that need a release
-- **`npm run version`** - Apply pending changesets, update package versions, and generate changelog entries
-- **`npm run release`** - Build all publishable packages and publish only unpublished versions detected by Changesets
-- **`npm run build`** - Build all workspace packages through npm workspaces
-- **`npm run lint`** - Run workspace linting plus root ESLint checks
-- **`npm run test`** - Run workspace tests
-- **`npm run verify`** - Run package checks, build, lint, and tests for CI
-- **`npm run lint:check`** - Compatibility alias for `npm run lint`
-- **`npm run lint:write`** - Run ESLint with auto-fix
-- **`npm run lint:check-ci`** - Compatibility alias for CI linting with the GitHub Actions formatter
-- **`npm run sync:packages`** - Synchronize derived workspace package metadata
-- **`npm run check:packages`** - Check workspace package metadata drift without writing files
-- **`npm run verify:packages`** - CI-friendly package metadata verification entry
-- **`npm run test:eslint-plugin-prefer-reflect`** - Compatibility alias for the prefer-reflect workspace tests
-- **`npm run test:eslint-formatter-gha:lint`** - Compatibility alias for the GHA formatter workspace tests
-- **`npm run package`** - Compatibility alias for `npm run build`
-
-### Package Development
-
-Each package has its own build, lint, test, and package scripts:
+### Quick Setup
 
 ```bash
-# Build a specific package
+git clone https://github.com/AnnAngela/eslint-packages.git
+cd eslint-packages
+npm install
+```
+
+### Common Commands
+
+```bash
+# Run the full local verification flow
+npm run verify
+
+# Regenerate derived workspace metadata when package.json files drift
+npm run sync:packages
+
+# Create a release note entry for a user-facing change
+npm run changeset
+```
+
+### Package-Scoped Commands
+
+```bash
+# Replace <package-name> with eslint-config, eslint-formatter-gha, or eslint-plugin-prefer-reflect
 npm run build --workspace=@annangela/<package-name>
+npm run lint --workspace=@annangela/<package-name>
+npm run test --workspace=@annangela/<package-name>
 ```
-
-### Running Tests
-
-```bash
-# Run all workspace tests
-npm run test
-```
-
-## 🚢 Release Process
-
-This repository now uses [Changesets](https://github.com/changesets/changesets) for versioning, changelog generation, and package publishing.
-
-1. Add a changeset from the repository root with `npm run changeset`.
-2. Commit the generated `.changeset/*.md` file with the related code changes.
-3. Merge the pull request to `master`.
-4. The `npm-publish.yml` workflow will inspect pending changesets:
-   - if release notes are pending, it opens or updates a release PR with generated version and changelog changes;
-   - if versioned packages have not been published yet, it runs `npm run release` and publishes only those packages.
-
-### Local Release Maintenance
-
-- Use `npm run version` when you need to preview or regenerate version and changelog files locally.
-- Use `npm run release` only when you intentionally want to publish unpublished package versions.
-- The legacy `scripts/newTag.js` flow is deprecated and should not be used for new releases.
 
 ## 📚 Documentation
 
@@ -192,17 +155,7 @@ For package-specific documentation, please refer to the README files in each pac
 
 Contributions are welcome! This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md).
 
-### How to Contribute
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Run package checks, builds, tests, and linting (`npm run verify`)
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
-
-Please ensure your code follows the project's coding standards and includes appropriate tests.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full development and release workflow.
 
 ## 📄 License
 
