@@ -1,75 +1,75 @@
-# AnnAngela's ESLint Packages
+# AnnAngela 的 ESLint Packages
 
 [![npm publish](https://github.com/AnnAngela/eslint-packages/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/AnnAngela/eslint-packages/actions/workflows/npm-publish.yml)
 [![CodeQL](https://github.com/AnnAngela/eslint-packages/actions/workflows/CodeQL.yaml/badge.svg)](https://github.com/AnnAngela/eslint-packages/actions/workflows/CodeQL.yaml)
 [![Linter](https://github.com/AnnAngela/eslint-packages/actions/workflows/linter.yaml/badge.svg)](https://github.com/AnnAngela/eslint-packages/actions/workflows/linter.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A collection of ESLint packages for better code quality and developer experience. This monorepo contains shared ESLint configurations, plugins, and formatters designed to work together seamlessly.
+这是一个围绕 ESLint 生态维护的多包仓库，提供共享配置、插件与 GitHub Actions Formatter，用于提升代码质量与维护体验。
 
-## 📦 Packages
+## 📦 包列表
 
-This monorepo contains the following packages:
+本仓库当前包含以下可发布包：
 
 ### [@annangela/eslint-config](packages/eslint-config)
 
 [![npm version](https://img.shields.io/npm/v/@annangela/eslint-config.svg)](https://www.npmjs.com/package/@annangela/eslint-config)
 
-ESLint configuration for AnnAngela's projects, supporting the latest Node.js LTS versions. Includes configurations for:
+面向 AnnAngela 项目的 ESLint 配置包，支持当前维护中的 Node.js LTS 版本，包含以下配置：
 
-- Base JavaScript files
-- Browser environments
-- Node.js applications
-- TypeScript projects
-- ESLint plugin development
-- Mocha test files
+- 基础 JavaScript 配置
+- 浏览器环境配置
+- Node.js 环境配置
+- TypeScript 配置
+- ESLint 插件开发配置
+- Mocha 测试配置
 
-**Installation:**
+**安装：**
 
 ```bash
 npm install --save-dev @annangela/eslint-config
 ```
 
-[View Package Documentation →](packages/eslint-config/README.md)
+[查看包文档 →](packages/eslint-config/README.md)
 
 ### [@annangela/eslint-formatter-gha](packages/eslint-formatter-gha)
 
 [![npm version](https://img.shields.io/npm/v/@annangela/eslint-formatter-gha.svg)](https://www.npmjs.com/package/@annangela/eslint-formatter-gha)
 
-A better ESLint formatter specifically designed for GitHub Actions. Provides human-readable annotations and summaries with support for:
+这是一个专为 GitHub Actions 设计的 ESLint Formatter，可输出更易读的注解与摘要信息，支持：
 
-- Enhanced error reporting
-- Configurable deprecated rule severity
-- Rich GitHub Actions annotations
-- Summary views in workflow runs
+- 更清晰的错误展示
+- 可配置的废弃规则等级
+- GitHub Actions 注解输出
+- 工作流摘要展示
 
-**Installation:**
+**安装：**
 
 ```bash
 npm install --save-dev @annangela/eslint-formatter-gha
 ```
 
-**Usage:**
+**使用：**
 
 ```bash
 npx eslint -f @annangela/eslint-formatter-gha src
 ```
 
-[View Package Documentation →](packages/eslint-formatter-gha/README.md)
+[查看包文档 →](packages/eslint-formatter-gha/README.md)
 
 ### [@annangela/eslint-plugin-prefer-reflect](packages/eslint-plugin-prefer-reflect)
 
 [![npm version](https://img.shields.io/npm/v/@annangela/eslint-plugin-prefer-reflect.svg)](https://www.npmjs.com/package/@annangela/eslint-plugin-prefer-reflect)
 
-Modern version of the original `prefer-reflect` rules in ESLint. Encourages the use of Reflect API methods over traditional Object methods.
+这是对 ESLint 原始 `prefer-reflect` 思路的现代化实现，鼓励优先使用 Reflect API，而不是旧的 Object / Function 写法。
 
-**Installation:**
+**安装：**
 
 ```bash
 npm install --save-dev @annangela/eslint-plugin-prefer-reflect
 ```
 
-**Usage:**
+**使用：**
 
 ```javascript
 import preferReflectPlugin from "@annangela/eslint-plugin-prefer-reflect";
@@ -84,145 +84,97 @@ export default {
 };
 ```
 
-[View Package Documentation →](packages/eslint-plugin-prefer-reflect/README.md)
+[查看包文档 →](packages/eslint-plugin-prefer-reflect/README.md)
 
-## 🚀 Quick Start
+## 🚀 快速开始
 
-### Prerequisites
+### 环境要求
 
-- Node.js: `^20.19 || ^22.21 || ^24.11`
-- npm (comes with Node.js)
+- Node.js：`^20.19 || ^22.21 || ^24.11`
+- npm（随 Node.js 一起提供）
 
-### Using the Packages
+### 使用这些包
 
-Each package can be installed independently based on your needs:
+可按需单独安装任意包：
 
 ```bash
-# For ESLint configuration
+# ESLint 配置
 npm install --save-dev @annangela/eslint-config
 
-# For GitHub Actions formatter
+# GitHub Actions Formatter
 npm install --save-dev @annangela/eslint-formatter-gha
 
-# For prefer-reflect plugin
+# prefer-reflect 插件
 npm install --save-dev @annangela/eslint-plugin-prefer-reflect
 ```
 
-Refer to individual package documentation for detailed usage instructions.
+更详细的使用说明请查看各个包目录下的 README。
 
-## 🛠️ Development
+## 🛠️ 开发
 
-### Setting Up the Development Environment
+仓库级开发、维护、发布与 CI 说明请查看 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/AnnAngela/eslint-packages.git
-   cd eslint-packages
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. If package metadata drifts, run `npm run sync:packages` to synchronize workspace package metadata.
-
-### Available Scripts
-
-- **`npm run changeset`** - Create an interactive changeset entry for the packages that need a release
-- **`npm run version`** - Apply pending changesets, update package versions, and generate changelog entries
-- **`npm run release`** - Build all publishable packages and publish only unpublished versions detected by Changesets
-- **`npm run build`** - Build all workspace packages through npm workspaces
-- **`npm run lint`** - Run workspace linting plus root ESLint checks
-- **`npm run test`** - Run workspace tests
-- **`npm run verify`** - Run package checks, build, lint, and tests for CI
-- **`npm run lint:check`** - Compatibility alias for `npm run lint`
-- **`npm run lint:write`** - Run ESLint with auto-fix
-- **`npm run lint:check-ci`** - Compatibility alias for CI linting with the GitHub Actions formatter
-- **`npm run sync:packages`** - Synchronize derived workspace package metadata
-- **`npm run check:packages`** - Check workspace package metadata drift without writing files
-- **`npm run verify:packages`** - CI-friendly package metadata verification entry
-- **`npm run test:eslint-plugin-prefer-reflect`** - Compatibility alias for the prefer-reflect workspace tests
-- **`npm run test:eslint-formatter-gha:lint`** - Compatibility alias for the GHA formatter workspace tests
-- **`npm run package`** - Compatibility alias for `npm run build`
-
-### Package Development
-
-Each package has its own build, lint, test, and package scripts:
+### 快速初始化
 
 ```bash
-# Build a specific package
+git clone https://github.com/AnnAngela/eslint-packages.git
+cd eslint-packages
+npm install
+```
+
+### 常用命令
+
+```bash
+# 运行完整校验流程
+npm run verify
+
+# 重新同步派生 package.json 元数据
+npm run sync:packages
+
+# 为影响已发布包的改动编写 changeset
+npm run changeset
+```
+
+### 针对单个 workspace 的命令
+
+```bash
+# 将 <package-name> 替换为 eslint-config、eslint-formatter-gha 或 eslint-plugin-prefer-reflect
 npm run build --workspace=@annangela/<package-name>
+npm run lint --workspace=@annangela/<package-name>
+npm run test --workspace=@annangela/<package-name>
 ```
 
-### Running Tests
+## 📚 文档
 
-```bash
-# Run all workspace tests
-npm run test
-```
+- **[贡献指南](CONTRIBUTING.md)** - 仓库架构、workspace、脚本、Changesets、发布与 CI 说明
+- **[行为准则](CODE_OF_CONDUCT.md)** - 社区参与规范
+- **[安全策略](SECURITY.md)** - 安全漏洞报告方式与处理说明
 
-## 🚢 Release Process
+包级使用文档请查看各包目录下的 README。
 
-This repository now uses [Changesets](https://github.com/changesets/changesets) for versioning, changelog generation, and package publishing.
+## 🤝 参与贡献
 
-1. Add a changeset from the repository root with `npm run changeset`.
-2. Commit the generated `.changeset/*.md` file with the related code changes.
-3. Merge the pull request to `master`.
-4. The `npm-publish.yml` workflow will inspect pending changesets:
-   - if release notes are pending, it opens or updates a release PR with generated version and changelog changes;
-   - if versioned packages have not been published yet, it runs `npm run release` and publishes only those packages.
+欢迎贡献。提交前请先阅读 [CONTRIBUTING.md](CONTRIBUTING.md)，并遵守 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)。
 
-### Local Release Maintenance
+## 📄 许可
 
-- Use `npm run version` when you need to preview or regenerate version and changelog files locally.
-- Use `npm run release` only when you intentionally want to publish unpublished package versions.
-- The legacy `scripts/newTag.js` flow is deprecated and should not be used for new releases.
+本项目基于 MIT 许可协议发布；各包目录中也包含对应的许可信息。
 
-## 📚 Documentation
+## 🔗 链接
 
-- **[Code of Conduct](CODE_OF_CONDUCT.md)** - Community guidelines and expectations
-- **[Security Policy](SECURITY.md)** - Security vulnerability reporting and best practices
+- **GitHub 仓库**：<https://github.com/AnnAngela/eslint-packages>
+- **Issue Tracker**：<https://github.com/AnnAngela/eslint-packages/issues>
+- **npm 组织**：[@annangela](https://www.npmjs.com/~annangela)
 
-For package-specific documentation, please refer to the README files in each package directory.
-
-## 🤝 Contributing
-
-Contributions are welcome! This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md).
-
-### How to Contribute
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Run package checks, builds, tests, and linting (`npm run verify`)
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
-
-Please ensure your code follows the project's coding standards and includes appropriate tests.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the individual package directories for full license text.
-
-## 🔗 Links
-
-- **GitHub Repository**: [https://github.com/AnnAngela/eslint-packages](https://github.com/AnnAngela/eslint-packages)
-- **Issue Tracker**: [https://github.com/AnnAngela/eslint-packages/issues](https://github.com/AnnAngela/eslint-packages/issues)
-- **npm Organization**: [@annangela](https://www.npmjs.com/~annangela)
-
-## 👤 Author
+## 👤 作者
 
 - **AnnAngela**
   - GitHub: [@AnnAngela](https://github.com/AnnAngela)
 
-## ⭐ Support
+## ⭐ 支持
 
-If you find these packages helpful, please consider giving the repository a star on GitHub!
+如果这些包对你有帮助，欢迎为仓库点一个 Star。
 
 ---
 
-> *Made with ❤️ for better ESLint configurations*
+> 为更好的 ESLint 配置与维护体验而生 ❤️

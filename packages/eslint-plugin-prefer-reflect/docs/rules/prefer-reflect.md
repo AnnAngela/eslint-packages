@@ -8,47 +8,53 @@ related_rules:
 - no-delete-var
 ---
 
-Modern version of original "prefer-reflect" rules in eslint.
+这是 ESLint 原始 `prefer-reflect` 思路的现代化版本。
 
-The ES6 Reflect API comes with a handful of methods which somewhat deprecate methods on old constructors:
+ES6 的 Reflect API 提供了一组方法，可用于替代旧构造器或旧语法中的对应写法：
 
-* [`Reflect.apply`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.apply) effectively deprecates [`Function.prototype.apply`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-function.prototype.apply)
-* [`Reflect.call`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.call) effectively deprecates [`Function.prototype.call`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-function.prototype.call)
-* [`Reflect.defineProperty`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.defineproperty) effectively deprecates [`Object.defineProperty`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.defineproperty)
-* [`Reflect.deleteProperty`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.deleteproperty) effectively deprecates the [`delete` keyword](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-delete-operator-runtime-semantics-evaluation)
-* [`Reflect.getOwnPropertyDescriptor`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.getownpropertydescriptor) effectively deprecates [`Object.getOwnPropertyDescriptor`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.getownpropertydescriptor)
-* [`Reflect.getPrototypeOf`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.getprototypeof) effectively deprecates [`Object.getPrototypeOf`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.getprototypeof)
-* [`Reflect.has`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.has) effectively deprecates [`in` keyword](https://tc39.es/ecma262/multipage/ecmascript-language-expressions.html#sec-relational-operators)
-* [`Reflect.setPrototypeOf`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.setprototypeof) effectively deprecates [`Object.setPrototypeOf`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.setprototypeof)
-* [`Reflect.isExtensible`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.isextensible) effectively deprecates [`Object.isExtensible`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.isextensible)
-* [`Reflect.isExtensible`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.isextensible) effectively deprecates [`Object.isExtensible`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.isextensible)
-* [`Reflect.preventExtensions`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.preventextensions)  effectively deprecates [`Object.preventExtensions`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.preventextensions)
+* [`Reflect.apply`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.apply) 可替代 [`Function.prototype.apply`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-function.prototype.apply)
+* [`Reflect.apply`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.apply) 也可用于替代 [`Function.prototype.call`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-function.prototype.call)
+* [`Reflect.defineProperty`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.defineproperty) 可替代 [`Object.defineProperty`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.defineproperty)
+* [`Reflect.deleteProperty`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.deleteproperty) 可替代 [`delete` 关键字](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-delete-operator-runtime-semantics-evaluation)
+* [`Reflect.getOwnPropertyDescriptor`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.getownpropertydescriptor) 可替代 [`Object.getOwnPropertyDescriptor`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.getownpropertydescriptor)
+* [`Reflect.getPrototypeOf`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.getprototypeof) 可替代 [`Object.getPrototypeOf`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.getprototypeof)
+* [`Reflect.has`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.has) 可替代 [`in` 关键字](https://tc39.es/ecma262/multipage/ecmascript-language-expressions.html#sec-relational-operators)
+* [`Reflect.setPrototypeOf`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.setprototypeof) 可替代 [`Object.setPrototypeOf`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.setprototypeof)
+* [`Reflect.isExtensible`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.isextensible) 可替代 [`Object.isExtensible`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.isextensible)
+* [`Reflect.ownKeys`](https://tc39.es/ecma262/multipage/reflection.html#sec-reflect.ownkeys) 可替代 [`Object.getOwnPropertyNames`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.getownpropertynames)
+* [`Reflect.preventExtensions`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.preventextensions) 可替代 [`Object.preventExtensions`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.preventextensions)
 
-The prefer-reflect rule will flag usage of any older method, suggesting to instead use the newer Reflect version.
+`prefer-reflect` 规则会标记这些旧写法，并提示改用 Reflect 版本。
 
-## Rule Details
+## 规则细节
 
-## Options
+## 配置项
 
-### Exceptions
+### `exceptions`
 
 ```js
 "prefer-reflect": [<enabled>, { "exceptions": [<...exceptions>] }]
 ```
 
-The `exceptions` option allows you to pass an array of methods names of `Reflect` you don't want to use.
+`exceptions` 允许你传入一个 Reflect 方法名数组，用来声明哪些 Reflect 方法不强制使用。
 
-For example if you wish to use all Reflect methods, except for `Function.prototype.apply` then your config would look like `prefer-reflect: [2, { "exceptions": ["apply"] }]`.
+例如，如果你想启用大部分 Reflect 写法，但仍允许继续使用 `Function.prototype.apply`，可以这样配置：
 
-If you want to use Reflect methods, but keep using the `delete` keyword (in which the method name is `deleteProperty`), then your config would look like `prefer-reflect: [2, { "exceptions": ["deleteProperty"] }]`.
+`prefer-reflect: [2, { "exceptions": ["apply"] }]`
 
-These can be combined as much as you like. To make all methods exceptions (thereby rendering this rule useless), use `prefer-reflect: [2, { "exceptions": [ "apply", "defineProperty", "deleteProperty", "getOwnPropertyDescriptor", "getPrototypeOf", "has", "isExtensible", "ownKeys", "preventExtensions", "setPrototypeOf" ] }]`
+如果你想继续使用 `delete` 关键字（对应的方法名为 `deleteProperty`），则可以这样配置：
+
+`prefer-reflect: [2, { "exceptions": ["deleteProperty"] }]`
+
+这些例外项可以自由组合。如果你把所有方法都列入例外（这也基本等于关闭这条规则），则可写成：
+
+`prefer-reflect: [2, { "exceptions": [ "apply", "defineProperty", "deleteProperty", "getOwnPropertyDescriptor", "getPrototypeOf", "has", "isExtensible", "ownKeys", "preventExtensions", "setPrototypeOf" ] }]`
 
 ### Reflect.apply
 
-Deprecates `Function.prototype.apply()` and `Function.prototype.call()`
+用于替代 `Function.prototype.apply()` 和 `Function.prototype.call()`。
 
-Examples of **incorrect** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **错误**：
 
 ::: incorrect
 
@@ -68,7 +74,7 @@ obj.myMethod.call(other, arg);
 
 :::
 
-Examples of **correct** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -87,14 +93,14 @@ Reflect.apply(obj.myMethod, other, [arg]);
 
 :::
 
-Examples of **correct** code for this rule with the `{ "exceptions": ["apply"] }` option:
+启用 `{ "exceptions": ["apply"] }` 时，以下代码会被视为 **正确**：
 
 ::: correct
 
 ```js
 /*eslint @annangela/prefer-reflect: ["error", { "exceptions": ["apply"] }]*/
 
-// in addition to Reflect.apply(...):
+// 除 Reflect.apply(...) 外，也允许以下写法：
 myFunction.apply(undefined, args);
 myFunction.apply(null, args);
 obj.myMethod.apply(obj, args);
@@ -103,14 +109,14 @@ obj.myMethod.apply(other, args);
 
 :::
 
-Examples of **correct** code for this rule with the `{ "exceptions": ["call"] }` option:
+启用 `{ "exceptions": ["apply"] }` 时，以下代码会被视为 **正确**：
 
 ::: correct
 
 ```js
-/*eslint @annangela/prefer-reflect: ["error", { "exceptions": ["call"] }]*/
+/*eslint @annangela/prefer-reflect: ["error", { "exceptions": ["apply"] }]*/
 
-// in addition to Reflect.apply(...):
+// 除 Reflect.apply(...) 外，也允许以下写法：
 myFunction.call(undefined, arg);
 myFunction.call(null, arg);
 obj.myMethod.call(obj, arg);
@@ -121,9 +127,9 @@ obj.myMethod.call(other, arg);
 
 ### Reflect.defineProperty
 
-Deprecates `Object.defineProperty()`
+用于替代 `Object.defineProperty()`。
 
-Examples of **incorrect** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **错误**：
 
 ::: incorrect
 
@@ -135,7 +141,7 @@ Object.defineProperty({}, 'foo', {value: 1})
 
 :::
 
-Examples of **correct** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -147,7 +153,7 @@ Reflect.defineProperty({}, 'foo', {value: 1})
 
 :::
 
-Examples of **correct** code for this rule with the `{ "exceptions": ["defineProperty"] }` option:
+启用 `{ "exceptions": ["defineProperty"] }` 时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -162,36 +168,36 @@ Reflect.defineProperty({}, 'foo', {value: 1})
 
 ### Reflect.deleteProperty
 
-Deprecates the `delete` keyword
+用于替代 `delete` 关键字。
 
-Examples of **incorrect** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **错误**：
 
 ::: incorrect
 
 ```js
 /*eslint @annangela/prefer-reflect: "error"*/
 
-delete foo.bar; // deleting object property
+delete foo.bar; // 删除对象属性
 ```
 
 :::
 
-Examples of **correct** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **正确**：
 
 ::: correct
 
 ```js
 /*eslint @annangela/prefer-reflect: "error"*/
 
-delete bar; // deleting variable
+delete bar; // 删除变量
 Reflect.deleteProperty(foo, 'bar');
 ```
 
 :::
 
-Note: For a rule preventing deletion of variables, see [no-delete-var instead](no-delete-var)
+提示：如果你想阻止删除变量，请改用 [no-delete-var](no-delete-var)。
 
-Examples of **correct** code for this rule with the `{ "exceptions": ["delete"] }` option:
+启用 `{ "exceptions": ["delete"] }` 时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -207,9 +213,9 @@ Reflect.deleteProperty(foo, 'bar');
 
 ### Reflect.getOwnPropertyDescriptor
 
-Deprecates `Object.getOwnPropertyDescriptor()`
+用于替代 `Object.getOwnPropertyDescriptor()`。
 
-Examples of **incorrect** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **错误**：
 
 ::: incorrect
 
@@ -221,7 +227,7 @@ Object.getOwnPropertyDescriptor({}, 'foo')
 
 :::
 
-Examples of **correct** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -233,7 +239,7 @@ Reflect.getOwnPropertyDescriptor({}, 'foo')
 
 :::
 
-Examples of **correct** code for this rule with the `{ "exceptions": ["getOwnPropertyDescriptor"] }` option:
+启用 `{ "exceptions": ["getOwnPropertyDescriptor"] }` 时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -248,9 +254,9 @@ Reflect.getOwnPropertyDescriptor({}, 'foo')
 
 ### Reflect.getPrototypeOf
 
-Deprecates `Object.getPrototypeOf()`
+用于替代 `Object.getPrototypeOf()`。
 
-Examples of **incorrect** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **错误**：
 
 ::: incorrect
 
@@ -262,7 +268,7 @@ Object.getPrototypeOf({}, 'foo')
 
 :::
 
-Examples of **correct** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -274,7 +280,7 @@ Reflect.getPrototypeOf({}, 'foo')
 
 :::
 
-Examples of **correct** code for this rule with the `{ "exceptions": ["getPrototypeOf"] }` option:
+启用 `{ "exceptions": ["getPrototypeOf"] }` 时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -289,21 +295,21 @@ Reflect.getPrototypeOf({}, 'foo')
 
 ### Reflect.has
 
-Deprecates the `in` keyword
+用于替代 `in` 关键字。
 
-Examples of **incorrect** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **错误**：
 
 ::: incorrect
 
 ```js
 /*eslint @annangela/prefer-reflect: "error"*/
 
-'foo' in {}; // deleting object property
+'foo' in {}; // 判断对象属性是否存在
 ```
 
 :::
 
-Examples of **correct** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -315,7 +321,7 @@ Reflect.has({}, 'foo');
 
 :::
 
-Examples of **correct** code for this rule with the `{ "exceptions": ["has"] }` option:
+启用 `{ "exceptions": ["has"] }` 时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -330,9 +336,9 @@ Reflect.has({}, 'foo');
 
 ### Reflect.isExtensible
 
-Deprecates `Object.isExtensible`
+用于替代 `Object.isExtensible()`。
 
-Examples of **incorrect** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **错误**：
 
 ::: incorrect
 
@@ -344,7 +350,7 @@ Object.isExtensible({})
 
 :::
 
-Examples of **correct** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -356,7 +362,7 @@ Reflect.isExtensible({})
 
 :::
 
-Examples of **correct** code for this rule with the `{ "exceptions": ["isExtensible"] }` option:
+启用 `{ "exceptions": ["isExtensible"] }` 时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -371,9 +377,9 @@ Reflect.isExtensible({})
 
 ### Reflect.ownKeys
 
-Deprecates `Object.getOwnPropertyNames()`
+用于替代 `Object.getOwnPropertyNames()`。
 
-Examples of **incorrect** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **错误**：
 
 ::: incorrect
 
@@ -385,7 +391,7 @@ Object.getOwnPropertyNames({})
 
 :::
 
-Examples of **correct** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -397,7 +403,7 @@ Reflect.ownKeys({})
 
 :::
 
-Examples of **correct** code for this rule with the `{ "exceptions": ["ownKeys"] }` option:
+启用 `{ "exceptions": ["ownKeys"] }` 时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -412,9 +418,9 @@ Reflect.ownKeys({})
 
 ### Reflect.preventExtensions
 
-Deprecates `Object.preventExtensions()`
+用于替代 `Object.preventExtensions()`。
 
-Examples of **incorrect** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **错误**：
 
 ::: incorrect
 
@@ -426,7 +432,7 @@ Object.preventExtensions({})
 
 :::
 
-Examples of **correct** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -438,7 +444,7 @@ Reflect.preventExtensions({})
 
 :::
 
-Examples of **correct** code for this rule with the `{ "exceptions": ["preventExtensions"] }` option:
+启用 `{ "exceptions": ["preventExtensions"] }` 时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -453,9 +459,9 @@ Reflect.preventExtensions({})
 
 ### Reflect.setPrototypeOf
 
-Deprecates `Object.setPrototypeOf()`
+用于替代 `Object.setPrototypeOf()`。
 
-Examples of **incorrect** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **错误**：
 
 ::: incorrect
 
@@ -467,7 +473,7 @@ Object.setPrototypeOf({}, Object.prototype)
 
 :::
 
-Examples of **correct** code for this rule when used without exceptions:
+未配置例外时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -479,7 +485,7 @@ Reflect.setPrototypeOf({}, Object.prototype)
 
 :::
 
-Examples of **correct** code for this rule with the `{ "exceptions": ["setPrototypeOf"] }` option:
+启用 `{ "exceptions": ["setPrototypeOf"] }` 时，以下代码会被视为 **正确**：
 
 ::: correct
 
@@ -492,8 +498,8 @@ Reflect.setPrototypeOf({}, Object.prototype)
 
 :::
 
-## When Not To Use It
+## 何时不应使用
 
-This rule should not be used in ES3/5 environments.
+如果你的代码运行在 ES3 / ES5 环境中，不应启用这条规则。
 
-In ES2015 (ES6) or later, if you don't want to be notified about places where Reflect could be used, you can safely disable this rule.
+如果你的运行环境是 ES2015（ES6）及以上，但你并不希望收到“这里可以改用 Reflect”的提示，也可以安全地关闭这条规则。

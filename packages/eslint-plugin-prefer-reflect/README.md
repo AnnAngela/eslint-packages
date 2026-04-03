@@ -1,55 +1,41 @@
-# eslint-plugin-prefer-reflect
+# @annangela/eslint-plugin-prefer-reflect
 
-Main propose:
+这个包提供 ESLint 规则，用现代的 Reflect API 写法替代传统的旧式 API 写法。
 
-- Modern version of original `prefer-reflect` rules in eslint
+## 安装
 
-## Installation
-
-You'll first need to install [ESLint](https://eslint.org/):
+首先请先安装 [ESLint](https://eslint.org/)：
 
 ```sh
 npm i eslint --save-dev
 ```
 
-Next, install `@annangela/eslint-plugin-prefer-reflect`:
+然后安装 `@annangela/eslint-plugin-prefer-reflect`：
 
 ```sh
 npm install @annangela/eslint-plugin-prefer-reflect --save-dev
 ```
 
-## Usage
+## 使用
 
-### `eslint.config.js` - flat config
-
-Use the plugin:
+### `eslint.config.js`（Flat Config）
 
 ```js
 import preferReflectPlugin from "@annangela/eslint-plugin-prefer-reflect";
 
-// ...
-
 export default {
-    // ...
     plugins: {
-        // ...
         "@annangela/prefer-reflect": preferReflectPlugin,
-        // ...
     },
     rules: {
-        // ...
-
-        // @annangela/prefer-reflect
         "@annangela/prefer-reflect/prefer-reflect": "error",
-
-        // ...
     },
 };
 ```
 
-### `.eslintrc` (Deprecated)
+### `.eslintrc`（已废弃）
 
-Add `@annangela/eslint-plugin-prefer-reflect` to the plugins section of your `.eslintrc` configuration file:
+在 `.eslintrc` 的 `plugins` 中加入 `@annangela/prefer-reflect`：
 
 ```json
 {
@@ -59,7 +45,7 @@ Add `@annangela/eslint-plugin-prefer-reflect` to the plugins section of your `.e
 }
 ```
 
-Then configure the rules you want to use under the rules section.
+然后在 `rules` 中启用对应规则：
 
 ```json
 {
@@ -69,8 +55,8 @@ Then configure the rules you want to use under the rules section.
 }
 ```
 
-I know this repeated words looks stupid, but the eslint requires this format.
+虽然规则名看起来重复，但这是 ESLint 对 scoped plugin 规则命名的既定格式。
 
-## Supported Rules
+## 已提供的规则
 
-- [`@annangela/prefer-reflect/prefer-reflect`](packages/eslint-plugin-prefer-reflect/docs/rules/prefer-reflect.md): Please look up [the doc link](packages/eslint-plugin-prefer-reflect/docs/rules/prefer-reflect.md).
+- [`@annangela/prefer-reflect/prefer-reflect`](docs/rules/prefer-reflect.md)：规则完整说明
