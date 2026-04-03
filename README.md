@@ -131,6 +131,9 @@ Refer to individual package documentation for detailed usage instructions.
 
 ### Available Scripts
 
+- **`npm run changeset`** - Create an interactive changeset entry for the packages that need a release
+- **`npm run version`** - Apply pending changesets, update package versions, and generate changelog entries
+- **`npm run release`** - Build all publishable packages and publish only unpublished versions detected by Changesets
 - **`npm run build`** - Build all workspace packages through npm workspaces
 - **`npm run lint`** - Run workspace linting plus root ESLint checks
 - **`npm run test`** - Run workspace tests
@@ -160,6 +163,23 @@ npm run build --workspace=@annangela/<package-name>
 # Run all workspace tests
 npm run test
 ```
+
+## 🚢 Release Process
+
+This repository now uses [Changesets](https://github.com/changesets/changesets) for versioning, changelog generation, and package publishing.
+
+1. Add a changeset from the repository root with `npm run changeset`.
+2. Commit the generated `.changeset/*.md` file with the related code changes.
+3. Merge the pull request to `master`.
+4. The `npm-publish.yml` workflow will inspect pending changesets:
+   - if release notes are pending, it opens or updates a release PR with generated version and changelog changes;
+   - if versioned packages have not been published yet, it runs `npm run release` and publishes only those packages.
+
+### Local Release Maintenance
+
+- Use `npm run version` when you need to preview or regenerate version and changelog files locally.
+- Use `npm run release` only when you intentionally want to publish unpublished package versions.
+- The legacy `scripts/newTag.js` flow is deprecated and should not be used for new releases.
 
 ## 📚 Documentation
 

@@ -30,8 +30,7 @@
     "test": "node --input-type=module -e \"const { configs } = await import('./src/index.js'); for (const key of ['base', 'node', 'typescript']) { if (!(key in configs)) { throw new Error('Missing config export: ' + key); } }\"",
     "package": "npm run build",
     "preversion": "npm run lint",
-    "version": "npm run package",
-    "tag": "node ../../scripts/newTag.js"
+    "version": "npm run package"
   },
   "engines": {
     "node": "^20.19 || ^22.21 || ^24.11"

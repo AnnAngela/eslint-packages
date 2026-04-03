@@ -34,8 +34,7 @@
     "test": "mocha tests --recursive",
     "package": "npm run build",
     "preversion": "npm run lint",
-    "version": "npm run package",
-    "tag": "node ../../scripts/newTag.js"
+    "version": "npm run package"
   },
   "devDependencies": {
     "eslint": "^10.1.0",
