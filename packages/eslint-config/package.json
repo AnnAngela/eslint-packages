@@ -25,8 +25,11 @@
   ],
   "type": "module",
   "scripts": {
-    "package": "node scripts/build.js",
-    "preversion": "eslint --exit-on-fatal-error --max-warnings 0 ./src",
+    "build": "node scripts/build.js",
+    "lint": "eslint --exit-on-fatal-error --max-warnings 0 ./src",
+    "test": "node --input-type=module -e \"const { configs } = await import('./src/index.js'); for (const key of ['base', 'node', 'typescript']) { if (!(key in configs)) { throw new Error(`Missing config export: ${key}`); } }\"",
+    "package": "npm run build",
+    "preversion": "npm run lint",
     "version": "npm run package",
     "tag": "node ../../scripts/newTag.js"
   },

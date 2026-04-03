@@ -87,9 +87,6 @@ jobs:
       - name: Check environment
         if: steps.release_check.outputs.skip_steps != 'true'
         run: npx eslint --env-info
-      - name: Run eslint
+      - name: Run workspace verification
         if: steps.release_check.outputs.skip_steps != 'true'
-        run: npm run lint:check-ci
-      - name: Test packaging
-        if: steps.release_check.outputs.skip_steps != 'true'
-        run: npm run package
+        run: npm run verify

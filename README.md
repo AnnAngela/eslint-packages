@@ -131,34 +131,34 @@ Refer to individual package documentation for detailed usage instructions.
 
 ### Available Scripts
 
-- **`npm run lint:check`** - Run ESLint on the entire monorepo
+- **`npm run build`** - Build all workspace packages through npm workspaces
+- **`npm run lint`** - Run workspace linting plus root ESLint checks
+- **`npm run test`** - Run workspace tests
+- **`npm run verify`** - Run package checks, build, lint, and tests for CI
+- **`npm run lint:check`** - Compatibility alias for `npm run lint`
 - **`npm run lint:write`** - Run ESLint with auto-fix
-- **`npm run lint:check-ci`** - Run ESLint in CI mode with GitHub Actions formatter
+- **`npm run lint:check-ci`** - Compatibility alias for CI linting with the GitHub Actions formatter
 - **`npm run sync:packages`** - Synchronize derived workspace package metadata
 - **`npm run check:packages`** - Check workspace package metadata drift without writing files
 - **`npm run verify:packages`** - CI-friendly package metadata verification entry
-- **`npm run test:eslint-plugin-prefer-reflect`** - Run tests for the prefer-reflect plugin
-- **`npm run test:eslint-formatter-gha:lint`** - Run tests for the GHA formatter
-- **`npm run package`** - Build all packages
+- **`npm run test:eslint-plugin-prefer-reflect`** - Compatibility alias for the prefer-reflect workspace tests
+- **`npm run test:eslint-formatter-gha:lint`** - Compatibility alias for the GHA formatter workspace tests
+- **`npm run package`** - Compatibility alias for `npm run build`
 
 ### Package Development
 
-Each package has its own build and test scripts:
+Each package has its own build, lint, test, and package scripts:
 
 ```bash
 # Build a specific package
-cd packages/<package-name>
-npm run package
+npm run build --workspace=@annangela/<package-name>
 ```
 
 ### Running Tests
 
 ```bash
-# Test prefer-reflect plugin
-npm run test:eslint-plugin-prefer-reflect
-
-# Test GHA formatter
-npm run test:eslint-formatter-gha:lint
+# Run all workspace tests
+npm run test
 ```
 
 ## 📚 Documentation
@@ -177,7 +177,7 @@ Contributions are welcome! This project follows the [Contributor Covenant Code o
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Run package checks, tests, and linting (`npm run verify:packages && npm run lint:check`)
+4. Run package checks, builds, tests, and linting (`npm run verify`)
 5. Commit your changes (`git commit -m 'Add amazing feature'`)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
