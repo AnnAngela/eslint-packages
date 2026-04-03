@@ -2,6 +2,10 @@
     "$schema": "https://json.schemastore.org/tsconfig",
     "display": "Base",
     "compilerOptions": {
+        // In TypeScript 6.0, the default value of `types` changed from `["*"]` to `[]`, which means that by default, no type declaration files will be included unless explicitly specified. This change was made to improve performance and reduce the likelihood of accidentally including unwanted type declarations. If you want to include all type declaration files, you can set `types` back to `["*"]`. For more information, see the TypeScript 6.0 release notes: <https://www.typescriptlang.org/docs/handbook/release-notes/typescript-6-0.html#types-now-defaults-to->
+        "types": [
+            "*"
+        ],
         // Type Checking
         "allowUnreachableCode": false,
         "allowUnusedLabels": false,
@@ -25,7 +29,6 @@
         // Emit
         "declaration": true,
         "declarationMap": true,
-        "downlevelIteration": true,
         "newLine": "lf",
         "removeComments": true,
         // JavaScript Support

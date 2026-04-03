@@ -36,7 +36,7 @@
     "@stylistic/eslint-plugin": "^5.10.0",
     "@stylistic/eslint-plugin-migrate": "^4.4.1",
     "@types/node": "^25.5.0",
-    "@typescript-eslint/eslint-plugin": "^8.57.1",
+    "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.32.1",
     "eslint": "^10.1.0",
     "eslint-plugin-eslint-plugin": "^7.3.2",
@@ -50,7 +50,7 @@
     "pkg-types": "^2.3.0",
     "semver": "^7.7.4",
     "simple-git": "^3.33.0",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.2"
   },
   "overrides": {
     "eslint-plugin-promise": {

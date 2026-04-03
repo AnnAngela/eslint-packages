@@ -2,7 +2,7 @@
     "$schema": "https://json.schemastore.org/tsconfig",
     "extends": "./tsconfig.base.json",
     "display": "Node 24",
-    "_version": "22.0.0",
+    "_version": "24.0.0",
     "compilerOptions": {
         // Modules
         "module": "nodenext", // Node 24 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
