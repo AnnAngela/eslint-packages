@@ -109,12 +109,12 @@ obj.myMethod.apply(other, args);
 
 :::
 
-启用 `{ "exceptions": ["call"] }` 时，以下代码会被视为 **正确**：
+启用 `{ "exceptions": ["apply"] }` 时，以下代码会被视为 **正确**：
 
 ::: correct
 
 ```js
-/*eslint @annangela/prefer-reflect: ["error", { "exceptions": ["call"] }]*/
+/*eslint @annangela/prefer-reflect: ["error", { "exceptions": ["apply"] }]*/
 
 // 除 Reflect.apply(...) 外，也允许以下写法：
 myFunction.call(undefined, arg);
