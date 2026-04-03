@@ -16,8 +16,7 @@
     "test": "bash ../../scripts/eslint-formatter-gha.test.sh",
     "package": "npm run build",
     "preversion": "npm run lint",
-    "version": "npm run package",
-    "tag": "node ../../scripts/newTag.js"
+    "version": "npm run package"
   },
   "engines": {
     "node": "^20.19 || ^22.21 || ^24.11"

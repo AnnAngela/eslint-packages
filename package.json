@@ -5,6 +5,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "npm run build && changeset publish",
     "build": "npm run build --workspace=@annangela/eslint-plugin-prefer-reflect --workspace=@annangela/eslint-formatter-gha --workspace=@annangela/eslint-config",
     "lint": "npm run check:packages && npm run build --workspace=@annangela/eslint-plugin-prefer-reflect && npm run lint --workspaces && eslint --exit-on-fatal-error --max-warnings 0 .",
     "lint:ci": "npm run check:packages && npm run build --workspace=@annangela/eslint-plugin-prefer-reflect --workspace=@annangela/eslint-formatter-gha && npm run lint:ci:run",
@@ -60,6 +63,9 @@
     "semver": "^7.7.4",
     "simple-git": "^3.33.0",
     "typescript": "^6.0.2"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.30.0"
   },
   "overrides": {
     "eslint-plugin-promise": {
