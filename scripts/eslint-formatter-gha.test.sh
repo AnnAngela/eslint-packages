@@ -1,3 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
 echo ----
 echo Prepare the environment
 mkdir -pv .cache
@@ -9,7 +15,7 @@ export GITHUB_REPOSITORY=asd/dsa
 echo ---
 echo Build the formatter
 cd packages/eslint-formatter-gha
-npm run package
+npm run build
 cd -
 echo ---
 echo Run the formatter

@@ -11,8 +11,11 @@
   ],
   "type": "module",
   "scripts": {
-    "package": "node scripts/build.js",
-    "preversion": "eslint --exit-on-fatal-error --max-warnings 0 ./src",
+    "build": "node scripts/build.js",
+    "lint": "eslint --exit-on-fatal-error --max-warnings 0 ./src",
+    "test": "bash ../../scripts/eslint-formatter-gha.test.sh",
+    "package": "npm run build",
+    "preversion": "npm run lint",
     "version": "npm run package",
     "tag": "node ../../scripts/newTag.js"
   },
