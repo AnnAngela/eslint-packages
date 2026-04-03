@@ -7,9 +7,10 @@
   "scripts": {
     "build": "npm run build --workspace=@annangela/eslint-plugin-prefer-reflect --workspace=@annangela/eslint-formatter-gha --workspace=@annangela/eslint-config",
     "lint": "npm run check:packages && npm run build --workspace=@annangela/eslint-plugin-prefer-reflect && npm run lint --workspaces && eslint --exit-on-fatal-error --max-warnings 0 .",
-    "lint:ci": "npm run check:packages && npm run build --workspace=@annangela/eslint-plugin-prefer-reflect --workspace=@annangela/eslint-formatter-gha && npm run lint --workspaces && eslint --exit-on-fatal-error -f ./node_modules/@annangela/eslint-formatter-gha/dist/index.js --max-warnings 0 .",
+    "lint:ci": "npm run check:packages && npm run build --workspace=@annangela/eslint-plugin-prefer-reflect --workspace=@annangela/eslint-formatter-gha && npm run lint:ci:run",
+    "lint:ci:run": "npm run lint --workspaces && eslint --exit-on-fatal-error -f ./node_modules/@annangela/eslint-formatter-gha/dist/index.js --max-warnings 0 .",
     "test": "npm run test --workspaces",
-    "verify": "npm run check:packages && npm run build && npm run lint:ci && npm run test",
+    "verify": "npm run check:packages && npm run build && npm run lint:ci:run && npm run test",
     "lint:check": "npm run lint",
     "lint:check-ci": "npm run lint:ci",
     "lint:write": "eslint --fix .",
