@@ -5,6 +5,10 @@ import path from "node:path";
 import { readPackageJSON, resolvePackageJSON, writePackageJSON } from "pkg-types";
 
 const IS_CHECK = process.argv.includes("--check") || process.argv.includes("--dry-run");
+const defaultRepository = {
+    type: "git",
+    url: "git+https://github.com/AnnAngela/eslint-packages.git",
+};
 
 /**
  * @typedef {{
@@ -90,10 +94,7 @@ const syncDerivedMetadata = (pkg, pkgJSON) => {
     if (typeof derivedMetadata.repositoryDirectory === "string" && pkgJSON.repository?.directory !== derivedMetadata.repositoryDirectory) {
         console.warn(`[${pkg}]`, `Repository directory mismatch: ${pkgJSON.repository?.directory ?? "(missing)"} vs ${derivedMetadata.repositoryDirectory}`);
         pkgChanged = true;
-        pkgJSON.repository ??= {
-            type: "git",
-            url: "git+https://github.com/AnnAngela/eslint-packages.git",
-        };
+        pkgJSON.repository ??= structuredClone(defaultRepository);
         pkgJSON.repository.directory = derivedMetadata.repositoryDirectory;
     }
     if (typeof derivedMetadata.homepage === "string" && pkgJSON.homepage !== derivedMetadata.homepage) {
