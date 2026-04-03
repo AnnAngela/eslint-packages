@@ -10,8 +10,8 @@ mkdir -pv .cache
 rm -f .cache/summary.md
 touch .cache/summary.md
 export GITHUB_STEP_SUMMARY=.cache/summary.md
-export GITHUB_SHA=123456789012345678901234
-export GITHUB_REPOSITORY=asd/dsa
+export GITHUB_SHA=114514191981019260817536
+export GITHUB_REPOSITORY=AnnAngela/eslint-packages
 echo ---
 echo Build the formatter
 cd packages/eslint-formatter-gha
