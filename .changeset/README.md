@@ -1,27 +1,27 @@
-# Changesets in this repository
+# 本仓库中的 Changesets 使用说明
 
-This repository uses [Changesets](https://github.com/changesets/changesets) for release notes, package versioning, and npm publishing.
+本仓库使用 [Changesets](https://github.com/changesets/changesets) 管理发布说明、版本号与 npm 发布流程。
 
-## Quick start
+## 快速开始
 
-1. Run `npm run changeset` from the repository root.
-2. Select each published package affected by your change.
-3. Choose the correct bump type (`patch`, `minor`, or `major`).
-4. Write a short summary describing the consumer-facing impact.
-5. Commit the generated `.changeset/*.md` file with the related change.
+1. 在仓库根目录执行 `npm run changeset`
+2. 选择本次改动影响到的已发布包
+3. 选择合适的版本类型：`patch`、`minor` 或 `major`
+4. 写一段简洁的中文说明，描述这次变更对使用者的影响
+5. 将生成的 `.changeset/*.md` 文件与相关改动一起提交
 
-## Repository-specific rules
+## 仓库特定规则
 
-- The base branch is `master`.
-- Packages are published with public access.
-- Internal workspace dependency ranges are updated with a patch bump when needed.
-- Version updates are not auto-committed by Changesets; they are handled through the normal release PR flow.
+- 基线分支是 `master`
+- 所有包按 public npm package 发布
+- 当本地 workspace 之间存在依赖关系时，内部依赖范围会按 patch 自动前推
+- Changesets 不会自动提交版本更新结果，版本提交由正常的发布流程处理
 
-## Release flow
+## 发布流程
 
-- Merge changesets to `master` through the usual pull request process.
-- The publish workflow runs `changesets/action`.
-- If release notes are pending, the workflow opens or updates a release PR.
-- If versioned packages are ready and unpublished, the workflow runs `npm run release`.
+- 通过常规 PR 流程将 changeset 合并到 `master`
+- 发布工作流会执行 `changesets/action`
+- 如果存在待处理的发布说明，工作流会创建或更新 release PR
+- 如果存在已经版本化但尚未发布的包，工作流会执行 `npm run release`
 
-For the full contributor workflow, script reference, and CI details, see [`../CONTRIBUTING.md`](../CONTRIBUTING.md).
+更完整的维护说明请查看 [`../CONTRIBUTING.md`](../CONTRIBUTING.md)。

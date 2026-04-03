@@ -1,45 +1,54 @@
-# AnnAngela/eslint-formatter-gha
+# @annangela/eslint-formatter-gha
 
-A better ESLint formatter used in GitHub Actions. It can help you to get more human-readable annotation from ESLint. See screenshoots below:
+这是一个面向 GitHub Actions 的 ESLint Formatter，可以把 ESLint 结果转换成更易读的注解与摘要信息。
 
-![Secreenshoot 1](https://github.com/AnnAngela/eslint-packages/assets/9762652/26a6890c-1d2c-485c-adb0-133645ef16b3)
+下图展示了 formatter 的输出效果：
 
-![Secreenshoot 2](https://github.com/AnnAngela/eslint-packages/assets/9762652/0e02570c-fc07-44d5-99a4-184e07b5be94)
+![示意图 1](https://github.com/AnnAngela/eslint-packages/assets/9762652/26a6890c-1d2c-485c-adb0-133645ef16b3)
 
-Thess secreenshoots are taken with configuration `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY` as `notice`, so you can see the deprecated rules infomation in Annotation and Summary.
+![示意图 2](https://github.com/AnnAngela/eslint-packages/assets/9762652/0e02570c-fc07-44d5-99a4-184e07b5be94)
 
-## Installation
+以上截图在 `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY=notice` 的配置下生成，因此可以在 Annotation 与 Summary 中看到废弃规则相关信息。
 
-Run this command:
-
-```shell
-npm install --save-dev @AnnAngela/eslint-formatter-gha
-```
-
-## Usage
-
-Add [`-f @AnnAngela/eslint-formatter-gha` or `--format @AnnAngela/eslint-formatter-gha`](https://eslint.org/docs/latest/use/command-line-interface#-f---format) to your eslint command, like this:
+## 安装
 
 ```shell
-npx eslint -f @AnnAngela/eslint-formatter-gha src
+npm install --save-dev @annangela/eslint-formatter-gha
 ```
 
-## Configuration
+## 使用
 
-You can use these **environment variables** to configure the formatter:
+在 ESLint 命令中加入 [`-f @annangela/eslint-formatter-gha` 或 `--format @annangela/eslint-formatter-gha`](https://eslint.org/docs/latest/use/command-line-interface#-f---format)，例如：
 
-* `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY`:
+```shell
+npx eslint -f @annangela/eslint-formatter-gha src
+```
 
-  Valid value is `debug` ~~(default in v1 and v2)~~, `notice`, `warning` (**default in v3**), `error`.
+## 配置
 
-  If the value is `debug`, the report of the deprecated rules will be only logged as debug log, which you have to enable [debug logging](https://docs.github.com/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging) to see it.
+可以通过以下环境变量配置 formatter：
 
-## Migrating to v3
+- `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY`
 
-According to [the blog "Deprecation of formatting rules"](https://eslint.org/blog/2023/10/deprecating-formatting-rules/) and [the release note of ESLint v8.53](https://eslint.org/blog/2023/11/eslint-v8.53.0-released/), a batch of formatting rules have been marked as deprecated in documents.
+  可选值为：`debug`、`notice`、`warning`、`error`。
 
-So in v3, the default value of environment variable `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY` will be changed to `warning`, to make the deprecated rules more noticeable.
+  其中：
 
-If you want to keep the old behavior, you can set the environment variable `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY` to `debug`.
+  - `debug`：v1 / v2 中的默认值
+  - `warning`：v3 中的默认值
 
-And this is the only breaking change in v3.
+  当值为 `debug` 时，废弃规则信息只会以 debug 日志方式输出；如果要查看这些内容，需要先开启 [GitHub Actions debug logging](https://docs.github.com/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging)。
+
+## 升级到 v3
+
+根据 [Deprecation of formatting rules](https://eslint.org/blog/2023/10/deprecating-formatting-rules/) 与 [ESLint v8.53.0 发布说明](https://eslint.org/blog/2023/11/eslint-v8.53.0-released/)，一批格式化规则已在文档中被标记为废弃。
+
+因此从 v3 开始，`ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY` 的默认值改为 `warning`，以便让这些废弃规则更容易被注意到。
+
+如果你希望保留旧行为，可以显式设置：
+
+```shell
+ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY=debug
+```
+
+这也是 v3 的主要兼容性变化。
