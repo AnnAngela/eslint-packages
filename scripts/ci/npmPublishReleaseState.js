@@ -43,6 +43,7 @@ const changesetFiles = await fs.promises.readdir(path.join(repoRoot, ".changeset
     .catch((error) => {
         const handledError = /** @type { NodeJS.ErrnoException } */ (error);
         if (handledError.code === "ENOENT") {
+            console.warn(".changeset directory not found; treating it as having no pending changesets.");
             return [];
         }
         throw error;
@@ -54,7 +55,6 @@ if (hasPendingChangesets) {
         "--yes",
         "@changesets/cli@2.30.0",
         "status",
-        "--output=/tmp/changeset-status.json",
     ], {
         cwd: repoRoot,
     });
