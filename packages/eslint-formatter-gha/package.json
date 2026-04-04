@@ -13,7 +13,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "lint": "eslint --exit-on-fatal-error --max-warnings 0 ./src",
-    "test": "bash ../../scripts/eslint-formatter-gha.test.sh",
+    "test": "bash ./scripts/eslint-formatter-gha.test.sh",
     "package": "npm run build",
     "preversion": "npm run lint",
     "version": "npm run package"
