@@ -1,6 +1,7 @@
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import os from "node:os";
 const repoRoot = process.cwd();
 const notFoundPatterns = [
     /\bnpm ERR!\s+code\s+E404\b/i,
@@ -77,16 +78,8 @@ const runCommand = (command, args, options) => new Promise((resolve, reject) => 
     });
 });
 
-const changesetFiles = await fs.promises.readdir(path.join(repoRoot, ".changeset"))
-    .then((files) => files.filter((file) => file.endsWith(".md") && file !== "README.md"))
-    .catch((error) => {
-        const handledError = /** @type { NodeJS.ErrnoException } */ (error);
-        if (handledError.code === "ENOENT") {
-            console.warn(".changeset directory not found; treating it as having no pending changesets.");
-            return [];
-        }
-        throw error;
-    });
+const changesetDir = await fs.promises.readdir(path.join(repoRoot, ".changeset"));
+const changesetFiles = changesetDir.filter((file) => file.endsWith(".md") && file !== "README.md");
 const hasPendingChangesets = changesetFiles.length > 0;
 
 if (hasPendingChangesets) {
@@ -94,7 +87,7 @@ if (hasPendingChangesets) {
         "--yes",
         "@changesets/cli@2.30.0",
         "status",
-        "--output=/tmp/changeset-status.json",
+        `--output=${path.join(os.tmpdir(), "changeset-status.json")}`,
     ], {
         cwd: repoRoot,
         synchronousStdout: true,
