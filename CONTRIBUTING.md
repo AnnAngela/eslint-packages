@@ -325,7 +325,6 @@ npm run version
 
 - `npm run version` 主要用于本地预览或 release PR 生成流程
 - `npm run release` 主要由工作流调用，不建议日常维护中随意手动执行
-- 旧的 `scripts/newTag.js` 流程已废弃，不应用于新发布流程
 
 ## 10. CI 与自动化说明
 
