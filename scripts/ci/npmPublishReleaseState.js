@@ -106,4 +106,6 @@ if (process.env.GITHUB_OUTPUT) {
         `has-unpublished-packages=${unpublishedPackages.length > 0}`,
         `should-run=${shouldRun}`,
     ].join("\n")}\n`, "utf8");
+} else {
+    console.warn("GITHUB_OUTPUT is not set; skipping workflow output export.");
 }
