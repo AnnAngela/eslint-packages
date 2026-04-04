@@ -361,7 +361,7 @@ changesets/action
 `@annangela/eslint-formatter-gha` 的测试命令最终会调用：
 
 ```bash
-bash ../../scripts/eslint-formatter-gha.test.sh
+bash ./scripts/eslint-formatter-gha.test.sh
 ```
 
 该脚本会：
