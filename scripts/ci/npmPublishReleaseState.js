@@ -41,7 +41,8 @@ const isNotFoundResponse = (output) => notFoundPatterns.some((pattern) => patter
 const changesetFiles = await fs.promises.readdir(path.join(repoRoot, ".changeset"))
     .then((files) => files.filter((file) => file.endsWith(".md") && file !== "README.md"))
     .catch((error) => {
-        if ((/** @type { NodeJS.ErrnoException } */ (error)).code === "ENOENT") {
+        const handledError = /** @type { NodeJS.ErrnoException } */ (error);
+        if (handledError.code === "ENOENT") {
             return [];
         }
         throw error;
