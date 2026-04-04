@@ -107,5 +107,3 @@ jobs:
           publish: npm run release
           commit: "ci: version packages"
           title: "ci: version packages"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
