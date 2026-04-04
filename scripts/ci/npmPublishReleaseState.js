@@ -102,7 +102,7 @@ if (unpublishedPackages.length > 0) {
 const shouldRun = hasPendingChangesets || unpublishedPackages.length > 0;
 
 if (process.env.GITHUB_OUTPUT) {
-    await fs.promises.appendFile(process.env.GITHUB_OUTPUT, [
+    await fs.promises.appendFile(process.env.GITHUB_OUTPUT, `${[
         `has-pending-changesets=${hasPendingChangesets}`,
         `has-unpublished-packages=${unpublishedPackages.length > 0}`,
         `should-run=${shouldRun}`,
