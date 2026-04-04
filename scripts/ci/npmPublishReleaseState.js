@@ -38,8 +38,14 @@ const extractCommandOutput = (error) => {
  */
 const isNotFoundResponse = (output) => notFoundPatterns.some((pattern) => pattern.test(output));
 
-const changesetFiles = (await fs.promises.readdir(path.join(repoRoot, ".changeset")))
-    .filter((file) => file.endsWith(".md") && file !== "README.md");
+const changesetFiles = await fs.promises.readdir(path.join(repoRoot, ".changeset"))
+    .then((files) => files.filter((file) => file.endsWith(".md") && file !== "README.md"))
+    .catch((error) => {
+        if ((/** @type { NodeJS.ErrnoException } */ (error)).code === "ENOENT") {
+            return [];
+        }
+        throw error;
+    });
 const hasPendingChangesets = changesetFiles.length > 0;
 
 if (hasPendingChangesets) {
@@ -50,7 +56,6 @@ if (hasPendingChangesets) {
         "--output=/tmp/changeset-status.json",
     ], {
         cwd: repoRoot,
-        maxBuffer: 1024 * 1024,
     });
     console.log("Pending changesets detected.");
 } else {
