@@ -37,6 +37,25 @@ jobs:
           import { join } from 'node:path';
 
           const repoRoot = process.cwd();
+          const notFoundPatterns = [
+            /\bnpm ERR!\s+code\s+E404\b/i,
+            /\bcode:?\s*['"]?E404['"]?\b/i,
+            /\bnpm ERR!\s+404\b.*\bNot Found\b/i,
+            /\bnot in this registry\b/i,
+            /\bis not in the npm registry\b/i,
+          ];
+
+          const extractCommandOutput = (error) => {
+            const stderr = typeof error?.stderr === 'string'
+              ? error.stderr
+              : error?.stderr?.toString?.('utf8') ?? '';
+            const message = typeof error?.message === 'string' ? error.message : String(error);
+
+            return `${stderr}\n${message}`.trim();
+          };
+
+          const isNotFoundResponse = (output) => notFoundPatterns.some((pattern) => pattern.test(output));
+
           const changesetFiles = readdirSync(join(repoRoot, '.changeset'))
             .filter((file) => file.endsWith('.md') && file !== 'README.md');
           const hasPendingChangesets = changesetFiles.length > 0;
@@ -72,7 +91,17 @@ jobs:
                 { stdio: 'pipe' },
               );
             } catch (error) {
-              unpublishedPackages.push({ name: pkg.name, version: pkg.version });
+              const npmViewOutput = extractCommandOutput(error);
+              const isNotFound = isNotFoundResponse(npmViewOutput);
+
+              if (isNotFound) {
+                unpublishedPackages.push({ name: pkg.name, version: pkg.version });
+                continue;
+              }
+
+              throw new Error(
+                `Failed to query npm for ${pkg.name}@${pkg.version}: ${npmViewOutput || 'unknown npm view error'}`,
+              );
             }
           }
 
