@@ -106,5 +106,5 @@ if (process.env.GITHUB_OUTPUT) {
         `has-pending-changesets=${hasPendingChangesets}`,
         `has-unpublished-packages=${unpublishedPackages.length > 0}`,
         `should-run=${shouldRun}`,
-    ].join("\n") + "\n", "utf8");
+    ].join("\n")}\n`, "utf8");
 }
