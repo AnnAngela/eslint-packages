@@ -1,9 +1,6 @@
-import { execFile } from "node:child_process";
+import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { promisify } from "node:util";
-
-const execFileAsync = promisify(execFile);
 const repoRoot = process.cwd();
 const notFoundPatterns = [
     /\bnpm ERR!\s+code\s+E404\b/i,
@@ -38,6 +35,48 @@ const extractCommandOutput = (error) => {
  */
 const isNotFoundResponse = (output) => notFoundPatterns.some((pattern) => pattern.test(output));
 
+/**
+ * @param { string } command
+ * @param { string[] } args
+ * @param { { cwd: string, synchronousStdout?: boolean, synchronousStderr?: boolean } } options
+ */
+const runCommand = (command, args, options) => new Promise((resolve, reject) => {
+    const childProcess = spawn(command, args, {
+        cwd: options.cwd,
+        stdio: ["ignore", "pipe", "pipe"],
+    });
+    let stdout = "";
+    let stderr = "";
+    childProcess.stdout?.on("data", (chunk) => {
+        const text = chunk.toString("utf8");
+        stdout += text;
+        if (options.synchronousStdout) {
+            process.stdout.write(text);
+        }
+    });
+    childProcess.stderr?.on("data", (chunk) => {
+        const text = chunk.toString("utf8");
+        stderr += text;
+        if (options.synchronousStderr) {
+            process.stderr.write(text);
+        }
+    });
+    childProcess.on("error", reject);
+    childProcess.on("close", (code, signal) => {
+        if (code === 0) {
+            resolve({ stdout, stderr });
+            return;
+        }
+        const error = new Error(signal
+            ? `${command} exited with signal ${signal}`
+            : `${command} exited with code ${code ?? "unknown"}`);
+        Reflect.set(error, "code", code);
+        Reflect.set(error, "stdout", stdout);
+        Reflect.set(error, "stderr", stderr);
+        reject(error);
+    });
+});
+
 const changesetFiles = await fs.promises.readdir(path.join(repoRoot, ".changeset"))
     .then((files) => files.filter((file) => file.endsWith(".md") && file !== "README.md"))
     .catch((error) => {
@@ -51,12 +90,15 @@ const changesetFiles = await fs.promises.readdir(path.join(repoRoot, ".changeset
 const hasPendingChangesets = changesetFiles.length > 0;
 
 if (hasPendingChangesets) {
-    await execFileAsync("npx", [
+    await runCommand("npx", [
         "--yes",
         "@changesets/cli@2.30.0",
         "status",
+        "--output=/tmp/changeset-status.json",
     ], {
         cwd: repoRoot,
+        synchronousStdout: true,
+        synchronousStderr: true,
     });
     console.log("Pending changesets detected.");
 } else {
@@ -76,14 +118,13 @@ for (const packageJsonFile of packageJsonFiles) {
     }
 
     try {
-        await execFileAsync("npm", [
+        await runCommand("npm", [
             "view",
             `${pkg.name}@${pkg.version}`,
             "version",
             "--json",
         ], {
             cwd: repoRoot,
-            maxBuffer: 1024 * 1024,
         });
     } catch (error) {
         const npmViewOutput = extractCommandOutput(/** @type { NodeJS.ErrnoException & { stdout?: string | Buffer, stderr?: string | Buffer } } */ (error));
