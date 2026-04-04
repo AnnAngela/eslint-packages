@@ -127,7 +127,7 @@ for (const packageJsonFile of packageJsonFiles) {
             cwd: repoRoot,
         });
     } catch (error) {
-        const npmViewOutput = extractCommandOutput(/** @type { NodeJS.ErrnoException & { stdout?: string | Buffer, stderr?: string | Buffer } } */ (error));
+        const npmViewOutput = extractCommandOutput(/** @type { NodeJS.ErrnoException & { stdout?: string | Buffer, stderr?: string | Buffer } } */(error));
 
         if (isNotFoundResponse(npmViewOutput)) {
             unpublishedPackages.push({ name: pkg.name, version: pkg.version });
