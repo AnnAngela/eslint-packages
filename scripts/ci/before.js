@@ -24,6 +24,7 @@ const tmpdir = await mkdtmp({
     subDir: process.env.RANDOM_UUID,
 });
 const backupedPackageLockFile = path.join(tmpdir, packageLockFile);
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
 await fs.promises.cp(packageLockFile, backupedPackageLockFile, { force: true, preserveTimestamps: true });
 console.info("backup:", backupedPackageLockFile);
 console.info("Start to read", packageLockFile);
