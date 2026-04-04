@@ -1,8 +1,7 @@
 # AnnAngela 的 ESLint Packages
 
-[![npm publish](https://github.com/AnnAngela/eslint-packages/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/AnnAngela/eslint-packages/actions/workflows/npm-publish.yml)
+[![CI / Publish](https://github.com/AnnAngela/eslint-packages/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/AnnAngela/eslint-packages/actions/workflows/npm-publish.yml)
 [![CodeQL](https://github.com/AnnAngela/eslint-packages/actions/workflows/CodeQL.yaml/badge.svg)](https://github.com/AnnAngela/eslint-packages/actions/workflows/CodeQL.yaml)
-[![Linter](https://github.com/AnnAngela/eslint-packages/actions/workflows/linter.yaml/badge.svg)](https://github.com/AnnAngela/eslint-packages/actions/workflows/linter.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 这是一个围绕 ESLint 生态维护的多包仓库，提供共享配置、插件与 GitHub Actions Formatter，用于提升代码质量与维护体验。

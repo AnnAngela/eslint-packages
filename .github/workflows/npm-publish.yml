@@ -1,65 +1,106 @@
-name: Node.js Package Publish
+name: Node.js Verify and Publish
 
 on:
   push:
-    branches:
-      - master
+  merge_group:
+  pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: 0 23 * * * # Every 07:00 CST
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 permissions:
-  id-token: write
+  actions: write
+  checks: read
   contents: write
+  deployments: read
+  discussions: read
+  id-token: write
+  issues: write
+  packages: read
+  pages: read
   pull-requests: write
+  repository-projects: read
+  security-events: write
+  statuses: write
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow_ref }}-${{ github.ref }}
 
 jobs:
-  publish:
+  release_check:
+    runs-on: ubuntu-latest
+    outputs:
+      skip_steps: ${{ steps.release_check.outputs.skip_steps }}
+    steps:
+      - name: Detect release commit
+        id: release_check
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message || '' }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "push" ] || [ "$EVENT_NAME" = "merge_group" ]; then
+            pattern='^release: @annangela/[^@\s]+@v[1-9][0-9]*\.[0-9]+\.[0-9]+$'
+            if printf '%s' "$COMMIT_MESSAGE" | grep -Eq "$pattern"; then
+              echo "skip_steps=true" >> "$GITHUB_OUTPUT"
+              echo "Release commit detected; skipping remaining steps."
+            else
+              echo "skip_steps=false" >> "$GITHUB_OUTPUT"
+              echo "Regular run; continuing."
+            fi
+          else
+            echo "skip_steps=false" >> "$GITHUB_OUTPUT"
+            echo "Event '$EVENT_NAME' does not need to skip linting steps; continuing."
+          fi
+
+  verify:
+    needs: release_check
+    if: needs.release_check.outputs.skip_steps != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
           show-progress: false
-      - uses: actions/setup-node@v6
+      - name: Use Node.js
+        uses: actions/setup-node@v6
         with:
           node-version: lts/*
           check-latest: true
           registry-url: https://registry.npmjs.org/
           cache: npm
-      - name: Detect release state
-        id: release-state
-        run: node ./scripts/npmPublishReleaseState.js
-      - name: Update npm
-        if: steps.release-state.outputs.should-run == 'true'
-        run: npm install -g npm@latest
       - name: Installing the dependencies
-        if: steps.release-state.outputs.should-run == 'true'
         uses: AnnAngela/cached_node-modules@v5
         with:
           command: npm run ci
 
       - name: Check environment
-        if: steps.release-state.outputs.should-run == 'true'
         run: npx eslint --env-info
       - name: Run workspace verification
-        if: steps.release-state.outputs.should-run == 'true'
         run: npm run verify
-      - name: Summarize pending changesets
-        if: steps.release-state.outputs.should-run == 'true'
-        run: |
-          set -euo pipefail
-          if find .changeset -maxdepth 1 -name '*.md' ! -name 'README.md' | grep -q .; then
-            npx changeset status --output=/tmp/changeset-status.json
-            cat /tmp/changeset-status.json
-          else
-            echo "No pending changesets found."
-          fi
-      - name: Skip publish flow when no release work is pending
-        if: steps.release-state.outputs.should-run != 'true'
-        run: echo "No pending changesets or unpublished package versions found. Skipping publish flow."
+
+  publish:
+    needs: verify
+    if: github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          show-progress: false
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          check-latest: true
+          registry-url: https://registry.npmjs.org/
+          cache: npm
+      - name: Installing the dependencies
+        uses: AnnAngela/cached_node-modules@v5
+        with:
+          command: npm run ci
       - name: Create release PR or publish packages
-        if: steps.release-state.outputs.should-run == 'true'
         uses: changesets/action@v1.7.0
         with:
           version: npm run version

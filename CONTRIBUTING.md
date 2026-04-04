@@ -308,18 +308,18 @@ npm run version
 
 ### 9.1 `master` 上的自动流程
 
-当变更进入 `master` 后，发布工作流会：
+当变更进入 `master` 后，统一工作流会：
 
 1. 检出代码
 2. 安装依赖
 3. 执行 `npm run verify`
-4. 汇总待处理的 changesets
-5. 执行 `changesets/action`
+4. 执行 `changesets/action`
 
 随后会发生两种情况之一：
 
 - 如果存在尚未应用的 release note，工作流会创建或更新 release PR
-- 如果版本已确定且 npm 上尚未发布，工作流会执行 `npm run release` 发布包
+- 如果存在待发布版本，工作流会执行 `npm run release` 发布包
+- 如果当前没有待处理的发布工作，`changesets/action` 会保持空操作而不再依赖额外的预判脚本
 
 ### 9.2 维护者需要知道的边界
 
@@ -328,11 +328,11 @@ npm run version
 
 ## 10. CI 与自动化说明
 
-### 10.1 Linter 工作流
+### 10.1 统一校验与发布工作流
 
-`.github/workflows/linter.yaml` 会在以下场景触发：
+[`.github/workflows/npm-publish.yml`](.github/workflows/npm-publish.yml) 会在以下场景触发：
 
-- 匹配路径的 push
+- push
 - pull request
 - merge queue
 - 手动触发
@@ -348,17 +348,15 @@ npm run verify
 
 此外，工作流会识别符合命名规则的自动 release commit，并跳过不必要的重复校验。
 
-### 10.2 Publish 工作流
-
-`.github/workflows/npm-publish.yml` 在发布前同样会执行：
+对于 `master` 上的 push 与手动触发，工作流会在 `npm run verify` 通过后继续执行：
 
 ```bash
-npm run verify
+changesets/action
 ```
 
-这意味着发布链路不会绕过标准校验流程。
+这意味着发布链路不会绕过标准校验流程，而是否创建 release PR 或直接发布则完全交由 Changesets 自行判断。
 
-### 10.3 Formatter 测试脚本
+### 10.2 Formatter 测试脚本
 
 `@annangela/eslint-formatter-gha` 的测试命令最终会调用：
 
