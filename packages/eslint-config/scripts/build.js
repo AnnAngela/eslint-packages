@@ -38,7 +38,7 @@ console.info("Copying tsconfig.base.json");
 await fs.promises.cp("./src/tsconfigs", "./dist/tsconfigs", { force: true, recursive: true });
 
 console.info("Result:");
-await execCommand("tree -afNshv dist", {
+await execCommand("tree --du -afNshv dist", {
     synchronousStderr: true,
     synchronousStdout: true,
 });

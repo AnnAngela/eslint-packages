@@ -66,7 +66,7 @@ await fs.promises.rm("src", {
 });
 
 console.info("Result:");
-await execCommand("tree -afNshv lib", {
+await execCommand("tree --du -afNshv lib", {
     synchronousStderr: true,
     synchronousStdout: true,
 });
