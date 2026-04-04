@@ -1,4 +1,12 @@
+// import packageJSON from "./package.json" with { type: "json" };
+import fs from "node:fs";
 import { configs } from "./packages/eslint-config/src/index.js";
+
+/**
+ * @type { import("./package.json") }
+ */
+const packageJSON = JSON.parse(await fs.promises.readFile("./package.json", "utf-8"));
+
 /**
  * @type { import("eslint").Linter.Config["ignores"] }
  */
@@ -86,9 +94,9 @@ const config = [
             "n/no-extraneous-import": "off",
             "n/no-process-exit": "off",
 
-            "n/no-unsupported-features/node-builtins": ["error", { version: "^24.11" }],
-            "n/no-unsupported-features/es-builtins": ["error", { version: "^24.11" }],
-            "n/no-unsupported-features/es-syntax": ["error", { version: "^24.11" }],
+            "n/no-unsupported-features/node-builtins": ["error", { version: packageJSON.engines.node }],
+            "n/no-unsupported-features/es-builtins": ["error", { version: packageJSON.engines.node }],
+            "n/no-unsupported-features/es-syntax": ["error", { version: packageJSON.engines.node }],
         },
     },
 ];

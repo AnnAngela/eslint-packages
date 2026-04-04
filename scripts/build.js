@@ -26,6 +26,7 @@ for (const dir of [
 }
 console.info("\tCopying scripts to src/ ...");
 for (const file of scripts) {
+    // eslint-disable-next-line n/no-unsupported-features/node-builtins
     await fs.promises.cp(file, path.join("src", file), {
         force: true,
         recursive: true,
@@ -46,6 +47,7 @@ await execCommand("tsc --project tsconfig.dts.json", {
 
 console.info("Copying scripts to lib/ ...");
 for (const file of scripts) {
+    // eslint-disable-next-line n/no-unsupported-features/node-builtins
     await fs.promises.cp(file, path.join("lib", file), {
         force: true,
         recursive: true,
@@ -64,7 +66,7 @@ await fs.promises.rm("src", {
 });
 
 console.info("Result:");
-await execCommand("tree -afNshv lib", {
+await execCommand("tree --du -afNshv lib", {
     synchronousStderr: true,
     synchronousStdout: true,
 });

@@ -16,6 +16,7 @@ const testLatency = async (urls, times = 5, timeout = 3000) => {
             const signal = controller.signal;
             const timeoutRef = setTimeout(() => controller.abort(), timeout);
             const start = process.hrtime.bigint();
+            // eslint-disable-next-line n/no-unsupported-features/node-builtins
             await fetch(url, { method: "HEAD", signal });
             const end = process.hrtime.bigint();
             clearTimeout(timeoutRef);

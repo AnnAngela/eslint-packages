@@ -34,10 +34,11 @@ await fs.promises.writeFile("dist/cjs/package.json", JSON.stringify({ type: "com
 });
 
 console.info("Copying tsconfig.base.json");
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
 await fs.promises.cp("./src/tsconfigs", "./dist/tsconfigs", { force: true, recursive: true });
 
 console.info("Result:");
-await execCommand("tree -afNshv dist", {
+await execCommand("tree --du -afNshv dist", {
     synchronousStderr: true,
     synchronousStdout: true,
 });

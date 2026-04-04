@@ -34,7 +34,7 @@ await fs.promises.writeFile("dist/cjs/package.json", JSON.stringify({ type: "com
 });
 
 console.info("Result:");
-await execCommand("tree -afNshv dist", {
+await execCommand("tree --du -afNshv dist", {
     synchronousStderr: true,
     synchronousStdout: true,
 });

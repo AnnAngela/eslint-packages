@@ -1,9 +1,9 @@
-import stylistic from "@stylistic/eslint-plugin";
 import preferReflectPlugin from "@annangela/eslint-plugin-prefer-reflect";
-import preferArrowFunctionsPlugin from "eslint-plugin-prefer-arrow-functions";
-import eslintJS from "@eslint/js";
-import promiseLegacyPlugin from "eslint-plugin-promise";
 import commentsLegacyPlugin from "@eslint-community/eslint-plugin-eslint-comments";
+import eslintJS from "@eslint/js";
+import stylistic from "@stylistic/eslint-plugin";
+import preferArrowFunctionsPlugin from "eslint-plugin-prefer-arrow-functions";
+import promiseLegacyPlugin from "eslint-plugin-promise";
 
 import globals from "globals";
 
@@ -40,13 +40,13 @@ const config = { // `baseConfig`: Default config
         reportUnusedInlineConfigs: "error",
     },
     languageOptions: {
-        ecmaVersion: 2022, // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+        ecmaVersion: 2024, // Node 24 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
         parserOptions: {
-            ecmaVersion: 2022, // Node 20 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
+            ecmaVersion: 2024, // Node 24 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
         },
         globals: {
             ...globals.builtin,
-            ...globals.es2022,
+            ...globals.es2024,
         },
     },
     plugins: {

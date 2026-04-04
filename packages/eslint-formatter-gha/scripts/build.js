@@ -27,7 +27,7 @@ await fs.promises.appendFile("dist/index.js", "\n;module.exports=module.exports.
 });
 
 console.info("Result:");
-await execCommand("tree -afNshv dist", {
+await execCommand("tree --du -afNshv dist", {
     synchronousStderr: true,
     synchronousStdout: true,
 });
