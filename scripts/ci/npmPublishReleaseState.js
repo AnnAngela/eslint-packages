@@ -28,10 +28,9 @@ const normalizeOutput = (output) => {
  */
 const extractCommandOutput = (error) => {
     const stderr = normalizeOutput(error?.stderr);
-    const stdout = normalizeOutput(error?.stdout);
     const message = typeof error?.message === "string" ? error.message : String(error);
 
-    return `${stdout}\n${stderr}\n${message}`.trim();
+    return `${stderr}\n${message}`.trim();
 };
 
 /**
