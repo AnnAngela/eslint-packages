@@ -35,7 +35,7 @@ jobs:
     outputs:
       skip_steps: ${{ steps.release_check.outputs.skip_steps }}
     steps:
-      - name: Detect release commit
+      - name: Detect versioning commit
         id: release_check
         env:
           EVENT_NAME: ${{ github.event_name }}
@@ -43,10 +43,10 @@ jobs:
         run: |
           set -euo pipefail
           if [ "$EVENT_NAME" = "push" ] || [ "$EVENT_NAME" = "merge_group" ]; then
-            pattern='^release: @annangela/[^@\s]+@v[1-9][0-9]*\.[0-9]+\.[0-9]+$'
+            pattern='^ci: version packages( \(#[0-9]+\))?$'
             if printf '%s' "$COMMIT_MESSAGE" | grep -Eq "$pattern"; then
               echo "skip_steps=true" >> "$GITHUB_OUTPUT"
-              echo "Release commit detected; skipping remaining steps."
+              echo "Versioning commit detected; skipping verification steps."
             else
               echo "skip_steps=false" >> "$GITHUB_OUTPUT"
               echo "Regular run; continuing."
@@ -82,8 +82,10 @@ jobs:
         run: npm run verify
 
   publish:
-    needs: verify
-    if: github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    needs:
+      - release_check
+      - verify
+    if: always() && github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (needs.release_check.outputs.skip_steps == 'true' || needs.verify.result == 'success')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
