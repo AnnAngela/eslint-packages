@@ -78,6 +78,8 @@ jobs:
 
       - name: Check environment
         run: npx eslint --env-info
+      - name: Sync package metadata
+        run: npm run sync:packages
       - name: Run workspace verification
         run: npm run verify
 
