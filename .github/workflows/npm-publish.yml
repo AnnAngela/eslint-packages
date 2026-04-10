@@ -83,7 +83,8 @@ jobs:
       - name: Run workspace verification
         run: npm run verify
       - name: Push changes if needed
-        run: scripts/gha/push.sh
+        run: |
+          bash scripts/gha/push.sh "auto: sync workspace package metadata"
 
   publish:
     needs:

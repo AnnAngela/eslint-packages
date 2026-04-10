@@ -65,7 +65,7 @@ fi
 
 name="github-actions[bot]"
 email="41898282+github-actions[bot]@users.noreply.github.com"
-commit_message="${CI_AUTO_COMMIT_MESSAGE:-ci: sync workspace package metadata}"
+commit_message="${1:-auto: changed made by CI}"
 
 log "branch: $current_branch"
 log "name: $name"
