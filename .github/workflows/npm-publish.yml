@@ -78,8 +78,13 @@ jobs:
 
       - name: Check environment
         run: npx eslint --env-info
+      - name: Sync package metadata
+        run: npm run sync:packages
       - name: Run workspace verification
         run: npm run verify
+      - name: Push changes if needed
+        run: |
+          bash scripts/gha/push.sh "auto: sync workspace package metadata"
 
   publish:
     needs:
