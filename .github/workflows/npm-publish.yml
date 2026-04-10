@@ -82,6 +82,8 @@ jobs:
         run: npm run sync:packages
       - name: Run workspace verification
         run: npm run verify
+      - name: Push changes if needed
+        run: scripts/gha/push.sh
 
   publish:
     needs:
