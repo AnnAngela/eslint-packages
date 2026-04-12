@@ -101,7 +101,14 @@ print_group "workingTreeChanges" "$working_tree_changes"
 if [[ -n "$working_tree_changes" ]]; then
   log "Creating commit for workspace changes..."
   git add -A
-  git commit -m "$commit_message"
+
+  staged_changes=$(git diff --cached --name-status)
+  print_group "stagedChanges" "$staged_changes"
+  if [[ -n "$staged_changes" ]]; then
+    git commit -m "$commit_message"
+  else
+    log "Workspace changes resolved after staging. Skip commit."
+  fi
 fi
 
 log "Checking unpushed commits..."
