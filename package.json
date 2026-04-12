@@ -47,7 +47,7 @@
     "@eslint/js": "^9.39.4",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@stylistic/eslint-plugin-migrate": "^4.4.1",
-    "@types/node": "^25.5.2",
+    "@types/node": "^25.6.0",
     "@typescript-eslint/eslint-plugin": "^8.58.1",
     "@typescript-eslint/parser": "^8.32.1",
     "eslint": "^10.2.0",
@@ -57,11 +57,11 @@
     "eslint-plugin-prefer-arrow-functions": "^3.9.1",
     "eslint-plugin-promise": "^7.2.1",
     "eslint-plugin-security": "^4.0.0",
-    "globals": "^17.4.0",
+    "globals": "^17.5.0",
     "mocha": "^11.7.5",
     "pkg-types": "^2.3.0",
     "semver": "^7.7.4",
-    "simple-git": "^3.35.2",
+    "simple-git": "^3.36.0",
     "typescript": "^6.0.2"
   },
   "devDependencies": {
