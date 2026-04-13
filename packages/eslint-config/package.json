@@ -52,7 +52,7 @@
   },
   "homepage": "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-config#readme",
   "peerDependencies": {
-    "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0"
+    "eslint": "^10.0.0"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",
