@@ -1,5 +1,11 @@
 # @annangela/eslint-config
 
+## 11.0.0
+
+### Major Changes
+
+- 8758304: update eslint peer dependency to ^10.0.0 ONLY
+
 ## 10.0.0
 
 ### BEAKING CHANGES
