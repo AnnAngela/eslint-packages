@@ -55,6 +55,7 @@ const config = { // `nodeConfig`: For files used in Node.js
         "n/no-unsupported-features/node-builtins": ["error", { version: "^20.19 || ^22.21 || ^24.11" }],
         "n/no-unsupported-features/es-builtins": ["error", { version: "^20.19 || ^22.21 || ^24.11" }],
         "n/no-unsupported-features/es-syntax": ["error", { version: "^20.19 || ^22.21 || ^24.11" }],
+        "n/no-missing-import": ["error", { ignoreTypeImport: true }],
 
         // securityPlugin
         ...securityPlugin.configs.recommended.rules,
