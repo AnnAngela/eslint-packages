@@ -1,5 +1,11 @@
 # @annangela/eslint-config
 
+## 11.1.0
+
+### Minor Changes
+
+- c59663b: fix(node): add rule to prevent missing imports
+
 ## 11.0.0
 
 ### Major Changes
