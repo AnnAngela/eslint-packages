@@ -73,10 +73,5 @@
     "eslint-plugin-promise": "^7.3.0",
     "eslint-plugin-security": "^4.0.0",
     "globals": "^17.5.0"
-  },
-  "overrides": {
-    "eslint-plugin-promise": {
-      "eslint": "^10.0.3"
-    }
   }
 }
