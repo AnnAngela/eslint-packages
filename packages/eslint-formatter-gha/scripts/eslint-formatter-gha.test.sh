@@ -20,6 +20,6 @@ npm run build
 cd -
 echo ---
 echo Run the formatter
-./node_modules/.bin/eslint --format ./packages/eslint-formatter-gha/dist/index.js .
+npx eslint --format ./packages/eslint-formatter-gha/dist/index.js .
 echo Done.
 echo ---
