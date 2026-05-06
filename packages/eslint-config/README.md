@@ -25,8 +25,6 @@
 该包还额外导出以下 tsconfig 文件：
 
 - [`./tsconfig.browser.json`](src/tsconfigs/tsconfig.browser.json)
-- [`./tsconfig.node20.json`](src/tsconfigs/tsconfig.node20.json)
-- [`./tsconfig.node20.cjs.json`](src/tsconfigs/tsconfig.node20.cjs.json)
 - [`./tsconfig.node22.json`](src/tsconfigs/tsconfig.node22.json)
 - [`./tsconfig.node22.cjs.json`](src/tsconfigs/tsconfig.node22.cjs.json)
 - [`./tsconfig.node24.json`](src/tsconfigs/tsconfig.node24.json)

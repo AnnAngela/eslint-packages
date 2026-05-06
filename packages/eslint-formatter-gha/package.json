@@ -19,7 +19,7 @@
     "version": "npm run package"
   },
   "engines": {
-    "node": "^20.19 || ^22.21 || ^24.11"
+    "node": "^22.21 || ^24.11"
   },
   "repository": {
     "type": "git",
