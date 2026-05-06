@@ -31,8 +31,6 @@ const derivedPackageMetadata = {
                 "import": "./dist/esm/index.js",
                 require: "./dist/cjs/index.js",
             },
-            "./tsconfig.node20.json": "./dist/tsconfigs/tsconfig.node20.json",
-            "./tsconfig.node20.cjs.json": "./dist/tsconfigs/tsconfig.node20.cjs.json",
             "./tsconfig.node22.json": "./dist/tsconfigs/tsconfig.node22.json",
             "./tsconfig.node22.cjs.json": "./dist/tsconfigs/tsconfig.node22.cjs.json",
             "./tsconfig.node24.json": "./dist/tsconfigs/tsconfig.node24.json",

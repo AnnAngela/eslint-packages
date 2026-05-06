@@ -12,8 +12,6 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./tsconfig.node20.json": "./dist/tsconfigs/tsconfig.node20.json",
-    "./tsconfig.node20.cjs.json": "./dist/tsconfigs/tsconfig.node20.cjs.json",
     "./tsconfig.node22.json": "./dist/tsconfigs/tsconfig.node22.json",
     "./tsconfig.node22.cjs.json": "./dist/tsconfigs/tsconfig.node22.cjs.json",
     "./tsconfig.node24.json": "./dist/tsconfigs/tsconfig.node24.json",
@@ -33,7 +31,7 @@
     "version": "npm run package"
   },
   "engines": {
-    "node": "^20.19 || ^22.21 || ^24.11"
+    "node": "^22.21 || ^24.11"
   },
   "repository": {
     "type": "git",
