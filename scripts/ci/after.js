@@ -17,7 +17,6 @@ console.info("Start to check backup file:", backupedPackageLockFile);
 const backupedPackageLockFileExists = await fs.promises.access(backupedPackageLockFile).then(() => true).catch(() => false);
 if (backupedPackageLockFileExists) {
     console.info("Backup file exists, use it to recover.");
-    // eslint-disable-next-line n/no-unsupported-features/node-builtins
     await fs.promises.cp(backupedPackageLockFile, packageLockFile, { force: true, preserveTimestamps: true });
 } else {
     console.info("Backup file unexists, use `git` to recover.");
