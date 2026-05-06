@@ -1,5 +1,13 @@
 # @annangela/eslint-config
 
+## 12.0.0
+
+### Major Changes
+
+- 458d765: npm(deps): bump eslint-plugin-n from 17.24.0 to 18.0.1 in the npm group
+
+  See <https://github.com/eslint-community/eslint-plugin-n/releases>
+
 ## 11.2.0
 
 ### Minor Changes
