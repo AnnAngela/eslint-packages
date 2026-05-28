@@ -12,5 +12,7 @@
         "node_modules",
         "scripts",
         "tests",
+        "vitest.config.js",
+        "coverage",
     ],
 }

@@ -13,7 +13,8 @@
     "lint:ci": "npm run check:packages && npm run build --workspace=@annangela/eslint-plugin-prefer-reflect --workspace=@annangela/eslint-formatter-gha && npm run lint:ci:run",
     "lint:ci:run": "npm run lint --workspaces && eslint --exit-on-fatal-error -f ./node_modules/@annangela/eslint-formatter-gha/dist/index.js --max-warnings 0 .",
     "test": "npm run test --workspaces",
-    "verify": "npm run check:packages && npm run build && npm run lint:ci:run && npm run test",
+    "test:coverage": "npm run test:coverage --workspaces",
+    "verify": "npm run check:packages && npm run build && npm run lint:ci:run && npm run test:coverage",
     "lint:check": "npm run lint",
     "lint:check-ci": "npm run lint:ci",
     "lint:write": "eslint --fix .",
@@ -58,13 +59,14 @@
     "eslint-plugin-promise": "^7.3.0",
     "eslint-plugin-security": "^4.0.0",
     "globals": "^17.6.0",
-    "mocha": "^11.7.6",
     "pkg-types": "^2.3.1",
     "semver": "^7.8.1",
     "simple-git": "^3.36.0",
     "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.31.0"
+    "@changesets/cli": "^2.31.0",
+    "@vitest/coverage-v8": "^4.1.7",
+    "vitest": "^4.1.7"
   }
 }

@@ -4,7 +4,7 @@ import os from "node:os";
 interface ActionsSummaryWrapOptions {
     tag: string;
     content?: string;
-    attributes?: Record<string, string | undefined | null>;
+    attributes?: Record<string, string | undefined>;
     /**
      * The default value is `false`
      */
@@ -96,8 +96,8 @@ export default class ActionsSummary {
         return this._filePath;
     }
     private wrap = ({ tag, content, attributes = {}, contentOnSeparateLine = false }: ActionsSummaryWrapOptions) => {
-        const htmlAttributes = Object.entries(attributes).map(([key, value]) => value === undefined ? false : value === null ? key : `${key}="${value}"`).filter((attribute): attribute is string => typeof attribute === "string").join(" ");
-        const output = [`<${tag}${htmlAttributes}>`];
+        const htmlAttributes = Object.entries(attributes).map(([key, value]) => value === undefined ? false : `${key}="${value}"`).filter((attribute): attribute is string => typeof attribute === "string").join(" ");
+        const output = htmlAttributes ? [`<${tag} ${htmlAttributes}>`] : [`<${tag}>`];
         if (content) {
             output.push(content, `</${tag}>`);
         }

@@ -87,7 +87,7 @@ export const create = (context) => {
         setPrototypeOf: "setPrototypeOf",
     };
 
-    const exceptions = context.options[0]?.exceptions || [];
+    const exceptions = context.options[0].exceptions;
 
     /**
      * Reports the Reflect violation based on the `existing` and `substitute`

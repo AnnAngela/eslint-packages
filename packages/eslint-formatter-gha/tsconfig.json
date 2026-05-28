@@ -14,5 +14,8 @@
         "dist",
         "node_modules",
         "scripts",
+        "vitest.config.ts",
+        "coverage",
+        "**/*.test.ts",
     ],
 }

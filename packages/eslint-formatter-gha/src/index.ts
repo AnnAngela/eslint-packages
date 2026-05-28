@@ -4,8 +4,6 @@ import path from "node:path";
 import ActionsSummary from "./ActionsSummary.js";
 import { annotationPropertiesType, eslintSeverityToAnnotationSeverity, log, logSeverity } from "./command.js";
 
-const { GITHUB_SHA, GITHUB_REPOSITORY, GITHUB_SERVER_URL } = process.env;
-
 const actionsSummary = new ActionsSummary();
 
 const formatter: ESLint.FormatterFunction = (results, data) => {
@@ -74,7 +72,7 @@ const formatter: ESLint.FormatterFunction = (results, data) => {
                 }
             }
             const fileName = `${path.relative(process.cwd(), filePath)}${hash}`;
-            const fileLink = GITHUB_SHA && GITHUB_REPOSITORY ? `${GITHUB_SERVER_URL ?? "https://github.com"}/${GITHUB_REPOSITORY}/blob/${GITHUB_SHA.slice(0, 7)}/${encodeURI(fileName)}` : "";
+            const fileLink = process.env.GITHUB_SHA && process.env.GITHUB_REPOSITORY ? `${process.env.GITHUB_SERVER_URL ?? "https://github.com"}/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA.slice(0, 7)}/${encodeURI(fileName)}` : "";
             const msgArr = [
                 message,
             ];
@@ -85,7 +83,7 @@ const formatter: ESLint.FormatterFunction = (results, data) => {
                 msgArr.push(`(${ruleId}) - ${generateESLintRuleLink(ruleId, false)}`);
             }
             msgArr.push("@");
-            if (GITHUB_SHA) {
+            if (process.env.GITHUB_SHA) {
                 msgArr.push(fileLink);
             } else {
                 msgArr.push(fileName);
@@ -102,7 +100,7 @@ const formatter: ESLint.FormatterFunction = (results, data) => {
                 summaryLineArr.push(`\n  Rule: ${generateESLintRuleLink(ruleId, true)}`);
             }
             summaryLineArr.push("\n File:");
-            if (GITHUB_SHA) {
+            if (process.env.GITHUB_SHA) {
                 summaryLineArr.push(`[${fileName}](${fileLink})`);
             } else {
                 summaryLineArr.push(fileName);

@@ -146,6 +146,7 @@ npm run verify
 | `npm run lint:ci` | CI 风格 lint 校验 | 需要验证 GitHub Actions formatter 输出时 |
 | `npm run lint:ci:run` | 在前置构建已完成后执行 lint 主体 | 避免重复执行检查或构建 |
 | `npm run test` | 运行全部 workspace 测试 | 常规测试入口 |
+| `npm run test:coverage` | 运行全部 workspace 测试并生成覆盖率报告 | 需要检查测试覆盖率时 |
 | `npm run verify` | 运行完整校验流程 | 提交前、CI、发布前 |
 | `npm run sync:packages` | 回写派生 package.json 字段 | 根依赖或包元数据变更后 |
 | `npm run check:packages` | 检查包元数据是否漂移 | CI 或提交前只读校验 |
@@ -167,14 +168,14 @@ npm run verify
 1. `npm run check:packages`
 2. `npm run build`
 3. `npm run lint:ci:run`
-4. `npm run test`
+4. `npm run test:coverage`
 
 也就是说，`verify` 覆盖了：
 
 - 包级元数据一致性检查
 - 所有 workspace 构建
 - 所有 workspace lint 与根目录 lint
-- 所有 workspace 测试
+- 所有 workspace 测试（含覆盖率报告）
 
 维护者在以下场景应优先使用 `verify`：
 
@@ -356,21 +357,15 @@ changesets/action
 
 这意味着发布链路不会绕过标准校验流程，而是否创建 release PR 或直接发布则完全交由 Changesets 自行判断。
 
-### 10.2 Formatter 测试脚本
+### 10.2 Formatter 测试
 
-`@annangela/eslint-formatter-gha` 的测试命令最终会调用：
+`@annangela/eslint-formatter-gha` 的测试现在通过 vitest 运行：
 
 ```bash
-bash ./scripts/eslint-formatter-gha.test.sh
+npm run test --workspace=@annangela/eslint-formatter-gha
 ```
 
-该脚本会：
-
-1. 准备本地 summary 文件和 GitHub Actions 风格环境变量
-2. 重新构建 formatter 包
-3. 使用 formatter 对仓库执行 ESLint
-
-因此无需真实 GitHub Actions 环境，也能验证 formatter 的主要行为。
+测试文件位于 `packages/eslint-formatter-gha/src/` 目录下，以 `.test.ts` 结尾，覆盖 ActionsSummary、command 工具函数以及 formatter 主逻辑。无需真实 GitHub Actions 环境即可验证 formatter 的主要行为。
 
 ## 11. 面向维护者的建议
 
