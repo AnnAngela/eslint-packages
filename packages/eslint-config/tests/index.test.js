@@ -4,6 +4,7 @@
  */
 
 import { describe, test, expect } from "vitest";
+import rootPackageJSON from "../../../package.json" with { type: "json" };
 import { configs, forkedGlobals } from "../src/index.js";
 
 describe("eslint-config", () => {
@@ -128,6 +129,9 @@ describe("eslint-config", () => {
             expect(rules["n/file-extension-in-import"]).toEqual(["error", "always"]);
             expect(rules["n/global-require"]).toBe("error");
             expect(rules["n/no-path-concat"]).toBe("error");
+            expect(rules["n/no-unsupported-features/node-builtins"]).toEqual(["error", { version: rootPackageJSON.engines.node }]);
+            expect(rules["n/no-unsupported-features/es-builtins"]).toEqual(["error", { version: rootPackageJSON.engines.node }]);
+            expect(rules["n/no-unsupported-features/es-syntax"]).toEqual(["error", { version: rootPackageJSON.engines.node }]);
             expect(rules["n/prefer-promises/dns"]).toBe("error");
             expect(rules["n/prefer-promises/fs"]).toBe("error");
             expect(rules["n/prefer-node-protocol"]).toBe("error");
