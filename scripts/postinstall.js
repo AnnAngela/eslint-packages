@@ -3,6 +3,7 @@ console.info("-".repeat(73));
 import fs from "node:fs";
 import path from "node:path";
 import { readPackageJSON, resolvePackageJSON, writePackageJSON } from "pkg-types";
+import { parse } from "yaml";
 
 const IS_CHECK = process.argv.includes("--check") || process.argv.includes("--dry-run");
 const defaultRepository = {
@@ -109,9 +110,45 @@ const syncDerivedMetadata = (pkg, pkgJSON) => {
 };
 
 /**
- * @type { import("../package-lock.json") }
+ * Parse pnpm-lock.yaml to extract resolved versions for dependencies.
+ * @returns { Record<string, string> }
  */
-const packageLockJSON = JSON.parse(await fs.promises.readFile("./package-lock.json", "utf8"));
+const parsePnpmLockfile = async () => {
+    const lockfile = parse(await fs.promises.readFile("./pnpm-lock.yaml", "utf8"));
+    /** @type { Record<string, string> } */
+    const result = {};
+
+    // Extract versions from root importer
+    const rootImporter = lockfile.importers?.["."];
+    if (rootImporter) {
+        for (const section of ["dependencies", "devDependencies", "optionalDependencies"]) {
+            const deps = rootImporter[section];
+            if (!deps) continue;
+            for (const [name, info] of Object.entries(deps)) {
+                if (typeof info.version === "string") {
+                    result[name] = info.version.replace(/\(.+\)$/, "").replace(/_.*$/, "");
+                }
+            }
+        }
+    }
+
+    // Fallback: extract from packages section
+    if (lockfile.packages) {
+        for (const [key, info] of Object.entries(lockfile.packages)) {
+            const atIndex = key.lastIndexOf("@");
+            if (atIndex <= 0) continue;
+            const pkgName = key.slice(0, atIndex);
+            const version = key.slice(atIndex + 1).replace(/\(.+\)$/, "").replace(/_.*$/, "");
+            if (!result[pkgName]) {
+                result[pkgName] = version;
+            }
+        }
+    }
+
+    return result;
+};
+
+const pnpmLockVersions = await parsePnpmLockfile();
 /**
  * @type { import("../package.json") }
  */
@@ -143,12 +180,9 @@ for (const [pkg, { pkgJSONPath, pkgJSON }] of Object.entries(packagesList)) {
         }
         for (const [dependencyName, dependencyVersionString] of Object.entries(pkgJSON[property])) {
             unusedDependencies.delete(dependencyName);
-            /**
-             * @type { { version: string } | undefined }
-             */
-            const lockInfo = packageLockJSON.packages[`node_modules/${dependencyName}`];
-            if (typeof lockInfo?.version === "string") {
-                const targetVersion = `^${lockInfo.version}`;
+            const lockVersion = pnpmLockVersions[dependencyName];
+            if (typeof lockVersion === "string") {
+                const targetVersion = `^${lockVersion}`;
                 if (dependencyVersionString !== targetVersion) {
                     console.warn(`[${pkg}]`, `[${property}]`, `Version mismatch for ${dependencyName}: ${dependencyVersionString} vs ${targetVersion} by dependency`);
                     pkgChanged = true;

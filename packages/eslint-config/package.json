@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "@annangela/eslint-plugin-prefer-reflect": "^6.0.0",
-    "@eslint-community/eslint-plugin-eslint-comments": "^4.7.1",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.7.2",
     "@eslint/js": "^9.39.4",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@stylistic/eslint-plugin-migrate": "^4.4.1",
