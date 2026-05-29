@@ -23,7 +23,7 @@
   ],
   "type": "module",
   "scripts": {
-    "build": "tsdown",
+    "build": "tsdown && cp cjs.package.json dist/cjs/package.json",
     "lint": "eslint --exit-on-fatal-error --max-warnings 0 ./src",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",

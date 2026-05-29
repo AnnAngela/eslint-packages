@@ -17,15 +17,15 @@ const configs: Record<string, Linter.Config> = {
     typescript,
 };
 
-const exportedForkedGlobals: Record<string, Record<string, boolean>> = forkedGlobals;
+const typedForkedGlobals: Record<string, Record<string, boolean>> = forkedGlobals;
 
-const exported: {
+const packageExports: {
     configs: typeof configs;
-    forkedGlobals: typeof exportedForkedGlobals;
+    forkedGlobals: typeof typedForkedGlobals;
 } = {
     configs,
-    forkedGlobals: exportedForkedGlobals,
+    forkedGlobals: typedForkedGlobals,
 };
 
-export { configs, exportedForkedGlobals as forkedGlobals };
-export default exported;
+export { configs, typedForkedGlobals as forkedGlobals };
+export default packageExports;

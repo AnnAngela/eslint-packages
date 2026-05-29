@@ -29,9 +29,5 @@ export default defineConfig({
             from: "src/tsconfigs/*",
             to: "dist/tsconfigs",
         },
-        {
-            from: "cjs.package.json",
-            to: "dist/cjs/package.json",
-        },
     ],
 });

@@ -7,6 +7,6 @@ import typescript from "./configs/typescript.js";
 import forkedGlobals from "./forkedGlobals.js";
 
 const configs = { base, browser, eslintPlugin, mocha, node, typescript };
-const exported = { configs, forkedGlobals };
+const packageExports = { configs, forkedGlobals };
 export { configs, forkedGlobals };
-export default exported;
+export default packageExports;
