@@ -123,7 +123,9 @@ const parsePnpmLockfile = async () => {
     if (rootImporter) {
         for (const section of ["dependencies", "devDependencies", "optionalDependencies"]) {
             const deps = rootImporter[section];
-            if (!deps) continue;
+            if (!deps) {
+                continue;
+            }
             for (const [name, info] of Object.entries(deps)) {
                 if (typeof info.version === "string") {
                     result[name] = info.version.replace(/\(.+\)$/, "").replace(/_.*$/, "");
@@ -134,9 +136,11 @@ const parsePnpmLockfile = async () => {
 
     // Fallback: extract from packages section
     if (lockfile.packages) {
-        for (const [key, info] of Object.entries(lockfile.packages)) {
+        for (const key of Object.keys(lockfile.packages)) {
             const atIndex = key.lastIndexOf("@");
-            if (atIndex <= 0) continue;
+            if (atIndex <= 0) {
+                continue;
+            }
             const pkgName = key.slice(0, atIndex);
             const version = key.slice(atIndex + 1).replace(/\(.+\)$/, "").replace(/_.*$/, "");
             if (!result[pkgName]) {
