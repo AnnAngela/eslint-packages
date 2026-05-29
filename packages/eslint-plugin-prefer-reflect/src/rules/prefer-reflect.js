@@ -17,7 +17,7 @@ export const meta = {
     docs: {
         description: "Modern version of original `prefer-reflect` rules in eslint",
         recommended: true,
-        url: "https://eslint.org/docs/rules/prefer-reflect",
+        url: "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-plugin-prefer-reflect/docs/rules/prefer-reflect.md",
     },
 
     schema: [
