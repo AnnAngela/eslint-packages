@@ -27,6 +27,7 @@
     "lint": "eslint --exit-on-fatal-error --max-warnings 0 ./src",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:smoke": "vitest run tests/smoke.test.js",
     "test:watch": "vitest",
     "package": "pnpm run build",
     "preversion": "pnpm run lint",
