@@ -247,6 +247,32 @@ for (const file of ["./eslint.config.js", ...dir.map((dirent) => path.resolve(di
     }
 }
 
+// Check node.js config version string matches engines.node
+const nodeConfigPath = path.resolve("./packages/eslint-config/src/configs/node.js");
+const nodeConfigContent = await fs.promises.readFile(nodeConfigPath, "utf8");
+const nodeConfigVersionMatch = nodeConfigContent.match(/version:\s*"([^"]+)"/g);
+if (nodeConfigVersionMatch) {
+    for (const match of nodeConfigVersionMatch) {
+        const version = match.match(/version:\s*"([^"]+)"/)?.[1];
+        if (version && version !== packageJSON.engines.node) {
+            const msg = `[eslint-config] Node version mismatch in configs/node.js: "${version}" vs engines.node "${packageJSON.engines.node}"`;
+            if (IS_CHECK) {
+                console.error(msg);
+                process.exitCode = 1;
+            } else {
+                console.warn(msg);
+                // Update the version string in the config file
+                const updatedContent = nodeConfigContent.replace(
+                    new RegExp(`version:\\s*"${version.replace(/[|.+^]/g, "\\$&")}"`, "g"),
+                    `version: "${packageJSON.engines.node}"`,
+                );
+                await fs.promises.writeFile(nodeConfigPath, updatedContent, "utf8");
+                console.info("[eslint-config] Updated node config version to", packageJSON.engines.node);
+            }
+        }
+    }
+}
+
 if (unusedDependencies.size > 0) {
     process.emitWarning(`There are some unused dependencies: ${[...unusedDependencies].join(", ")}`);
 } else {

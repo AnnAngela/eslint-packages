@@ -1,5 +1,5 @@
 /**
- * @fileoverview Forked from https://github.com/sindresorhus/globals/blob/v13.24.0/globals.json
+ * @fileoverview Forked from https://github.com/sindresorhus/globals/blob/v15.14.0/globals.json
  */
 
 const globals = {
