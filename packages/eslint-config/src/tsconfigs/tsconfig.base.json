@@ -29,6 +29,7 @@
         // Emit
         "declaration": true,
         "declarationMap": true,
+        "isolatedDeclarations": true,
         "newLine": "lf",
         "removeComments": true,
         // JavaScript Support

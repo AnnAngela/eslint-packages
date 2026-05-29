@@ -15,12 +15,16 @@ concurrency:
   group: ${{ github.workflow_ref }}-${{ github.ref }}
 
 jobs:
-  release_check:
+  prepare:
     permissions: {}
     runs-on: ubuntu-latest
     outputs:
       skip_steps: ${{ steps.release_check.outputs.skip_steps }}
+      node-versions: ${{ steps.versions.outputs.node-versions }}
     steps:
+      - uses: actions/checkout@v6
+        with:
+          show-progress: false
       - name: Detect versioning commit
         id: release_check
         env:
@@ -42,15 +46,43 @@ jobs:
             echo "Event '$EVENT_NAME' does not need to skip linting steps; continuing."
           fi
 
+      - name: Extract Node.js versions
+        id: versions
+        run: |
+          set -euo pipefail
+          node_version_range="$(
+            sed -nE '/"engines"[[:space:]]*:/, /}/ s/.*"node"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p' package.json \
+              | head -n 1
+          )"
+          if [ -z "$node_version_range" ]; then
+            echo "Failed to read engines.node from package.json" >&2
+            exit 1
+          fi
+
+          node_versions="$(
+            printf '%s\n' "$node_version_range" \
+              | grep -Eo '\^[0-9]+' \
+              | tr -d '^' \
+              | sort -un \
+              | awk 'BEGIN { printf "[" } { if (NR > 1) printf ", "; printf "%s", $0 } END { printf "]" }'
+          )"
+          if [ "$node_versions" = "[]" ]; then
+            echo "Failed to derive any Node.js major versions from: $node_version_range" >&2
+            exit 1
+          fi
+
+          echo "node-versions=$node_versions" >> "$GITHUB_OUTPUT"
+          echo "Detected Node.js versions: $node_versions"
+
   verify:
-    needs: release_check
-    if: needs.release_check.outputs.skip_steps != 'true'
+    needs: prepare
+    if: needs.prepare.outputs.skip_steps != 'true'
     permissions:
       contents: write
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [22, 24]
+        node-version: ${{ fromJSON(needs.prepare.outputs.node-versions) }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -82,9 +114,9 @@ jobs:
 
   publish:
     needs:
-      - release_check
+      - prepare
       - verify
-    if: always() && github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (needs.release_check.outputs.skip_steps == 'true' || needs.verify.result == 'success')
+    if: always() && github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (needs.prepare.outputs.skip_steps == 'true' || needs.verify.result == 'success')
     permissions:
       contents: write
       pull-requests: write

@@ -1,7 +1,11 @@
 import nodePlugin from "eslint-plugin-n";
 import securityPlugin from "eslint-plugin-security";
+import packageJSON from "../../../../package.json" with { type: "json" };
 
 import globals from "globals";
+
+/** @type {string} */
+const nodeVersion = packageJSON.engines.node;
 /**
  * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> }
  */
@@ -52,9 +56,9 @@ const config = { // `nodeConfig`: For files used in Node.js
         "n/prefer-promises/dns": "error",
         "n/prefer-promises/fs": "error",
         "n/prefer-node-protocol": "error",
-        "n/no-unsupported-features/node-builtins": ["error", { version: "^22.21 || ^24.11" }],
-        "n/no-unsupported-features/es-builtins": ["error", { version: "^22.21 || ^24.11" }],
-        "n/no-unsupported-features/es-syntax": ["error", { version: "^22.21 || ^24.11" }],
+        "n/no-unsupported-features/node-builtins": ["error", { version: nodeVersion }],
+        "n/no-unsupported-features/es-builtins": ["error", { version: nodeVersion }],
+        "n/no-unsupported-features/es-syntax": ["error", { version: nodeVersion }],
         "n/no-missing-import": ["error", { ignoreTypeImport: true }],
 
         // securityPlugin
