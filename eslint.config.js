@@ -1,11 +1,13 @@
 // import packageJSON from "./package.json" with { type: "json" };
 import fs from "node:fs";
+import { fileURLToPath } from "node:url";
 import { configs } from "./packages/eslint-config/src/index.js";
 
 /**
  * @type { import("./package.json") }
  */
 const packageJSON = JSON.parse(await fs.promises.readFile("./package.json", "utf-8"));
+const formatterGhaESLintTSConfig = fileURLToPath(new URL("./packages/eslint-formatter-gha/tsconfig.eslint.json", import.meta.url));
 
 /**
  * @type { import("eslint").Linter.Config["ignores"] }
@@ -80,7 +82,7 @@ const config = [
         ],
         ignores,
     },
-    // formatter-gha test files: allow project service to use default project for test files not in tsconfig
+    // formatter-gha test files: use a dedicated tsconfig so type-aware linting can include test files
     {
         files: [
             "packages/eslint-formatter-gha/src/*.test.ts",
@@ -88,9 +90,8 @@ const config = [
         ignores,
         languageOptions: {
             parserOptions: {
-                projectService: {
-                    allowDefaultProject: ["src/*.test.ts"],
-                },
+                project: [formatterGhaESLintTSConfig],
+                projectService: false,
             },
         },
     },
@@ -109,6 +110,7 @@ const config = [
             "scripts/**/*",
             "**/scripts/**/*",
             "eslint.config.js",
+            "packages/eslint-config/build-entry.ts",
         ],
         rules: {
             // Running in trusted environment
@@ -118,6 +120,7 @@ const config = [
             "security/detect-non-literal-regexp": "off",
             "security/detect-child-process": "off",
             "n/no-extraneous-import": "off",
+            "n/no-missing-import": "off",
             "n/no-process-exit": "off",
 
             "n/no-unsupported-features/node-builtins": ["error", { version: packageJSON.engines.node }],

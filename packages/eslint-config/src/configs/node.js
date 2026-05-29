@@ -1,11 +1,8 @@
 import nodePlugin from "eslint-plugin-n";
 import securityPlugin from "eslint-plugin-security";
-import packageJSON from "../../../../package.json" with { type: "json" };
+import nodeVersion from "../constants/nodeVersion.js";
 
 import globals from "globals";
-
-/** @type {string} */
-const nodeVersion = packageJSON.engines.node;
 /**
  * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> }
  */

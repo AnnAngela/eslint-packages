@@ -247,6 +247,21 @@ for (const file of ["./eslint.config.js", ...dir.map((dirent) => path.resolve(di
     }
 }
 
+const nodeVersionFilePath = path.resolve("./packages/eslint-config/src/constants/nodeVersion.js");
+const expectedNodeVersionFileContent = `/** @type {string} */\nconst nodeVersion = ${JSON.stringify(packageJSON.engines.node)};\n\nexport default nodeVersion;\n`;
+const nodeVersionFileContent = await fs.promises.readFile(nodeVersionFilePath, "utf8");
+if (nodeVersionFileContent !== expectedNodeVersionFileContent) {
+    const msg = "[eslint-config] Node version constant drift detected in src/constants/nodeVersion.js";
+    if (IS_CHECK) {
+        console.error(msg);
+        process.exitCode = 1;
+    } else {
+        console.warn(msg);
+        await fs.promises.writeFile(nodeVersionFilePath, expectedNodeVersionFileContent, "utf8");
+        console.info("[eslint-config] Updated node version constant to", packageJSON.engines.node);
+    }
+}
+
 if (unusedDependencies.size > 0) {
     process.emitWarning(`There are some unused dependencies: ${[...unusedDependencies].join(", ")}`);
 } else {

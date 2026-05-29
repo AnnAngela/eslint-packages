@@ -1,12 +1,10 @@
-import fs from "node:fs/promises";
-
 import { defineConfig } from "tsdown";
 
 export default defineConfig({
-    entry: [
-        "./src/index.js",
-    ],
-    tsconfig: "./tsconfig.json",
+    entry: {
+        index: "./build-entry.ts",
+    },
+    tsconfig: "./tsconfig.build.json",
     dts: true,
     sourcemap: true,
     clean: true,
@@ -22,21 +20,18 @@ export default defineConfig({
         js: ".js",
         dts: ".d.ts",
     }),
+    outputOptions: (options, format) => ({
+        ...options,
+        exports: format === "cjs" ? "named" : options.exports,
+    }),
     copy: [
         {
             from: "src/tsconfigs/*",
             to: "dist/tsconfigs",
         },
-    ],
-    hooks: {
-        "build:done": async ({ format }) => {
-            if (format !== "cjs") {
-                return;
-            }
-
-            await fs.writeFile("dist/cjs/package.json", JSON.stringify({ type: "commonjs" }), {
-                encoding: "utf-8",
-            });
+        {
+            from: "cjs.package.json",
+            to: "dist/cjs/package.json",
         },
-    },
+    ],
 });
