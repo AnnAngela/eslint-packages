@@ -218,7 +218,7 @@ if (unusedDependencies.size > 0) {
 if (!globalChanged) {
     console.info("There is no change in package.json.");
 } else if (IS_CHECK) {
-    console.error("Package metadata drift detected. Run `npm run sync:packages` to update package.json files.");
+    console.error("Package metadata drift detected. Run `pnpm run sync:packages` to update package.json files.");
     process.exitCode = 1;
 } else {
     console.info("Package metadata synchronized.");

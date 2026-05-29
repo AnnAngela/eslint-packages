@@ -28,9 +28,9 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
-    "package": "npm run build",
-    "preversion": "npm run lint",
-    "version": "npm run package"
+    "package": "pnpm run build",
+    "preversion": "pnpm run lint",
+    "version": "pnpm run package"
   },
   "engines": {
     "node": "^22.21 || ^24.11"

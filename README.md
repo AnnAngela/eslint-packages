@@ -90,7 +90,7 @@ export default {
 ### 环境要求
 
 - Node.js：当前 LTS 版本（2026 年 5 月：`^22.21 || ^24.11`）
-- npm（随 Node.js 一起提供）
+- pnpm：通过 corepack 启用，版本由 `package.json` 的 `packageManager` 字段指定
 
 ### 使用这些包
 
@@ -118,29 +118,27 @@ npm install --save-dev @annangela/eslint-plugin-prefer-reflect
 ```bash
 git clone https://github.com/AnnAngela/eslint-packages.git
 cd eslint-packages
-npm install
+corepack enable
+pnpm install
 ```
 
 ### 常用命令
 
 ```bash
-# 运行完整校验流程
-npm run verify
-
 # 重新同步派生 package.json 元数据
-npm run sync:packages
+pnpm run sync:packages
 
 # 为影响已发布包的改动编写 changeset
-npm run changeset
+pnpm run changeset
 ```
 
 ### 针对单个 workspace 的命令
 
 ```bash
 # 将 <package-name> 替换为 eslint-config、eslint-formatter-gha 或 eslint-plugin-prefer-reflect
-npm run build --workspace=@annangela/<package-name>
-npm run lint --workspace=@annangela/<package-name>
-npm run test --workspace=@annangela/<package-name>
+pnpm --filter @annangela/<package-name> run build
+pnpm --filter @annangela/<package-name> run lint
+pnpm --filter @annangela/<package-name> run test
 ```
 
 ## 📚 文档

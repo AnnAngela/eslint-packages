@@ -4,7 +4,7 @@
 
 ## 快速开始
 
-1. 在仓库根目录执行 `npm run changeset`
+1. 在仓库根目录执行 `pnpm run changeset`
 2. 选择本次改动影响到的已发布包
 3. 选择合适的版本类型：`patch`、`minor` 或 `major`
 4. 写一段简洁的中文说明，描述这次变更对使用者的影响
@@ -22,6 +22,6 @@
 - 通过常规 PR 流程将 changeset 合并到 `master`
 - 发布工作流会执行 `changesets/action`
 - 如果存在待处理的发布说明，工作流会创建或更新 release PR
-- 如果存在已经版本化但尚未发布的包，工作流会执行 `npm run release`
+- 如果存在已经版本化但尚未发布的包，工作流会执行 `pnpm run release`
 
 更完整的维护说明请查看 [`../CONTRIBUTING.md`](../CONTRIBUTING.md)。
