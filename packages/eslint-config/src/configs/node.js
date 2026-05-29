@@ -1,6 +1,10 @@
+import { createRequire } from "node:module";
+
 import nodePlugin from "eslint-plugin-n";
 import securityPlugin from "eslint-plugin-security";
-import rootPackageJSON from "../../../../package.json" with { type: "json" };
+
+const require = createRequire(import.meta.url);
+const rootPackageJSON = require("../../../../package.json");
 
 import globals from "globals";
 /**

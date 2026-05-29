@@ -3,9 +3,13 @@
  * @author AnnAngela
  */
 
+import { createRequire } from "node:module";
+
 import { describe, test, expect } from "vitest";
-import rootPackageJSON from "../../../package.json" with { type: "json" };
 import { configs, forkedGlobals } from "../src/index.js";
+
+const require = createRequire(import.meta.url);
+const rootPackageJSON = require("../../../package.json");
 
 describe("eslint-config", () => {
     describe("configs exports", () => {
