@@ -76,6 +76,10 @@ jobs:
             echo "Failed to read engines.node from package.json" >&2
             exit 1
           fi
+          if ! printf '%s\n' "$node_version_range" | grep -Eq '^\^[0-9]+\.[0-9]+(\s*\|\|\s*\^[0-9]+\.[0-9]+)*$'; then
+            echo "Unsupported engines.node format for matrix derivation: $node_version_range" >&2
+            exit 1
+          fi
 
           node_versions="$(
             printf '%s\n' "$node_version_range" \
