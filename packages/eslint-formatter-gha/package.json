@@ -15,6 +15,7 @@
     "lint": "eslint --exit-on-fatal-error --max-warnings 0 ./src",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:smoke": "vitest run tests/smoke.test.ts",
     "test:watch": "vitest",
     "package": "pnpm run build",
     "preversion": "pnpm run lint",
@@ -35,6 +36,9 @@
   ],
   "author": "AnnAngela",
   "license": "MIT",
+  "peerDependencies": {
+    "eslint": "^10.0.0"
+  },
   "bugs": {
     "url": "https://github.com/AnnAngela/eslint-packages/issues"
   },
