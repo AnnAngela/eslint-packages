@@ -11,26 +11,12 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-permissions:
-  actions: write
-  checks: read
-  contents: write
-  deployments: read
-  discussions: read
-  id-token: write
-  issues: write
-  packages: read
-  pages: read
-  pull-requests: write
-  repository-projects: read
-  security-events: write
-  statuses: write
-
 concurrency:
   group: ${{ github.workflow_ref }}-${{ github.ref }}
 
 jobs:
   release_check:
+    permissions: {}
     runs-on: ubuntu-latest
     outputs:
       skip_steps: ${{ steps.release_check.outputs.skip_steps }}
@@ -59,7 +45,12 @@ jobs:
   verify:
     needs: release_check
     if: needs.release_check.outputs.skip_steps != 'true'
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22, 24]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -70,10 +61,10 @@ jobs:
           run_install: |
             - args:
                 - --frozen-lockfile
-      - name: Use Node.js
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
-          node-version-file: 'package.json'
+          node-version: ${{ matrix.node-version }}
           check-latest: true
           cache: pnpm
 
@@ -82,7 +73,9 @@ jobs:
       - name: Sync package metadata
         run: pnpm run sync:packages
       - name: Run workspace verification
-        run: pnpm run verify
+        run: pnpm run verify:ci
+      - name: Run smoke tests
+        run: pnpm run test:smoke
       - name: Push changes if needed
         run: |
           bash scripts/gha/push.sh "auto: sync workspace package metadata"
@@ -92,6 +85,10 @@ jobs:
       - release_check
       - verify
     if: always() && github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (needs.release_check.outputs.skip_steps == 'true' || needs.verify.result == 'success')
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
