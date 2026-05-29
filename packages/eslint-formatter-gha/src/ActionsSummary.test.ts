@@ -5,28 +5,27 @@
 
 import { describe, test, expect, beforeEach, afterEach } from "vitest";
 import fs from "node:fs";
+import tmp from "tmp";
 import ActionsSummary from "./ActionsSummary.js";
 
 describe("ActionsSummary", () => {
     let summary: InstanceType<typeof ActionsSummary>;
-    const testFilePath = "/tmp/test-summary.md";
+    let testFilePath: string;
 
     beforeEach(() => {
         summary = new ActionsSummary();
+        // Create secure temporary file
+        const tmpFile = tmp.fileSync({ postfix: ".md" });
+        testFilePath = tmpFile.name;
+        // Close the file descriptor so other processes can write to it
+        fs.closeSync(tmpFile.fd);
         // Mock the environment variable
         process.env.GITHUB_STEP_SUMMARY = testFilePath;
-        // Create test file
-        fs.writeFileSync(testFilePath, "", { encoding: "utf-8" });
     });
 
     afterEach(() => {
         // Clean up
         Reflect.deleteProperty(process.env, "GITHUB_STEP_SUMMARY");
-        try {
-            fs.unlinkSync(testFilePath);
-        } catch {
-            // Ignore if file doesn't exist
-        }
     });
 
     describe("static properties", () => {

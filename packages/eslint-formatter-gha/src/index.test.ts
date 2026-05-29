@@ -5,6 +5,7 @@
 
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import fs from "node:fs";
+import tmp from "tmp";
 import type { ESLint } from "eslint";
 import formatter from "./index.js";
 
@@ -27,7 +28,10 @@ const createData = (overrides: Partial<ESLint.LintResultData> & { rulesMeta: ESL
 
 describe("eslint-formatter-gha", () => {
     let consoleInfoSpy: ReturnType<typeof vi.spyOn<typeof console, "info">>;
-    const testFilePath = "/tmp/test-formatter-summary.md";
+    // Create secure temporary file once for all tests (ActionsSummary caches _filePath)
+    const tmpFile = tmp.fileSync({ postfix: ".md" });
+    const testFilePath = tmpFile.name;
+    fs.closeSync(tmpFile.fd);
 
     beforeEach(() => {
         consoleInfoSpy = vi.spyOn(console, "info").mockImplementation(() => { /* noop */ });
@@ -36,8 +40,6 @@ describe("eslint-formatter-gha", () => {
         process.env.GITHUB_SHA = "abc1234567890";
         process.env.GITHUB_REPOSITORY = "owner/repo";
         process.env.GITHUB_SERVER_URL = "https://github.com";
-        // Create test file
-        fs.writeFileSync(testFilePath, "", { encoding: "utf-8" });
     });
 
     afterEach(() => {
@@ -48,12 +50,6 @@ describe("eslint-formatter-gha", () => {
         Reflect.deleteProperty(process.env, "GITHUB_REPOSITORY");
         Reflect.deleteProperty(process.env, "GITHUB_SERVER_URL");
         Reflect.deleteProperty(process.env, "ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY");
-        // Clean up test file
-        try {
-            fs.unlinkSync(testFilePath);
-        } catch {
-            // Ignore
-        }
     });
 
     describe("basic functionality", () => {
