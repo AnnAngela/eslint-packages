@@ -51,8 +51,26 @@ jobs:
         run: |
           set -euo pipefail
           node_version_range="$(
-            sed -nE '/"engines"[[:space:]]*:/, /}/ s/.*"node"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p' package.json \
-              | head -n 1
+            awk '
+              /"engines"[[:space:]]*:[[:space:]]*{/ {
+                in_engines = 1
+                depth = 1
+                next
+              }
+              in_engines {
+                line = $0
+                open_braces = gsub(/\{/, "{", line)
+                close_braces = gsub(/\}/, "}", line)
+                if (match($0, /"node"[[:space:]]*:[[:space:]]*"([^"]+)"/, matches)) {
+                  print matches[1]
+                  exit
+                }
+                depth += open_braces - close_braces
+                if (depth <= 0) {
+                  exit
+                }
+              }
+            ' package.json
           )"
           if [ -z "$node_version_range" ]; then
             echo "Failed to read engines.node from package.json" >&2

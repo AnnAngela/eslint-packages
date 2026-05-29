@@ -6,7 +6,7 @@ import eslintPlugin from "./src/configs/eslintPlugin.js";
 import mocha from "./src/configs/mocha.js";
 import node from "./src/configs/node.js";
 import typescript from "./src/configs/typescript.js";
-import forkedGlobals from "./src/forkedGlobals.js";
+import sourceForkedGlobals from "./src/forkedGlobals.js";
 
 const configs: Record<string, Linter.Config> = {
     base,
@@ -17,15 +17,15 @@ const configs: Record<string, Linter.Config> = {
     typescript,
 };
 
-const typedForkedGlobals: Record<string, Record<string, boolean>> = forkedGlobals;
+const forkedGlobals: Record<string, Record<string, boolean>> = sourceForkedGlobals;
 
 const packageExports: {
     configs: typeof configs;
-    forkedGlobals: typeof typedForkedGlobals;
+    forkedGlobals: typeof forkedGlobals;
 } = {
     configs,
-    forkedGlobals: typedForkedGlobals,
+    forkedGlobals,
 };
 
-export { configs, typedForkedGlobals as forkedGlobals };
+export { configs, forkedGlobals };
 export default packageExports;
