@@ -148,7 +148,8 @@ pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run te
 | `pnpm run lint:ci:run` | 在前置构建已完成后执行 lint 主体 | 避免重复执行检查或构建 |
 | `pnpm run test` | 运行全部 workspace 测试 | 常规测试入口 |
 | `pnpm run test:coverage` | 运行全部 workspace 测试并生成覆盖率报告 | 需要检查测试覆盖率时 |
-| `pnpm run verify` | 运行完整校验流程 | 仅供 CI 使用 |
+| `pnpm run verify:ci` | 运行完整校验流程 | CI 入口 |
+| `pnpm run verify` | 运行完整校验流程 | 本地开发入口（等价于 `verify:ci`） |
 | `pnpm run sync:packages` | 回写派生 package.json 字段 | 根依赖或包元数据变更后 |
 | `pnpm run check:packages` | 检查包元数据是否漂移 | CI 或提交前只读校验 |
 | `pnpm run verify:packages` | `check:packages` 的别名 | 命名统一 |
@@ -162,26 +163,30 @@ pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run te
 
 ## 6. 各脚本之间的关系
 
-### 6.1 `verify` 是 CI 专用总入口
+### 6.1 `verify:ci` 与 `verify`
 
-`pnpm run verify` 会顺序执行：
+`pnpm run verify:ci` 是 CI 专用总入口，会顺序执行：
 
 1. `pnpm run check:packages`
 2. `pnpm run build`
 3. `pnpm run lint:ci:run`
 4. `pnpm run test:coverage`
 
-也就是说，`verify` 覆盖了：
+也就是说，`verify:ci` 覆盖了：
 
 - 包级元数据一致性检查
 - 所有 workspace 构建
 - 所有 workspace lint 与根目录 lint
 - 所有 workspace 测试（含覆盖率报告）
 
-`verify` 仅供 CI 环境使用。本地验证应使用等效命令组合：
+`pnpm run verify` 是本地开发入口，直接调用 `verify:ci`，两者执行的命令集合完全一致。
 
 ```bash
-pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run test:coverage
+# 本地开发使用
+pnpm run verify
+
+# CI 环境使用
+pnpm run verify:ci
 ```
 
 ### 6.2 `lint` 与 `lint:ci` 的区别
@@ -313,7 +318,7 @@ pnpm run version
 
 1. 检出代码
 2. 安装依赖（通过 `pnpm/action-setup` 的 `run_install` 参数，使用 `--frozen-lockfile`）
-3. 执行 `pnpm run verify`
+3. 执行 `pnpm run verify:ci`
 4. 执行 `changesets/action`
 
 随后会发生两种情况之一：
@@ -342,14 +347,14 @@ pnpm run version
 其核心校验命令是：
 
 ```bash
-pnpm run verify
+pnpm run verify:ci
 ```
 
-`verify` 仅供 CI 环境使用。本地验证应使用等效命令组合，与 CI 校验流程保持一致。
+`verify:ci` 仅供 CI 环境使用。本地验证应使用 `pnpm run verify`，与 CI 校验流程保持一致。
 
 此外，工作流会识别符合命名规则的自动 release commit，并跳过不必要的重复校验。
 
-对于 `master` 上的 push 与手动触发，工作流会在 `pnpm run verify` 通过后继续执行：
+对于 `master` 上的 push 与手动触发，工作流会在 `pnpm run verify:ci` 通过后继续执行：
 
 ```bash
 changesets/action

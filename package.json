@@ -15,7 +15,9 @@
     "lint:ci:run": "pnpm -r run lint && eslint --exit-on-fatal-error -f ./packages/eslint-formatter-gha/dist/index.js --max-warnings 0 .",
     "test": "pnpm -r run test",
     "test:coverage": "pnpm -r run test:coverage",
-    "verify": "pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run test:coverage",
+    "test:smoke": "pnpm -r run test:smoke",
+    "verify:ci": "pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run test:coverage",
+    "verify": "pnpm run verify:ci",
     "lint:check": "pnpm run lint",
     "lint:check-ci": "pnpm run lint:ci",
     "lint:write": "eslint --fix .",
@@ -59,7 +61,6 @@
     "globals": "^17.6.0",
     "pkg-types": "^2.3.1",
     "semver": "^7.8.1",
-    "simple-git": "^3.36.0",
     "typescript": "^6.0.3"
   },
   "devDependencies": {
