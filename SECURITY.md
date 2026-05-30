@@ -58,7 +58,7 @@ When using our ESLint packages, we recommend following these security best pract
 1. **Keep packages updated**: Regularly update to the latest versions to get security patches.
 2. **Review configurations**: Ensure your ESLint configurations follow security best practices.
 3. **Use security plugins**: Our `@annangela/eslint-config` includes the `eslint-plugin-security` plugin to help catch common security issues.
-4. **Audit dependencies**: Regularly run `npm audit` or `yarn audit` to check for vulnerabilities in dependencies.
+4. **Audit dependencies**: Regularly run `pnpm audit` (or `npm audit` / `yarn audit`) to check for vulnerabilities in dependencies.
 
 ### For Contributors
 
@@ -109,7 +109,7 @@ For security-related questions or concerns, please contact:
 ## Additional Resources
 
 - [Code of Conduct](CODE_OF_CONDUCT.md)
-- [Contributing Guidelines](https://github.com/AnnAngela/eslint-packages#readme)
+- [Contributing Guidelines](https://github.com/AnnAngela/eslint-packages/blob/master/CONTRIBUTING.md)
 - [npm Security Best Practices](https://docs.npmjs.com/packages-and-modules/securing-your-code)
 - [GitHub Security Features](https://docs.github.com/en/code-security)
 

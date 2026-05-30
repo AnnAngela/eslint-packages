@@ -4,15 +4,15 @@
 
 下图展示了 formatter 的输出效果：
 
-![示意图 1](https://github.com/AnnAngela/eslint-packages/assets/9762652/26a6890c-1d2c-485c-adb0-133645ef16b3)
+![GitHub Actions 注解输出示例](https://github.com/AnnAngela/eslint-packages/assets/9762652/26a6890c-1d2c-485c-adb0-133645ef16b3)
 
-![示意图 2](https://github.com/AnnAngela/eslint-packages/assets/9762652/0e02570c-fc07-44d5-99a4-184e07b5be94)
+![GitHub Actions 摘要输出示例](https://github.com/AnnAngela/eslint-packages/assets/9762652/0e02570c-fc07-44d5-99a4-184e07b5be94)
 
 以上截图在 `ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY=notice` 的配置下生成，因此可以在 Annotation 与 Summary 中看到废弃规则相关信息。
 
 ## 安装
 
-```shell
+```bash
 npm install --save-dev @annangela/eslint-formatter-gha
 ```
 
@@ -20,7 +20,7 @@ npm install --save-dev @annangela/eslint-formatter-gha
 
 在 ESLint 命令中加入 [`-f @annangela/eslint-formatter-gha` 或 `--format @annangela/eslint-formatter-gha`](https://eslint.org/docs/latest/use/command-line-interface#-f---format)，例如：
 
-```shell
+```bash
 npx eslint -f @annangela/eslint-formatter-gha src
 ```
 
@@ -32,10 +32,12 @@ npx eslint -f @annangela/eslint-formatter-gha src
 
   可选值为：`debug`、`notice`、`warning`、`error`。
 
-  其中：
+  各版本默认值如下：
 
-  - `debug`：v1 / v2 中的默认值
-  - `warning`：v3 中的默认值
+  | 版本 | 默认值 |
+  |------|--------|
+  | v1 / v2 | `debug` |
+  | v3+ | `warning` |
 
   当值为 `debug` 时，废弃规则信息只会以 debug 日志方式输出；如果要查看这些内容，需要先开启 [GitHub Actions debug logging](https://docs.github.com/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging)。
 
@@ -47,7 +49,7 @@ npx eslint -f @annangela/eslint-formatter-gha src
 
 如果你希望保留旧行为，可以显式设置：
 
-```shell
+```bash
 ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY=debug
 ```
 

@@ -6,13 +6,13 @@
 
 首先请先安装 [ESLint](https://eslint.org/)：
 
-```sh
-npm i eslint --save-dev
+```bash
+npm install eslint --save-dev
 ```
 
 然后安装 `@annangela/eslint-plugin-prefer-reflect`：
 
-```sh
+```bash
 npm install @annangela/eslint-plugin-prefer-reflect --save-dev
 ```
 
