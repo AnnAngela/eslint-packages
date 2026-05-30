@@ -15,12 +15,17 @@ concurrency:
   group: ${{ github.workflow_ref }}-${{ github.ref }}
 
 jobs:
-  release_check:
+  prepare:
     permissions: {}
     runs-on: ubuntu-latest
     outputs:
       skip_steps: ${{ steps.release_check.outputs.skip_steps }}
+      node-versions: ${{ steps.versions.outputs.node-versions }}
     steps:
+      - uses: actions/checkout@v6
+        with:
+          show-progress: false
+
       - name: Detect versioning commit
         id: release_check
         env:
@@ -42,15 +47,21 @@ jobs:
             echo "Event '$EVENT_NAME' does not need to skip linting steps; continuing."
           fi
 
+      - name: Extract Node.js versions
+        id: versions
+        run: |
+          VERSIONS=$(jq -r '.engines.node' package.json | grep -oP '(?<=\^)\d+(?=\.)' | sort -un | jq -R . | jq -sc .)
+          echo "node-versions=$VERSIONS" >> "$GITHUB_OUTPUT"
+
   verify:
-    needs: release_check
-    if: needs.release_check.outputs.skip_steps != 'true'
+    needs: prepare
+    if: needs.prepare.outputs.skip_steps != 'true'
     permissions:
       contents: write
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [22, 24]
+        node-version: ${{ fromJSON(needs.prepare.outputs.node-versions) }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -82,9 +93,9 @@ jobs:
 
   publish:
     needs:
-      - release_check
+      - prepare
       - verify
-    if: always() && github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (needs.release_check.outputs.skip_steps == 'true' || needs.verify.result == 'success')
+    if: always() && github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (needs.prepare.outputs.skip_steps == 'true' || needs.verify.result == 'success')
     permissions:
       contents: write
       pull-requests: write
