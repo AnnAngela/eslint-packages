@@ -62,6 +62,7 @@ jobs:
     strategy:
       matrix:
         node-version: ${{ fromJSON(needs.prepare.outputs.node-versions) }}
+    name: Verify on Node.js ${{ matrix.node-version }}
     steps:
       - uses: actions/checkout@v6
         with:
