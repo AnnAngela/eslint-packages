@@ -141,6 +141,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "(function(){}).apply(null, [1, 2])",
+                        output: "Reflect.apply(function(){}, null, [1, 2])",
                         errors: [
                             {
                                 messageId: "preferReflect",
@@ -150,6 +151,7 @@ describe("prefer-reflect", () => {
                     },
                     {
                         code: "(function(){}).apply(null, [1, 2])",
+                        output: "Reflect.apply(function(){}, null, [1, 2])",
                         options: [{ exceptions: ["defineProperty"] }],
                         errors: [
                             {
@@ -168,6 +170,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "(function(){}).call(null, 1, 2)",
+                        output: "Reflect.apply(function(){}, null, [1, 2])",
                         errors: [
                             {
                                 messageId: "preferReflect",
@@ -177,6 +180,7 @@ describe("prefer-reflect", () => {
                     },
                     {
                         code: "(function(){}).call(null, 1, 2)",
+                        output: "Reflect.apply(function(){}, null, [1, 2])",
                         options: [{ exceptions: ["defineProperty"] }],
                         errors: [
                             {
@@ -195,6 +199,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "Object.defineProperty({}, 'foo', { value: 1 })",
+                        output: "Reflect.defineProperty({}, 'foo', { value: 1 })",
                         errors: [
                             {
                                 messageId: "preferReflect",
@@ -204,6 +209,7 @@ describe("prefer-reflect", () => {
                     },
                     {
                         code: "Object.defineProperty({}, 'foo', { value: 1 })",
+                        output: "Reflect.defineProperty({}, 'foo', { value: 1 })",
                         options: [{ exceptions: ["apply"] }],
                         errors: [
                             {
@@ -222,6 +228,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "Object.getOwnPropertyDescriptor({}, 'foo')",
+                        output: "Reflect.getOwnPropertyDescriptor({}, 'foo')",
                         errors: [
                             {
                                 messageId: "preferReflect",
@@ -231,6 +238,7 @@ describe("prefer-reflect", () => {
                     },
                     {
                         code: "Object.getOwnPropertyDescriptor({}, 'foo')",
+                        output: "Reflect.getOwnPropertyDescriptor({}, 'foo')",
                         options: [{ exceptions: ["apply"] }],
                         errors: [
                             {
@@ -249,6 +257,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "Object.getPrototypeOf({})",
+                        output: "Reflect.getPrototypeOf({})",
                         errors: [
                             {
                                 messageId: "preferReflect",
@@ -258,6 +267,7 @@ describe("prefer-reflect", () => {
                     },
                     {
                         code: "Object.getPrototypeOf({})",
+                        output: "Reflect.getPrototypeOf({})",
                         options: [{ exceptions: ["apply"] }],
                         errors: [
                             {
@@ -276,6 +286,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "Object.setPrototypeOf({}, Object.prototype)",
+                        output: "Reflect.setPrototypeOf({}, Object.prototype)",
                         errors: [
                             {
                                 messageId: "preferReflect",
@@ -285,6 +296,7 @@ describe("prefer-reflect", () => {
                     },
                     {
                         code: "Object.setPrototypeOf({}, Object.prototype)",
+                        output: "Reflect.setPrototypeOf({}, Object.prototype)",
                         options: [{ exceptions: ["apply"] }],
                         errors: [
                             {
@@ -303,6 +315,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "Object.isExtensible({})",
+                        output: "Reflect.isExtensible({})",
                         errors: [
                             {
                                 messageId: "preferReflect",
@@ -312,6 +325,7 @@ describe("prefer-reflect", () => {
                     },
                     {
                         code: "Object.isExtensible({})",
+                        output: "Reflect.isExtensible({})",
                         options: [{ exceptions: ["apply"] }],
                         errors: [
                             {
@@ -330,6 +344,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "Object.getOwnPropertyNames({})",
+                        output: "Reflect.ownKeys({})",
                         errors: [
                             {
                                 messageId: "preferReflect",
@@ -339,6 +354,7 @@ describe("prefer-reflect", () => {
                     },
                     {
                         code: "Object.getOwnPropertyNames({})",
+                        output: "Reflect.ownKeys({})",
                         options: [{ exceptions: ["apply"] }],
                         errors: [
                             {
@@ -357,6 +373,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "Object.preventExtensions({})",
+                        output: "Reflect.preventExtensions({})",
                         errors: [
                             {
                                 messageId: "preferReflect",
@@ -366,6 +383,7 @@ describe("prefer-reflect", () => {
                     },
                     {
                         code: "Object.preventExtensions({})",
+                        output: "Reflect.preventExtensions({})",
                         options: [{ exceptions: ["apply"] }],
                         errors: [
                             {
@@ -384,6 +402,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "delete ({}).foo",
+                        output: "Reflect.deleteProperty({}, 'foo')",
                         errors: [
                             {
                                 messageId: "preferReflect",
@@ -393,6 +412,7 @@ describe("prefer-reflect", () => {
                     },
                     {
                         code: "delete ({}).foo",
+                        output: "Reflect.deleteProperty({}, 'foo')",
                         options: [{ exceptions: ["apply"] }],
                         errors: [
                             {
@@ -411,6 +431,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "foo in {}",
+                        output: "Reflect.has({}, foo)",
                         errors: [
                             {
                                 messageId: "preferReflect",
@@ -420,6 +441,7 @@ describe("prefer-reflect", () => {
                     },
                     {
                         code: "foo in {}",
+                        output: "Reflect.has({}, foo)",
                         options: [{ exceptions: ["apply"] }],
                         errors: [
                             {
@@ -436,6 +458,7 @@ describe("prefer-reflect", () => {
     describe("rule metadata", () => {
         test("should have correct meta", () => {
             expect(rule.meta.type).toBe("suggestion");
+            expect(rule.meta.fixable).toBe("code");
             expect(rule.meta.docs.description).toBe("Modern version of original `prefer-reflect` rules in eslint");
             expect(rule.meta.docs.recommended).toBe(true);
             expect(rule.meta.messages.preferReflect).toBe("Avoid using {{existing}}, instead use {{substitute}}.");
@@ -471,6 +494,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "(function(){}).apply(null, [1, 2])",
+                        output: "Reflect.apply(function(){}, null, [1, 2])",
                         errors: [{ messageId: "preferReflect" }],
                     },
                 ],
@@ -483,6 +507,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "(function(){}).apply(null, [1, 2])",
+                        output: "Reflect.apply(function(){}, null, [1, 2])",
                         options: [{ exceptions: [] }],
                         errors: [{ messageId: "preferReflect" }],
                     },
@@ -496,6 +521,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "(function(){}).apply(null, [1, 2])",
+                        output: "Reflect.apply(function(){}, null, [1, 2])",
                         options: [{}],
                         errors: [{ messageId: "preferReflect" }],
                     },
@@ -518,6 +544,71 @@ describe("prefer-reflect", () => {
                     "Reflect.preventExtensions({});",
                 ],
                 invalid: [],
+            });
+        });
+
+        test("should fix call with no arguments", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.call()",
+                        output: "Reflect.apply(func, undefined, [])",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should fix call with single argument (thisArg only)", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.call(this)",
+                        output: "Reflect.apply(func, this, [])",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should fix delete with computed property", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "delete obj[expr]",
+                        output: "Reflect.deleteProperty(obj, expr)",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should fix delete with nested member", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "delete a.b.c",
+                        output: "Reflect.deleteProperty(a.b, 'c')",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should fix in with string literal key", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "'foo' in {}",
+                        output: "Reflect.has({}, 'foo')",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
             });
         });
     });

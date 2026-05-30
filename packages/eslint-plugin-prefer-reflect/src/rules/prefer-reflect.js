@@ -13,6 +13,7 @@
  */
 export const meta = {
     type: "suggestion",
+    fixable: "code",
 
     docs: {
         description: "Modern version of original `prefer-reflect` rules in eslint",
@@ -88,15 +89,18 @@ export const create = (context) => {
     };
 
     const exceptions = context.options[0].exceptions;
+    const sourceCode = context.sourceCode;
+    const getText = (node) => sourceCode.getText(node);
 
     /**
      * Reports the Reflect violation based on the `existing` and `substitute`
      * @param {Object} node The node that violates the rule.
      * @param {string} existing The existing method name that has been used.
      * @param {string} substitute The Reflect substitute that should be used.
+     * @param {import('eslint').Rule.RuleFixer} fix The fix function.
      * @returns {void}
      */
-    const report = (node, existing, substitute) => {
+    const report = (node, existing, substitute, fix) => {
         context.report({
             node,
             messageId: "preferReflect",
@@ -104,6 +108,7 @@ export const create = (context) => {
                 existing,
                 substitute,
             },
+            fix,
         });
     };
 
@@ -115,7 +120,38 @@ export const create = (context) => {
             const userConfiguredException = exceptions.includes(reflectSubstitutes[methodName]);
 
             if (hasReflectSubstitute && !isReflectCall && !userConfiguredException) {
-                report(node, existingNames[methodName], `Reflect.${reflectSubstitutes[methodName]}`);
+                const existing = existingNames[methodName];
+                const substitute = `Reflect.${reflectSubstitutes[methodName]}`;
+
+                if (methodName === "apply") {
+                    report(node, existing, substitute, (fixer) => {
+                        const funcText = getText(node.callee.object);
+                        const argsText = node.arguments.map((a) => getText(a)).join(", ");
+                        return fixer.replaceText(node, `Reflect.apply(${funcText}, ${argsText})`);
+                    });
+                } else if (methodName === "call") {
+                    report(node, existing, substitute, (fixer) => {
+                        const funcText = getText(node.callee.object);
+                        if (node.arguments.length === 0) {
+                            return fixer.replaceText(node, `Reflect.apply(${funcText}, undefined, [])`);
+                        }
+                        const thisArgText = getText(node.arguments[0]);
+                        const callArgs = node.arguments.slice(1);
+                        if (callArgs.length === 0) {
+                            return fixer.replaceText(node, `Reflect.apply(${funcText}, ${thisArgText}, [])`);
+                        }
+                        const argsText = callArgs.map((a) => getText(a)).join(", ");
+                        return fixer.replaceText(node, `Reflect.apply(${funcText}, ${thisArgText}, [${argsText}])`);
+                    });
+                } else if (methodName === "getOwnPropertyNames") {
+                    report(node, existing, substitute, (fixer) =>
+                        fixer.replaceText(node.callee, "Reflect.ownKeys"),
+                    );
+                } else {
+                    report(node, existing, substitute, (fixer) =>
+                        fixer.replaceText(node.callee.object, "Reflect"),
+                    );
+                }
             }
         },
         UnaryExpression: (node) => {
@@ -124,7 +160,14 @@ export const create = (context) => {
             const userConfiguredException = exceptions.includes("deleteProperty");
 
             if (isDeleteOperator && !targetsIdentifier && !userConfiguredException) {
-                report(node, "the delete keyword", "Reflect.deleteProperty");
+                report(node, "the delete keyword", "Reflect.deleteProperty", (fixer) => {
+                    const arg = node.argument;
+                    const objText = getText(arg.object);
+                    if (arg.computed) {
+                        return fixer.replaceText(node, `Reflect.deleteProperty(${objText}, ${getText(arg.property)})`);
+                    }
+                    return fixer.replaceText(node, `Reflect.deleteProperty(${objText}, '${getText(arg.property)}')`);
+                });
             }
         },
         BinaryExpression: (node) => {
@@ -132,7 +175,11 @@ export const create = (context) => {
             const userConfiguredException = exceptions.includes("has");
 
             if (isInOperator && !userConfiguredException) {
-                report(node, "the in keyword", "Reflect.has");
+                report(node, "the in keyword", "Reflect.has", (fixer) => {
+                    const leftText = getText(node.left);
+                    const rightText = getText(node.right);
+                    return fixer.replaceText(node, `Reflect.has(${rightText}, ${leftText})`);
+                });
             }
         },
     };

@@ -2,6 +2,7 @@
 title: @annangela/prefer-reflect
 layout: doc
 rule_type: suggestion
+fixable: code
 related_rules:
 - no-useless-call
 - prefer-spread
@@ -25,6 +26,8 @@ ES6 的 Reflect API 提供了一组方法，可用于替代旧构造器或旧语
 * [`Reflect.preventExtensions`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-reflect.preventextensions) 可替代 [`Object.preventExtensions`](https://www.ecma-international.org/ecma-262/6.0/index.html#sec-object.preventextensions)
 
 `prefer-reflect` 规则会标记这些旧写法，并提示改用 Reflect 版本。
+
+该规则是可自动修复的。运行 `eslint --fix` 即可自动将旧写法替换为对应的 Reflect API 调用。
 
 ## 规则细节
 
