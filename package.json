@@ -17,7 +17,7 @@
     "test:coverage": "pnpm -r run test:coverage",
     "test:smoke": "pnpm -r run test:smoke",
     "verify:ci": "pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run test:coverage",
-    "verify": "pnpm run verify:ci",
+    "verify": "pnpm run lint && pnpm run build --filter @annangela/eslint-formatter-gha --filter @annangela/eslint-config && pnpm run test:coverage",
     "lint:check": "pnpm run lint",
     "lint:check-ci": "pnpm run lint:ci",
     "lint:write": "eslint --fix .",

@@ -179,7 +179,7 @@ pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run te
 - 所有 workspace lint 与根目录 lint
 - 所有 workspace 测试（含覆盖率报告）
 
-`pnpm run verify` 是本地开发入口，直接调用 `verify:ci`，两者执行的命令集合完全一致。
+`pnpm run verify` 是本地开发入口，与 `verify:ci` 等价。
 
 ```bash
 # 本地开发使用
