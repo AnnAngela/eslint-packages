@@ -81,11 +81,11 @@ pnpm --filter @annangela/eslint-config run build
 # 对单个 workspace 执行 lint
 pnpm --filter @annangela/eslint-formatter-gha run lint
 
-# 对单个 workspace 执行测试
-pnpm --filter @annangela/eslint-plugin-prefer-reflect run test
+# 对单个 workspace 执行测试并生成覆盖率报告
+pnpm --filter @annangela/eslint-plugin-prefer-reflect run test:coverage
 
 # 对所有 workspace 执行同名脚本
-pnpm -r run test
+pnpm -r run test:coverage
 ```
 
 ### 3.3 什么时候用单包命令，什么时候用根命令
@@ -124,7 +124,7 @@ pnpm install
 ```bash
 pnpm --filter @annangela/eslint-plugin-prefer-reflect run build
 pnpm --filter @annangela/eslint-plugin-prefer-reflect run lint
-pnpm --filter @annangela/eslint-plugin-prefer-reflect run test
+pnpm --filter @annangela/eslint-plugin-prefer-reflect run test:coverage
 ```
 
 完成局部验证后，仍然应补跑一次：
@@ -146,9 +146,7 @@ pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run te
 | `pnpm run lint` | 本地 lint 校验 | 本地检查代码质量 |
 | `pnpm run lint:ci` | CI 风格 lint 校验 | 需要验证 GitHub Actions formatter 输出时 |
 | `pnpm run lint:ci:run` | 在前置构建已完成后执行 lint 主体 | 避免重复执行检查或构建 |
-| `pnpm run test` | 运行全部 workspace 测试 | 常规测试入口 |
-| `pnpm run test:coverage` | 运行全部 workspace 测试并生成覆盖率报告 | 需要检查测试覆盖率时 |
-| `pnpm run test:smoke` | 运行全部 workspace 的 smoke tests | 快速确认导出、加载路径与最小可运行链路是否正常，尤其适合发布链路前的轻量验证 |
+| `pnpm run test:coverage` | 运行全部 workspace 的默认测试集并生成覆盖率报告 | 当前唯一的常规测试入口 |
 | `pnpm run verify:ci` | 运行完整校验流程 | CI 入口 |
 | `pnpm run verify` | 运行完整校验流程 | 本地开发入口（等价于 `verify:ci`） |
 | `pnpm run sync:packages` | 回写派生 package.json 字段 | 根依赖或包元数据变更后 |
@@ -159,8 +157,6 @@ pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run te
 | `pnpm run lint:write` | 在根目录执行 ESLint 自动修复 | 修复可自动处理的问题 |
 | `pnpm run ci` | 执行 `pnpm install --frozen-lockfile` | 主要用于 CI 环境 |
 | `pnpm run package` | `build` 的兼容别名 | 兼容旧调用方式 |
-| `pnpm run test:eslint-plugin-prefer-reflect` | 仅运行 prefer-reflect 包测试 | 精确定位该包问题 |
-| `pnpm run test:eslint-formatter-gha:lint` | 仅运行 formatter 的测试脚本 | 精确定位 formatter 问题 |
 
 ## 6. 各脚本之间的关系
 
@@ -190,18 +186,14 @@ pnpm run verify
 pnpm run verify:ci
 ```
 
-### 6.2 `test`、`test:coverage` 与 `test:smoke` 的区别
+### 6.2 `test:coverage` 的定位
 
-- `pnpm run test`
-  - 运行各 workspace 的完整测试集，是日常开发时的常规测试入口
 - `pnpm run test:coverage`
-  - 在完整测试基础上生成覆盖率报告，适合提交前或 CI 中做更全面的验证
-- `pnpm run test:smoke`
-  - 仅运行各 workspace 的 `tests/smoke.test.*`
-  - 关注包是否能被 ESLint 或消费者以最小方式成功加载和执行，而不是覆盖所有细节逻辑
-  - 当前主要覆盖三类最小链路：共享配置可被 ESLint 加载、formatter 可被 ESLint 加载并格式化结果、插件规则可被 ESLint 加载并实际运行
+  - 当前仓库统一使用它作为根级与包级的常规测试入口
+  - 各 workspace 直接执行 `vitest run --coverage`，会按 Vitest 默认规则收集测试文件，因此现有 `*.test.*` 文件与 `tests/smoke.test.*` 都会被执行
+  - 适合本地提交前验证与 CI 中的统一校验
 
-因此，`test:smoke` 适合作为发布链路前的快速冒烟检查，但不能替代 `test` 或 `test:coverage`。
+仓库仍然保留 smoke test 文件本身，但不再为它们提供独立命令入口；这类用例现在作为默认测试集合的一部分随 `test:coverage` 一起执行。
 
 ### 6.3 `lint` 与 `lint:ci` 的区别
 
@@ -333,8 +325,7 @@ pnpm run version
 1. 检出代码
 2. 安装依赖（通过 `pnpm/action-setup` 的 `run_install` 参数，使用 `--frozen-lockfile`）
 3. 执行 `pnpm run verify:ci`
-4. 执行 `pnpm run test:smoke`
-5. 执行 `changesets/action`
+4. 执行 `changesets/action`
 
 随后会发生两种情况之一：
 
@@ -367,17 +358,9 @@ pnpm run verify:ci
 
 `verify:ci` 仅供 CI 环境使用。本地验证应使用 `pnpm run verify`，与 CI 校验流程保持一致。
 
-此外，工作流还会在 `verify:ci` 通过后额外执行一次：
-
-```bash
-pnpm run test:smoke
-```
-
-这一步用于补一层轻量的发布链路冒烟检查，确认各包的最小加载与运行路径仍然正常。
-
 此外，工作流会识别符合命名规则的自动 release commit，并跳过不必要的重复校验。
 
-对于 `master` 上的 push 与手动触发，工作流会在 `pnpm run verify:ci` 与 `pnpm run test:smoke` 均通过后继续执行：
+对于 `master` 上的 push 与手动触发，工作流会在 `pnpm run verify:ci` 通过后继续执行：
 
 ```bash
 changesets/action
@@ -390,7 +373,7 @@ changesets/action
 `@annangela/eslint-formatter-gha` 的测试现在通过 vitest 运行：
 
 ```bash
-pnpm --filter @annangela/eslint-formatter-gha run test
+pnpm --filter @annangela/eslint-formatter-gha run test:coverage
 ```
 
 测试文件位于 `packages/eslint-formatter-gha/src/` 目录下，以 `.test.ts` 结尾，覆盖 ActionsSummary、command 工具函数以及 formatter 主逻辑。无需真实 GitHub Actions 环境即可验证 formatter 的主要行为。
@@ -413,7 +396,6 @@ pnpm --filter @annangela/eslint-formatter-gha run test
 - 同时检查根 `package.json`、`.github/workflows/*` 与相关 `scripts/*`
 - 文档需要同步更新，尤其是本文件与 `.changeset/README.md`
 - 最终至少执行一次 `pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run test:coverage`
-- 如改动涉及包导出、加载入口、formatter 接入或发布链路，再补跑一次 `pnpm run test:smoke`
 
 ### 11.4 修改单个包时
 
