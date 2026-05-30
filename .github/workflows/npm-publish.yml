@@ -66,6 +66,10 @@ jobs:
       - uses: actions/checkout@v6
         with:
           show-progress: false
+      - uses: actions/cache@v5
+        with:
+          key: project-cache
+          path: .cache
       - name: Install pnpm
         uses: pnpm/action-setup@v6
         with:
@@ -84,7 +88,20 @@ jobs:
       - name: Sync package metadata
         run: pnpm run sync:packages
       - name: Run workspace verification
-        run: pnpm run verify:ci
+        env:
+          MATRIX_NODE_VERSION: ${{ matrix.node-version }}
+        run: |
+          mkdir -p .cache
+          SUMMARY_FILE=".cache/verify-coverage-summary-${MATRIX_NODE_VERSION}.md"
+          set +e
+          GITHUB_STEP_SUMMARY="$SUMMARY_FILE" pnpm run verify:ci
+          EXIT_CODE=$?
+          set -e
+          if [[ -f "$SUMMARY_FILE" ]]; then
+            sed "s/## Vitest Test Report/## Vitest Test Report (Node.js ${MATRIX_NODE_VERSION} - coverage)/" \
+              "$SUMMARY_FILE" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          exit $EXIT_CODE
       - name: Push changes if needed
         run: |
           bash scripts/gha/push.sh "auto: sync workspace package metadata"
