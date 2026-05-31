@@ -599,6 +599,32 @@ describe("prefer-reflect", () => {
             });
         });
 
+        test("should not fix apply when arguments include spread", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.apply(thisArg, ...rest)",
+                        output: null,
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should not fix call when arguments include spread", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.call(...all)",
+                        output: null,
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
         test("should fix delete with computed property", () => {
             ruleTester.run("prefer-reflect", rule, {
                 valid: [],
@@ -619,6 +645,24 @@ describe("prefer-reflect", () => {
                     {
                         code: "delete a.b.c",
                         output: "Reflect.deleteProperty(a.b, 'c')",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should report delete on non-member expressions without autofix", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "delete foo()",
+                        output: null,
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                    {
+                        code: "delete (a, b)",
+                        output: null,
                         errors: [{ messageId: "preferReflect" }],
                     },
                 ],
@@ -648,6 +692,13 @@ describe("prefer-reflect", () => {
                         errors: [{ messageId: "preferReflect" }],
                     },
                 ],
+            });
+        });
+
+        test("should only report Object static method replacements", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: ["someObj.defineProperty({}, 'foo', { value: 1 })"],
+                invalid: [],
             });
         });
     });

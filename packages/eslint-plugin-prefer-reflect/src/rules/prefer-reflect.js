@@ -118,13 +118,18 @@ export const create = (context) => {
             const isReflectCall = node.callee.object?.name === "Reflect";
             const hasReflectSubstitute = typeof reflectSubstitutes[methodName] === "string";
             const userConfiguredException = exceptions.includes(reflectSubstitutes[methodName]);
+            const requiresObjectCallee = methodName !== "apply" && methodName !== "call";
+            const isObjectCallee = node.callee.object?.type === "Identifier" && node.callee.object.name === "Object";
 
-            if (hasReflectSubstitute && !isReflectCall && !userConfiguredException) {
+            if (hasReflectSubstitute && !isReflectCall && !userConfiguredException && (!requiresObjectCallee || isObjectCallee)) {
                 const existing = existingNames[methodName];
                 const substitute = `Reflect.${reflectSubstitutes[methodName]}`;
 
                 if (methodName === "apply") {
                     report(node, existing, substitute, (fixer) => {
+                        if (node.arguments.some((argument) => argument.type === "SpreadElement")) {
+                            return null;
+                        }
                         const funcText = getText(node.callee.object);
                         if (node.arguments.length === 0) {
                             return fixer.replaceText(node, `Reflect.apply(${funcText}, undefined, [])`);
@@ -135,6 +140,9 @@ export const create = (context) => {
                     });
                 } else if (methodName === "call") {
                     report(node, existing, substitute, (fixer) => {
+                        if (node.arguments.some((argument) => argument.type === "SpreadElement")) {
+                            return null;
+                        }
                         const funcText = getText(node.callee.object);
                         if (node.arguments.length === 0) {
                             return fixer.replaceText(node, `Reflect.apply(${funcText}, undefined, [])`);
@@ -166,6 +174,9 @@ export const create = (context) => {
             if (isDeleteOperator && !targetsIdentifier && !userConfiguredException) {
                 report(node, "the delete keyword", "Reflect.deleteProperty", (fixer) => {
                     const arg = node.argument;
+                    if (arg.type !== "MemberExpression") {
+                        return null;
+                    }
                     const objText = getText(arg.object);
                     if (arg.computed) {
                         return fixer.replaceText(node, `Reflect.deleteProperty(${objText}, ${getText(arg.property)})`);
