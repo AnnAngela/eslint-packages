@@ -126,8 +126,12 @@ export const create = (context) => {
                 if (methodName === "apply") {
                     report(node, existing, substitute, (fixer) => {
                         const funcText = getText(node.callee.object);
-                        const argsText = node.arguments.map((a) => getText(a)).join(", ");
-                        return fixer.replaceText(node, `Reflect.apply(${funcText}, ${argsText})`);
+                        if (node.arguments.length === 0) {
+                            return fixer.replaceText(node, `Reflect.apply(${funcText}, undefined, [])`);
+                        }
+                        const thisArgText = getText(node.arguments[0]);
+                        const applyArgsText = node.arguments.length === 1 ? "[]" : getText(node.arguments[1]);
+                        return fixer.replaceText(node, `Reflect.apply(${funcText}, ${thisArgText}, ${applyArgsText})`);
                     });
                 } else if (methodName === "call") {
                     report(node, existing, substitute, (fixer) => {
@@ -176,7 +180,7 @@ export const create = (context) => {
 
             if (isInOperator && !userConfiguredException) {
                 report(node, "the in keyword", "Reflect.has", (fixer) => {
-                    const leftText = getText(node.left);
+                    const leftText = node.left.type === "SequenceExpression" ? `(${getText(node.left)})` : getText(node.left);
                     const rightText = getText(node.right);
                     return fixer.replaceText(node, `Reflect.has(${rightText}, ${leftText})`);
                 });

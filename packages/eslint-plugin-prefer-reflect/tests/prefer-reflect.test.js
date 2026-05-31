@@ -560,6 +560,32 @@ describe("prefer-reflect", () => {
             });
         });
 
+        test("should fix apply with no arguments", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.apply()",
+                        output: "Reflect.apply(func, undefined, [])",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should fix apply with single argument (thisArg only)", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.apply(this)",
+                        output: "Reflect.apply(func, this, [])",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
         test("should fix call with single argument (thisArg only)", () => {
             ruleTester.run("prefer-reflect", rule, {
                 valid: [],
@@ -606,6 +632,19 @@ describe("prefer-reflect", () => {
                     {
                         code: "'foo' in {}",
                         output: "Reflect.has({}, 'foo')",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should preserve sequence expressions when fixing in", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "(a, b) in obj",
+                        output: "Reflect.has(obj, (a, b))",
                         errors: [{ messageId: "preferReflect" }],
                     },
                 ],

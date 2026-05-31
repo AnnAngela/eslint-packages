@@ -16,7 +16,8 @@ concurrency:
 
 jobs:
   prepare:
-    permissions: {}
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     outputs:
       skip_steps: ${{ steps.release_check.outputs.skip_steps }}
@@ -104,6 +105,7 @@ jobs:
           fi
           exit $EXIT_CODE
       - name: Push changes if needed
+        if: matrix.node-version == fromJSON(needs.prepare.outputs.node-versions)[0]
         run: |
           bash scripts/gha/push.sh "auto: sync workspace package metadata"
 
