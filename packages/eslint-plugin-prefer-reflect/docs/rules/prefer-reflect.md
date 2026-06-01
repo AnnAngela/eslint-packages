@@ -27,7 +27,7 @@ ES6 的 Reflect API 提供了一组方法，可用于替代旧构造器或旧语
 
 `prefer-reflect` 规则会标记这些旧写法，并提示改用 Reflect 版本。
 
-该规则是可自动修复的。运行 `eslint --fix` 即可自动将旧写法替换为对应的 Reflect API 调用。
+大部分场景下该规则可自动修复。运行 `eslint --fix` 即可将旧写法替换为对应的 Reflect API 调用。对于无法安全自动修复的边界情况（例如 `delete` 非成员表达式、`func.call(...all)` 中展开在 thisArg 位置的复杂表达式），规则会提供代码建议（suggestion）供手动选择。
 
 ## 配置项
 

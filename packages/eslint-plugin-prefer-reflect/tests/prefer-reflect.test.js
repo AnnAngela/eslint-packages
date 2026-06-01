@@ -3,10 +3,10 @@
  * @author AnnAngela
  */
 
-import { describe, test, expect } from "vitest";
-import rule from "../src/rules/prefer-reflect.js";
-import plugin, { rules } from "../src/index.js";
 import { RuleTester } from "eslint";
+import { describe, expect, test } from "vitest";
+import plugin, { rules } from "../src/index.js";
+import rule from "../src/rules/prefer-reflect.js";
 
 const ruleTester = new RuleTester();
 
@@ -599,26 +599,67 @@ describe("prefer-reflect", () => {
             });
         });
 
-        test("should not fix apply when arguments include spread", () => {
+        test("should fix apply when arguments include spread", () => {
             ruleTester.run("prefer-reflect", rule, {
                 valid: [],
                 invalid: [
                     {
                         code: "func.apply(thisArg, ...rest)",
-                        output: null,
+                        output: "Reflect.apply(func, thisArg, ...rest)",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                    {
+                        code: "func.apply(...all)",
+                        output: "Reflect.apply(func, ...all)",
                         errors: [{ messageId: "preferReflect" }],
                     },
                 ],
             });
         });
 
-        test("should not fix call when arguments include spread", () => {
+        test("should fix call when tail arguments include spread", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.call(thisArg, head, ...rest)",
+                        output: "Reflect.apply(func, thisArg, [head, ...rest])",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                    {
+                        code: "func.call(thisArg, ...rest)",
+                        output: "Reflect.apply(func, thisArg, [...rest])",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should suggest manual restructuring when call has spread at thisArg", () => {
             ruleTester.run("prefer-reflect", rule, {
                 valid: [],
                 invalid: [
                     {
                         code: "func.call(...all)",
-                        output: null,
+                        errors: [{
+                            messageId: "preferReflect",
+                            suggestions: [{
+                                messageId: "preferReflectCallSpreadSuggest",
+                                data: { spreadTarget: "all" },
+                                output: "Reflect.apply(func, all[0], all.slice(1))",
+                            }],
+                        }],
+                    },
+                ],
+            });
+        });
+
+        test("should report without suggestions when call has spread at non-identifier thisArg", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.call(...getArgs())",
                         errors: [{ messageId: "preferReflect" }],
                     },
                 ],
@@ -651,19 +692,29 @@ describe("prefer-reflect", () => {
             });
         });
 
-        test("should report delete on non-member expressions without autofix", () => {
+        test("should suggest removing delete on non-member expressions", () => {
             ruleTester.run("prefer-reflect", rule, {
                 valid: [],
                 invalid: [
                     {
                         code: "delete foo()",
-                        output: null,
-                        errors: [{ messageId: "preferReflect" }],
+                        errors: [{
+                            messageId: "preferReflect",
+                            suggestions: [{
+                                desc: "Remove the delete keyword (the operand is not a property reference)",
+                                output: "foo()",
+                            }],
+                        }],
                     },
                     {
                         code: "delete (a, b)",
-                        output: null,
-                        errors: [{ messageId: "preferReflect" }],
+                        errors: [{
+                            messageId: "preferReflect",
+                            suggestions: [{
+                                desc: "Remove the delete keyword (the operand is not a property reference)",
+                                output: "(a, b)",
+                            }],
+                        }],
                     },
                 ],
             });
@@ -699,6 +750,99 @@ describe("prefer-reflect", () => {
             ruleTester.run("prefer-reflect", rule, {
                 valid: ["someObj.defineProperty({}, 'foo', { value: 1 })"],
                 invalid: [],
+            });
+        });
+
+        test("should preserve extra apply arguments for side effects", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.apply(thisArg, args, sideEffect())",
+                        output: "Reflect.apply(func, thisArg, args, sideEffect())",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should parenthesize sequence expression in call/apply callee", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "(a, b).apply(thisArg, [1])",
+                        output: "Reflect.apply((a, b), thisArg, [1])",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                    {
+                        code: "(a, b).call(thisArg, x)",
+                        output: "Reflect.apply((a, b), thisArg, [x])",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should parenthesize sequence expression in call/apply arguments", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.apply(thisArg, (a, b))",
+                        output: "Reflect.apply(func, thisArg, (a, b))",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                    {
+                        code: "func.call(thisArg, (a, b))",
+                        output: "Reflect.apply(func, thisArg, [(a, b)])",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should parenthesize sequence expression in delete object", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "delete (a, b).c",
+                        output: "Reflect.deleteProperty((a, b), 'c')",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                    {
+                        code: "delete obj[(a, b)]",
+                        output: "Reflect.deleteProperty(obj, (a, b))",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should parenthesize sequence expression on right side of in", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "'foo' in (a, b)",
+                        output: "Reflect.has((a, b), 'foo')",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should fix apply with zero arguments", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.apply()",
+                        output: "Reflect.apply(func, undefined, [])",
+                        errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
             });
         });
     });
