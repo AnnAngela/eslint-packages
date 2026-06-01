@@ -95,6 +95,7 @@ jobs:
         run: |
           mkdir -p .cache
           SUMMARY_FILE=".cache/verify-coverage-summary-${MATRIX_NODE_VERSION}.md"
+          touch "$SUMMARY_FILE"
           set +e
           GITHUB_STEP_SUMMARY="$SUMMARY_FILE" pnpm run verify:ci
           EXIT_CODE=$?
