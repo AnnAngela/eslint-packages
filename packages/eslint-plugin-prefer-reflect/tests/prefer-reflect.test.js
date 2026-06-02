@@ -620,7 +620,7 @@ describe("prefer-reflect", () => {
                             messageId: "preferReflect",
                             suggestions: [{
                                 messageId: "preferReflectApplySpreadSuggest",
-                                output: "Reflect.apply(func, thisArg, ...rest, [])",
+                                output: "Reflect.apply(func, thisArg, rest)",
                             }],
                         }],
                     },
@@ -650,7 +650,7 @@ describe("prefer-reflect", () => {
                             messageId: "preferReflect",
                             suggestions: [{
                                 messageId: "preferReflectApplySpreadSuggest",
-                                output: "Reflect.apply(func, thisArg, ...rest, [], sideEffect())",
+                                output: "Reflect.apply(func, thisArg, rest, sideEffect())",
                             }],
                         }],
                     },

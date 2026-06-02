@@ -59,7 +59,7 @@ export const meta = {
     messages: {
         preferReflect: "Avoid using {{existing}}, instead use {{substitute}}.",
         preferReflectCallSpreadSuggest: "Replace with Reflect.apply using {{spreadTarget}}[0] as thisArg and {{spreadTarget}}.slice(1) as args",
-        preferReflectApplySpreadSuggest: "Replace with Reflect.apply, appending [] as fallback argumentsList",
+        preferReflectApplySpreadSuggest: "Replace with Reflect.apply, passing the spread target directly as argumentsList",
         preferReflectOwnKeysSuggest: "Replace with Reflect.ownKeys",
         preferReflectDeleteNonMemberSuggest: "Remove the delete keyword (the operand is not a property reference)",
     },
@@ -156,11 +156,13 @@ export const create = (context) => {
                         }
                     } else {
                         // Check if argsList is a spread (e.g. func.apply(thisArg, ...rest)).
-                        // When the spreaded iterable is empty, the fix would produce
-                        // Reflect.apply(func, thisArg) which throws TypeError because
-                        // Reflect.apply requires exactly 3 arguments.
-                        // Since we cannot statically guarantee the spread provides
-                        // an argumentsList, downgrade to a suggestion instead.
+                        // The spread inside .apply() is almost always a mistake — the
+                        // programmer intended `rest` to be the argumentsList, not to
+                        // be spread element-by-element. Reflect.apply requires exactly
+                        // 3 arguments, so without a statically guaranteed argumentsList
+                        // we downgrade to a suggestion. The suggestion passes the spread
+                        // target directly as argumentsList (e.g. Reflect.apply(func,
+                        // thisArg, rest)), which correctly maps the programmer's intent.
                         const argsListIsSpread = node.arguments.length >= 2 && node.arguments[1].type === "SpreadElement";
 
                         if (argsListIsSpread) {
@@ -171,9 +173,10 @@ export const create = (context) => {
                             const spreadText = getText(spreadArg);
 
                             if (spreadArg.type === "Identifier") {
-                                // For simple identifiers, provide a safe suggestion
-                                // that handles an empty iterable by falling back to [[]]
-                                // so Reflect.apply always receives an argumentsList.
+                                // For simple identifiers, provide a suggestion that passes
+                                // the spread target directly as argumentsList to
+                                // Reflect.apply, correcting the inadvertent spread
+                                // on the original .apply() call.
                                 const extraArgs = node.arguments.slice(2).map(
                                     (a) => wrapSequence(a),
                                 ).join(", ");
@@ -186,7 +189,7 @@ export const create = (context) => {
                                         messageId: "preferReflectApplySpreadSuggest",
                                         fix: (fixer) => fixer.replaceText(
                                             node,
-                                            `Reflect.apply(${funcText}, ${thisArgText}, ...${spreadText}, []${extraPart})`,
+                                            `Reflect.apply(${funcText}, ${thisArgText}, ${spreadText}${extraPart})`,
                                         ),
                                     }],
                                 });
