@@ -33,7 +33,12 @@ describe("eslint-config smoke tests", () => {
             overrideConfig: configs.configs.typescript,
         });
 
-        // TypeScript config requires parser, so we just verify it loads
+        // The TypeScript config references @typescript-eslint/parser which
+        // may not be installed in the test environment (it is a transitive
+        // peer dependency). We verify the config loads without throwing,
+        // confirming that the config structure is valid. Full TS linting
+        // is verified by the formatter-gha smoke test which has the parser
+        // available in its workspace environment.
         expect(eslint).toBeDefined();
     });
 
