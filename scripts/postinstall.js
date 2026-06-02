@@ -270,7 +270,7 @@ if (!globalChanged) {
 if (SET_GHA_OUTPUT && globalChanged) {
     const ghaOutputPath = process.env.GITHUB_OUTPUT;
     if (ghaOutputPath) {
-        await fs.promises.appendFile(ghaOutputPath, `need_sync=true\n`);
+        await fs.promises.appendFile(ghaOutputPath, "need_sync=true\n");
         console.info("Set GHA output need_sync=true");
     } else {
         console.warn("$GITHUB_OUTPUT is not set, cannot write GHA output. Are you running in a GitHub Actions environment?");
