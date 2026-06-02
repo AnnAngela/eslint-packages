@@ -50,6 +50,8 @@ describe("prefer-reflect", () => {
                     "Reflect.defineProperty({}, 'foo', {value: 1})",
                     { code: "Reflect.defineProperty({}, 'foo', {value: 1})", options: [{ exceptions: ["defineProperty"] }] },
                     { code: "Object.defineProperty({}, 'foo', {value: 1})", options: [{ exceptions: ["defineProperty"] }] },
+                    // Object shadowed in function scope — rule should NOT report
+                    { code: "function foo() { const Object = {}; Object.defineProperty(obj, 'prop', desc); }", options: [{ exceptions: ["getPrototypeOf"] }] },
                 ],
                 invalid: [],
             });
@@ -82,6 +84,8 @@ describe("prefer-reflect", () => {
                     "Reflect.getPrototypeOf({});",
                     { code: "Reflect.getPrototypeOf({});", options: [{ exceptions: ["getPrototypeOf"] }] },
                     { code: "Object.getPrototypeOf({});", options: [{ exceptions: ["getPrototypeOf"] }] },
+                    // Object shadowed by local variable — rule should NOT report
+                    { code: "const Object = {}; Object.getPrototypeOf(x)" },
                 ],
                 invalid: [],
             });

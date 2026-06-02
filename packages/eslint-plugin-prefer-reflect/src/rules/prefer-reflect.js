@@ -108,6 +108,33 @@ export const create = (context) => {
         return node.type === "SequenceExpression" ? `(${text})` : text;
     };
 
+    /**
+     * Checks whether a variable name is shadowed (declared by user code)
+     * in the given scope or any ancestor scope.
+     *
+     * A variable is considered shadowed when a user declaration exists
+     * (variable.identifiers.length > 0), as opposed to predefined globals
+     * like `Object`, `Array`, `console` which have identifiers.length === 0.
+     *
+     * @see https://eslint.org/docs/latest/extend/scope-manager-interface
+     * @see eslint/lib/rules/no-object-constructor.js for the reference pattern
+     * @param {import('eslint').Scope.Scope} scope
+     * @param {string} name
+     * @returns {boolean}
+     */
+    function isVariableShadowed(scope, name) {
+        let currentScope = scope;
+        while (currentScope) {
+            const variable = currentScope.set.get(name);
+            if (variable) {
+                // identifiers.length > 0: declared in user code (shadowed)
+                // identifiers.length === 0: predefined global (not shadowed)
+                return variable.identifiers.length > 0;
+            }
+            currentScope = currentScope.upper;
+        }
+    }
+
     return {
         CallExpression: (node) => {
             const methodName = node.callee.property?.name;
@@ -115,7 +142,9 @@ export const create = (context) => {
             const hasReflectSubstitute = typeof reflectSubstitutes[methodName] === "string";
             const userConfiguredException = exceptions.includes(reflectSubstitutes[methodName]);
             const requiresObjectCallee = methodName !== "apply" && methodName !== "call";
-            const isObjectCallee = node.callee.object?.type === "Identifier" && node.callee.object.name === "Object";
+            const isObjectCallee = node.callee.object?.type === "Identifier"
+                && node.callee.object.name === "Object"
+                && !isVariableShadowed(sourceCode.getScope(node), "Object");
 
             if (hasReflectSubstitute && !isReflectCall && !userConfiguredException && (!requiresObjectCallee || isObjectCallee)) {
                 const existing = existingNames[methodName];
