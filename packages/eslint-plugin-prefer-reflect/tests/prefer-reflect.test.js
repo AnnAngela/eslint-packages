@@ -605,14 +605,49 @@ describe("prefer-reflect", () => {
             });
         });
 
-        test("should fix apply when arguments include spread", () => {
+        test("should suggest safe restructuring when apply has spread in argsList", () => {
             ruleTester.run("prefer-reflect", rule, {
                 valid: [],
                 invalid: [
                     {
                         code: "func.apply(thisArg, ...rest)",
-                        output: "Reflect.apply(func, thisArg, ...rest)",
+                        errors: [{
+                            messageId: "preferReflect",
+                            suggestions: [{
+                                messageId: "preferReflectApplySpreadSuggest",
+                                output: "Reflect.apply(func, thisArg, ...(rest.length ? rest : [[]]))",
+                            }],
+                        }],
+                    },
+                ],
+            });
+        });
+
+        test("should report without suggestion when apply has non-identifier spread in argsList", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.apply(thisArg, ...getArgs())",
                         errors: [{ messageId: "preferReflect" }],
+                    },
+                ],
+            });
+        });
+
+        test("should suggest safe restructuring when apply has spread in argsList with extra args", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.apply(thisArg, ...rest, sideEffect())",
+                        errors: [{
+                            messageId: "preferReflect",
+                            suggestions: [{
+                                messageId: "preferReflectApplySpreadSuggest",
+                                output: "Reflect.apply(func, thisArg, ...(rest.length ? rest : [[]]), sideEffect())",
+                            }],
+                        }],
                     },
                 ],
             });

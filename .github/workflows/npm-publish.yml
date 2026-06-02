@@ -143,7 +143,13 @@ jobs:
     needs:
       - prepare
       - verify
-    if: always() && github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (needs.prepare.outputs.skip_steps == 'true' || needs.verify.result == 'success')
+      - push-changes
+    if: |
+      always() &&
+      github.ref == 'refs/heads/master' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      (needs.prepare.outputs.skip_steps == 'true' || needs.verify.result == 'success') &&
+      (needs.push-changes.result == 'success' || needs.push-changes.result == 'skipped')
     permissions:
       contents: write
       pull-requests: write

@@ -59,6 +59,7 @@ export const meta = {
     messages: {
         preferReflect: "Avoid using {{existing}}, instead use {{substitute}}.",
         preferReflectCallSpreadSuggest: "Replace with Reflect.apply using {{spreadTarget}}[0] as thisArg and {{spreadTarget}}.slice(1) as args",
+        preferReflectApplySpreadSuggest: "Replace with Reflect.apply, using conditional spread to ensure argumentsList is provided",
         preferReflectOwnKeysSuggest: "Replace with Reflect.ownKeys",
         preferReflectDeleteNonMemberSuggest: "Remove the delete keyword (the operand is not a property reference)",
     },
@@ -154,30 +155,76 @@ export const create = (context) => {
                             });
                         }
                     } else {
-                        context.report({
-                            node,
-                            messageId: "preferReflect",
-                            data: { existing, substitute },
-                            fix: (fixer) => {
-                                if (node.arguments.length === 0) {
-                                    return fixer.replaceText(node, `Reflect.apply(${funcText}, undefined, [])`);
-                                }
-                                const firstArg = node.arguments[0];
-                                const thisArgText = wrapSequence(firstArg);
-                                if (node.arguments.length === 1) {
-                                    return fixer.replaceText(node, `Reflect.apply(${funcText}, ${thisArgText}, [])`);
-                                }
-                                const argsListText = wrapSequence(node.arguments[1]);
+                        // Check if argsList is a spread (e.g. func.apply(thisArg, ...rest)).
+                        // When the spreaded iterable is empty, the fix would produce
+                        // Reflect.apply(func, thisArg) which throws TypeError because
+                        // Reflect.apply requires exactly 3 arguments.
+                        // Since we cannot statically guarantee the spread provides
+                        // an argumentsList, downgrade to a suggestion instead.
+                        const argsListIsSpread = node.arguments.length >= 2 && node.arguments[1].type === "SpreadElement";
+
+                        if (argsListIsSpread) {
+                            // node.arguments.length >= 2 guarantees firstArg exists
+                            const firstArg = node.arguments[0];
+                            const thisArgText = wrapSequence(firstArg);
+                            const spreadArg = node.arguments[1].argument;
+                            const spreadText = getText(spreadArg);
+
+                            if (spreadArg.type === "Identifier") {
+                                // For simple identifiers, provide a safe suggestion
+                                // that handles an empty iterable by falling back to [[]]
+                                // so Reflect.apply always receives an argumentsList.
                                 const extraArgs = node.arguments.slice(2).map(
                                     (a) => wrapSequence(a),
                                 ).join(", ");
                                 const extraPart = extraArgs ? `, ${extraArgs}` : "";
-                                return fixer.replaceText(
+                                context.report({
                                     node,
-                                    `Reflect.apply(${funcText}, ${thisArgText}, ${argsListText}${extraPart})`,
-                                );
-                            },
-                        });
+                                    messageId: "preferReflect",
+                                    data: { existing, substitute },
+                                    suggest: [{
+                                        messageId: "preferReflectApplySpreadSuggest",
+                                        fix: (fixer) => fixer.replaceText(
+                                            node,
+                                            `Reflect.apply(${funcText}, ${thisArgText}, ...(${spreadText}.length ? ${spreadText} : [[]])${extraPart})`,
+                                        ),
+                                    }],
+                                });
+                            } else {
+                                // Non-Identifier spread (e.g. func.apply(thisArg, ...getArgs()))
+                                // cannot be safely restructured; report without fix/suggestion.
+                                context.report({
+                                    node,
+                                    messageId: "preferReflect",
+                                    data: { existing, substitute },
+                                });
+                            }
+                        } else {
+                            context.report({
+                                node,
+                                messageId: "preferReflect",
+                                data: { existing, substitute },
+                                fix: (fixer) => {
+                                    if (node.arguments.length === 0) {
+                                        return fixer.replaceText(node, `Reflect.apply(${funcText}, undefined, [])`);
+                                    }
+                                    const firstArg = node.arguments[0];
+                                    const thisArgText = wrapSequence(firstArg);
+                                    if (node.arguments.length === 1) {
+                                        return fixer.replaceText(node, `Reflect.apply(${funcText}, ${thisArgText}, [])`);
+                                    }
+                                    const argsListText = wrapSequence(node.arguments[1]);
+                                    const extraArgs = node.arguments.slice(2).map(
+                                        (a) => wrapSequence(a),
+                                    ).join(", ");
+                                    const extraPart = extraArgs ? `, ${extraArgs}` : "";
+                                    return fixer.replaceText(
+                                        node,
+                                        `Reflect.apply(${funcText}, ${thisArgText}, ${argsListText}${extraPart})`,
+                                    );
+                                },
+                            });
+                        }
                     }
                 } else if (methodName === "call") {
                     const funcText = wrapSequence(node.callee.object);
