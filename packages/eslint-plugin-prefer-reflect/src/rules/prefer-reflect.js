@@ -122,7 +122,7 @@ export const create = (context) => {
      * @param {string} name
      * @returns {boolean}
      */
-    function isVariableShadowed(scope, name) {
+    const isVariableShadowed = (scope, name) => {
         let currentScope = scope;
         while (currentScope) {
             const variable = currentScope.set.get(name);
@@ -133,7 +133,7 @@ export const create = (context) => {
             }
             currentScope = currentScope.upper;
         }
-    }
+    };
 
     return {
         CallExpression: (node) => {
