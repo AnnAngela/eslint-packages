@@ -63,6 +63,11 @@ jobs:
     strategy:
       matrix:
         node-version: ${{ fromJSON(needs.prepare.outputs.node-versions) }}
+    # NOTE: When a job has a matrix strategy, GitHub Actions takes the outputs
+    # from the last variant that completed. The `need_sync` output is set during
+    # the verify step in the last matrix variant to finish, implicitly overriding
+    # values from earlier variants. Since the drift check is deterministic across
+    # Node.js versions, all variants produce the same `need_sync` value.
     outputs:
       need_sync: ${{ steps.verify.outputs.need_sync }}
     name: Verify on Node.js ${{ matrix.node-version }}
