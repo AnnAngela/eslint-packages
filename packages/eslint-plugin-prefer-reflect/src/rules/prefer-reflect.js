@@ -391,9 +391,28 @@ export const create = (context) => {
                         },
                     });
                 } else {
-                    // Non-member-expression targets (e.g. delete foo(), delete (a, b))
-                    // have no direct Reflect.deleteProperty equivalent.
-                    // Suggest removing the delete keyword instead of returning null.
+                    //
+                    // Non-member-expression targets (e.g. delete foo(),
+                    // delete (a, b)) have no direct Reflect.deleteProperty
+                    // equivalent because the operand is not a property
+                    // reference.
+                    //
+                    // Semantic trade-off of this suggestion:
+                    //
+                    // The `delete` operator always returns a boolean. Removing
+                    // `delete` changes the expression's return value from
+                    // boolean to the operand's return value.
+                    //
+                    // This is offered as a *suggestion* (not auto-fix) because:
+                    // 1. ESLint suggestions are opt-in and explicitly documented
+                    //    as potentially changing semantics — see:
+                    //    https://eslint.org/docs/latest/extend/custom-rules
+                    // 2. The suggestion is safe when the expression appears in
+                    //    statement position (value is discarded) or in a void
+                    //    context.
+                    // 3. If the return value is used, the user can inspect and
+                    //    decline the suggestion through their editor/CLI.
+                    //
                     context.report({
                         node,
                         messageId: "preferReflect",
