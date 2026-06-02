@@ -5,6 +5,9 @@
 
 import { RuleTester } from "eslint";
 import { describe, expect, test } from "vitest";
+// Import ecmaVersion from @annangela/eslint-config rather than hardcoding a value,
+// so tests automatically stay in sync with the config's target language version
+// even if the config is updated to a newer ECMAScript edition.
 import { configs } from "@annangela/eslint-config";
 import plugin, { rules } from "../src/index.js";
 import rule from "../src/rules/prefer-reflect.js";
