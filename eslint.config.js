@@ -80,20 +80,6 @@ const config = [
         ],
         ignores,
     },
-    // formatter-gha test files: allow project service to use default project for test files not in tsconfig
-    {
-        files: [
-            "packages/eslint-formatter-gha/src/*.test.ts",
-        ],
-        ignores,
-        languageOptions: {
-            parserOptions: {
-                projectService: {
-                    allowDefaultProject: ["src/*.test.ts"],
-                },
-            },
-        },
-    },
     // formatter still requires CommonJS, so there is no top-level async/await and we have to use `Sync` methods
     {
         files: [

@@ -16,6 +16,5 @@
         "scripts",
         "vitest.config.ts",
         "coverage",
-        "**/*.test.ts",
     ],
 }

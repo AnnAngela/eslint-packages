@@ -13,7 +13,7 @@ for (const dir of [
 }
 
 console.info("Building the module ...");
-await execCommand("tsc", {
+await execCommand("tsc --project tsconfig.build.json", {
     synchronousStderr: true,
     synchronousStdout: true,
 });
