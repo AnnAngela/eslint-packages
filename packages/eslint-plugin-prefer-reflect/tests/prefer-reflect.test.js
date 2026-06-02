@@ -344,22 +344,28 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "Object.getOwnPropertyNames({})",
-                        output: "Reflect.ownKeys({})",
                         errors: [
                             {
                                 messageId: "preferReflect",
                                 data: { existing: "Object.getOwnPropertyNames", substitute: "Reflect.ownKeys" },
+                                suggestions: [{
+                                    messageId: "preferReflectOwnKeysSuggest",
+                                    output: "Reflect.ownKeys({})",
+                                }],
                             },
                         ],
                     },
                     {
                         code: "Object.getOwnPropertyNames({})",
-                        output: "Reflect.ownKeys({})",
                         options: [{ exceptions: ["apply"] }],
                         errors: [
                             {
                                 messageId: "preferReflect",
                                 data: { existing: "Object.getOwnPropertyNames", substitute: "Reflect.ownKeys" },
+                                suggestions: [{
+                                    messageId: "preferReflectOwnKeysSuggest",
+                                    output: "Reflect.ownKeys({})",
+                                }],
                             },
                         ],
                     },
@@ -402,7 +408,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "delete ({}).foo",
-                        output: "Reflect.deleteProperty({}, 'foo')",
+                        output: 'Reflect.deleteProperty({}, "foo")',
                         errors: [
                             {
                                 messageId: "preferReflect",
@@ -412,7 +418,7 @@ describe("prefer-reflect", () => {
                     },
                     {
                         code: "delete ({}).foo",
-                        output: "Reflect.deleteProperty({}, 'foo')",
+                        output: 'Reflect.deleteProperty({}, "foo")',
                         options: [{ exceptions: ["apply"] }],
                         errors: [
                             {
@@ -608,9 +614,35 @@ describe("prefer-reflect", () => {
                         output: "Reflect.apply(func, thisArg, ...rest)",
                         errors: [{ messageId: "preferReflect" }],
                     },
+                ],
+            });
+        });
+
+        test("should suggest manual restructuring when apply has single spread argument", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
                     {
                         code: "func.apply(...all)",
-                        output: "Reflect.apply(func, ...all)",
+                        errors: [{
+                            messageId: "preferReflect",
+                            suggestions: [{
+                                messageId: "preferReflectCallSpreadSuggest",
+                                data: { spreadTarget: "all" },
+                                output: "Reflect.apply(func, all[0], all.slice(1))",
+                            }],
+                        }],
+                    },
+                ],
+            });
+        });
+
+        test("should report without suggestions when apply has spread at non-identifier argument", () => {
+            ruleTester.run("prefer-reflect", rule, {
+                valid: [],
+                invalid: [
+                    {
+                        code: "func.apply(...getArgs())",
                         errors: [{ messageId: "preferReflect" }],
                     },
                 ],
@@ -685,7 +717,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "delete a.b.c",
-                        output: "Reflect.deleteProperty(a.b, 'c')",
+                        output: 'Reflect.deleteProperty(a.b, "c")',
                         errors: [{ messageId: "preferReflect" }],
                     },
                 ],
@@ -701,7 +733,7 @@ describe("prefer-reflect", () => {
                         errors: [{
                             messageId: "preferReflect",
                             suggestions: [{
-                                desc: "Remove the delete keyword (the operand is not a property reference)",
+                                messageId: "preferReflectDeleteNonMemberSuggest",
                                 output: "foo()",
                             }],
                         }],
@@ -711,7 +743,7 @@ describe("prefer-reflect", () => {
                         errors: [{
                             messageId: "preferReflect",
                             suggestions: [{
-                                desc: "Remove the delete keyword (the operand is not a property reference)",
+                                messageId: "preferReflectDeleteNonMemberSuggest",
                                 output: "(a, b)",
                             }],
                         }],
@@ -808,7 +840,7 @@ describe("prefer-reflect", () => {
                 invalid: [
                     {
                         code: "delete (a, b).c",
-                        output: "Reflect.deleteProperty((a, b), 'c')",
+                        output: 'Reflect.deleteProperty((a, b), "c")',
                         errors: [{ messageId: "preferReflect" }],
                     },
                     {

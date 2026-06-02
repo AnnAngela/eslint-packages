@@ -59,6 +59,8 @@ export const meta = {
     messages: {
         preferReflect: "Avoid using {{existing}}, instead use {{substitute}}.",
         preferReflectCallSpreadSuggest: "Replace with Reflect.apply using {{spreadTarget}}[0] as thisArg and {{spreadTarget}}.slice(1) as args",
+        preferReflectOwnKeysSuggest: "Replace with Reflect.ownKeys",
+        preferReflectDeleteNonMemberSuggest: "Remove the delete keyword (the operand is not a property reference)",
     },
 };
 
@@ -105,33 +107,6 @@ export const create = (context) => {
         return node.type === "SequenceExpression" ? `(${text})` : text;
     };
 
-    /**
-     * Reports the Reflect violation based on the `existing` and `substitute`
-     * @param {Object} node The node that violates the rule.
-     * @param {string} existing The existing method name that has been used.
-     * @param {string} substitute The Reflect substitute that should be used.
-     * @param {import('eslint').Rule.RuleFixer|null} fix The fix function, or null.
-     * @param {import('eslint').Rule.SuggestionReportDescriptor[]} [suggest] Optional suggestions.
-     * @returns {void}
-     */
-    const report = (node, existing, substitute, fix, suggest) => {
-        const reportData = {
-            node,
-            messageId: "preferReflect",
-            data: {
-                existing,
-                substitute,
-            },
-        };
-        if (fix) {
-            reportData.fix = fix;
-        }
-        if (suggest && suggest.length > 0) {
-            reportData.suggest = suggest;
-        }
-        context.report(reportData);
-    };
-
     return {
         CallExpression: (node) => {
             const methodName = node.callee.property?.name;
@@ -146,32 +121,64 @@ export const create = (context) => {
                 const substitute = `Reflect.${reflectSubstitutes[methodName]}`;
 
                 if (methodName === "apply") {
-                    report(node, existing, substitute, (fixer) => {
-                        const funcText = wrapSequence(node.callee.object);
-                        if (node.arguments.length === 0) {
-                            return fixer.replaceText(node, `Reflect.apply(${funcText}, undefined, [])`);
+                    const funcText = wrapSequence(node.callee.object);
+
+                    // When the only argument is a spread (e.g. func.apply(...all)),
+                    // we cannot statically guarantee the spread provides ≥2 elements.
+                    // Reflect.apply requires exactly 3 args, so an auto-fix can
+                    // silently turn working code into a TypeError at runtime.
+                    // Downgrade to a suggestion instead.
+                    if (node.arguments.length === 1 && node.arguments[0].type === "SpreadElement") {
+                        const spreadArg = node.arguments[0].argument;
+                        const spreadText = getText(spreadArg);
+
+                        if (spreadArg.type === "Identifier") {
+                            context.report({
+                                node,
+                                messageId: "preferReflect",
+                                data: { existing, substitute },
+                                suggest: [{
+                                    messageId: "preferReflectCallSpreadSuggest",
+                                    data: { spreadTarget: spreadText },
+                                    fix: (fixer) => fixer.replaceText(
+                                        node,
+                                        `Reflect.apply(${funcText}, ${spreadText}[0], ${spreadText}.slice(1))`,
+                                    ),
+                                }],
+                            });
+                        } else {
+                            context.report({
+                                node,
+                                messageId: "preferReflect",
+                                data: { existing, substitute },
+                            });
                         }
-                        const firstArg = node.arguments[0];
-                        const thisArgText = wrapSequence(firstArg);
-                        if (node.arguments.length === 1) {
-                            // When the only argument is a spread (e.g. func.apply(...all)),
-                            // Reflect.apply(func, ...all) is the correct mapping —
-                            // the spread already provides both thisArg and argsList.
-                            if (firstArg.type === "SpreadElement") {
-                                return fixer.replaceText(node, `Reflect.apply(${funcText}, ${thisArgText})`);
-                            }
-                            return fixer.replaceText(node, `Reflect.apply(${funcText}, ${thisArgText}, [])`);
-                        }
-                        const argsListText = wrapSequence(node.arguments[1]);
-                        const extraArgs = node.arguments.slice(2).map(
-                            (a) => wrapSequence(a),
-                        ).join(", ");
-                        const extraPart = extraArgs ? `, ${extraArgs}` : "";
-                        return fixer.replaceText(
+                    } else {
+                        context.report({
                             node,
-                            `Reflect.apply(${funcText}, ${thisArgText}, ${argsListText}${extraPart})`,
-                        );
-                    });
+                            messageId: "preferReflect",
+                            data: { existing, substitute },
+                            fix: (fixer) => {
+                                if (node.arguments.length === 0) {
+                                    return fixer.replaceText(node, `Reflect.apply(${funcText}, undefined, [])`);
+                                }
+                                const firstArg = node.arguments[0];
+                                const thisArgText = wrapSequence(firstArg);
+                                if (node.arguments.length === 1) {
+                                    return fixer.replaceText(node, `Reflect.apply(${funcText}, ${thisArgText}, [])`);
+                                }
+                                const argsListText = wrapSequence(node.arguments[1]);
+                                const extraArgs = node.arguments.slice(2).map(
+                                    (a) => wrapSequence(a),
+                                ).join(", ");
+                                const extraPart = extraArgs ? `, ${extraArgs}` : "";
+                                return fixer.replaceText(
+                                    node,
+                                    `Reflect.apply(${funcText}, ${thisArgText}, ${argsListText}${extraPart})`,
+                                );
+                            },
+                        });
+                    }
                 } else if (methodName === "call") {
                     const funcText = wrapSequence(node.callee.object);
 
@@ -205,27 +212,45 @@ export const create = (context) => {
                             });
                         }
                     } else {
-                        report(node, existing, substitute, (fixer) => {
-                            if (node.arguments.length === 0) {
-                                return fixer.replaceText(node, `Reflect.apply(${funcText}, undefined, [])`);
-                            }
-                            const thisArgText = wrapSequence(node.arguments[0]);
-                            const callArgs = node.arguments.slice(1);
-                            if (callArgs.length === 0) {
-                                return fixer.replaceText(node, `Reflect.apply(${funcText}, ${thisArgText}, [])`);
-                            }
-                            const argsText = callArgs.map((a) => wrapSequence(a)).join(", ");
-                            return fixer.replaceText(node, `Reflect.apply(${funcText}, ${thisArgText}, [${argsText}])`);
+                        context.report({
+                            node,
+                            messageId: "preferReflect",
+                            data: { existing, substitute },
+                            fix: (fixer) => {
+                                if (node.arguments.length === 0) {
+                                    return fixer.replaceText(node, `Reflect.apply(${funcText}, undefined, [])`);
+                                }
+                                const thisArgText = wrapSequence(node.arguments[0]);
+                                const callArgs = node.arguments.slice(1);
+                                if (callArgs.length === 0) {
+                                    return fixer.replaceText(node, `Reflect.apply(${funcText}, ${thisArgText}, [])`);
+                                }
+                                const argsText = callArgs.map((a) => wrapSequence(a)).join(", ");
+                                return fixer.replaceText(node, `Reflect.apply(${funcText}, ${thisArgText}, [${argsText}])`);
+                            },
                         });
                     }
                 } else if (methodName === "getOwnPropertyNames") {
-                    report(node, existing, substitute, (fixer) =>
-                        fixer.replaceText(node.callee, "Reflect.ownKeys"),
-                    );
+                    // Object.getOwnPropertyNames → Reflect.ownKeys is NOT semantically
+                    // equivalent: Reflect.ownKeys also returns Symbol keys.
+                    // Auto-fix could silently change program behavior, so downgrade
+                    // to a suggestion instead.
+                    context.report({
+                        node,
+                        messageId: "preferReflect",
+                        data: { existing, substitute },
+                        suggest: [{
+                            messageId: "preferReflectOwnKeysSuggest",
+                            fix: (fixer) => fixer.replaceText(node.callee, "Reflect.ownKeys"),
+                        }],
+                    });
                 } else {
-                    report(node, existing, substitute, (fixer) =>
-                        fixer.replaceText(node.callee.object, "Reflect"),
-                    );
+                    context.report({
+                        node,
+                        messageId: "preferReflect",
+                        data: { existing, substitute },
+                        fix: (fixer) => fixer.replaceText(node.callee.object, "Reflect"),
+                    });
                 }
             }
         },
@@ -237,27 +262,37 @@ export const create = (context) => {
             if (isDeleteOperator && !targetsIdentifier && !userConfiguredException) {
                 const arg = node.argument;
                 if (arg.type === "MemberExpression") {
-                    report(node, "the delete keyword", "Reflect.deleteProperty", (fixer) => {
-                        const objText = wrapSequence(arg.object);
-                        if (arg.computed) {
+                    context.report({
+                        node,
+                        messageId: "preferReflect",
+                        data: { existing: "the delete keyword", substitute: "Reflect.deleteProperty" },
+                        fix: (fixer) => {
+                            const objText = wrapSequence(arg.object);
+                            if (arg.computed) {
+                                return fixer.replaceText(
+                                    node,
+                                    `Reflect.deleteProperty(${objText}, ${wrapSequence(arg.property)})`,
+                                );
+                            }
                             return fixer.replaceText(
                                 node,
-                                `Reflect.deleteProperty(${objText}, ${wrapSequence(arg.property)})`,
+                                `Reflect.deleteProperty(${objText}, ${JSON.stringify(arg.property.name)})`,
                             );
-                        }
-                        return fixer.replaceText(
-                            node,
-                            `Reflect.deleteProperty(${objText}, '${getText(arg.property)}')`,
-                        );
+                        },
                     });
                 } else {
                     // Non-member-expression targets (e.g. delete foo(), delete (a, b))
                     // have no direct Reflect.deleteProperty equivalent.
                     // Suggest removing the delete keyword instead of returning null.
-                    report(node, "the delete keyword", "Reflect.deleteProperty", null, [{
-                        desc: "Remove the delete keyword (the operand is not a property reference)",
-                        fix: (fixer) => fixer.replaceText(node, wrapSequence(arg)),
-                    }]);
+                    context.report({
+                        node,
+                        messageId: "preferReflect",
+                        data: { existing: "the delete keyword", substitute: "Reflect.deleteProperty" },
+                        suggest: [{
+                            messageId: "preferReflectDeleteNonMemberSuggest",
+                            fix: (fixer) => fixer.replaceText(node, wrapSequence(arg)),
+                        }],
+                    });
                 }
             }
         },
@@ -266,10 +301,15 @@ export const create = (context) => {
             const userConfiguredException = exceptions.includes("has");
 
             if (isInOperator && !userConfiguredException) {
-                report(node, "the in keyword", "Reflect.has", (fixer) => {
-                    const leftText = wrapSequence(node.left);
-                    const rightText = wrapSequence(node.right);
-                    return fixer.replaceText(node, `Reflect.has(${rightText}, ${leftText})`);
+                context.report({
+                    node,
+                    messageId: "preferReflect",
+                    data: { existing: "the in keyword", substitute: "Reflect.has" },
+                    fix: (fixer) => {
+                        const leftText = wrapSequence(node.left);
+                        const rightText = wrapSequence(node.right);
+                        return fixer.replaceText(node, `Reflect.has(${rightText}, ${leftText})`);
+                    },
                 });
             }
         },
