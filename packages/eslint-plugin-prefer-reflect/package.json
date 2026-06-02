@@ -38,6 +38,7 @@
     "version": "pnpm run package"
   },
   "devDependencies": {
+    "@annangela/eslint-config": "^13.0.0",
     "@vitest/coverage-v8": "^4.1.7",
     "eslint": "^10.4.0",
     "eslint-plugin-eslint-plugin": "^7.3.3",

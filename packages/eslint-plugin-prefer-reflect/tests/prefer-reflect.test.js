@@ -5,10 +5,15 @@
 
 import { RuleTester } from "eslint";
 import { describe, expect, test } from "vitest";
+import { configs } from "@annangela/eslint-config";
 import plugin, { rules } from "../src/index.js";
 import rule from "../src/rules/prefer-reflect.js";
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    languageOptions: {
+        ecmaVersion: configs.base.languageOptions.ecmaVersion,
+    },
+});
 
 describe("plugin index", () => {
     test("should export rules", () => {
@@ -615,7 +620,7 @@ describe("prefer-reflect", () => {
                             messageId: "preferReflect",
                             suggestions: [{
                                 messageId: "preferReflectApplySpreadSuggest",
-                                output: "Reflect.apply(func, thisArg, ...(rest.length ? rest : [[]]))",
+                                output: "Reflect.apply(func, thisArg, ...rest, [])",
                             }],
                         }],
                     },
@@ -645,7 +650,7 @@ describe("prefer-reflect", () => {
                             messageId: "preferReflect",
                             suggestions: [{
                                 messageId: "preferReflectApplySpreadSuggest",
-                                output: "Reflect.apply(func, thisArg, ...(rest.length ? rest : [[]]), sideEffect())",
+                                output: "Reflect.apply(func, thisArg, ...rest, [], sideEffect())",
                             }],
                         }],
                     },

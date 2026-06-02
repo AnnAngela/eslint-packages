@@ -59,7 +59,7 @@ export const meta = {
     messages: {
         preferReflect: "Avoid using {{existing}}, instead use {{substitute}}.",
         preferReflectCallSpreadSuggest: "Replace with Reflect.apply using {{spreadTarget}}[0] as thisArg and {{spreadTarget}}.slice(1) as args",
-        preferReflectApplySpreadSuggest: "Replace with Reflect.apply, using conditional spread to ensure argumentsList is provided",
+        preferReflectApplySpreadSuggest: "Replace with Reflect.apply, appending [] as fallback argumentsList",
         preferReflectOwnKeysSuggest: "Replace with Reflect.ownKeys",
         preferReflectDeleteNonMemberSuggest: "Remove the delete keyword (the operand is not a property reference)",
     },
@@ -186,7 +186,7 @@ export const create = (context) => {
                                         messageId: "preferReflectApplySpreadSuggest",
                                         fix: (fixer) => fixer.replaceText(
                                             node,
-                                            `Reflect.apply(${funcText}, ${thisArgText}, ...(${spreadText}.length ? ${spreadText} : [[]])${extraPart})`,
+                                            `Reflect.apply(${funcText}, ${thisArgText}, ...${spreadText}, []${extraPart})`,
                                         ),
                                     }],
                                 });
