@@ -667,7 +667,7 @@ describe("prefer-reflect", () => {
                         errors: [{
                             messageId: "preferReflect",
                             suggestions: [{
-                                messageId: "preferReflectCallSpreadSuggest",
+                                messageId: "preferReflectSpreadSuggest",
                                 data: { spreadTarget: "all" },
                                 output: "Reflect.apply(func, all[0], all.slice(1))",
                             }],
@@ -716,7 +716,7 @@ describe("prefer-reflect", () => {
                         errors: [{
                             messageId: "preferReflect",
                             suggestions: [{
-                                messageId: "preferReflectCallSpreadSuggest",
+                                messageId: "preferReflectSpreadSuggest",
                                 data: { spreadTarget: "all" },
                                 output: "Reflect.apply(func, all[0], all.slice(1))",
                             }],
