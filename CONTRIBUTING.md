@@ -176,13 +176,15 @@ pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run te
 - 所有 workspace lint 与根目录 lint
 - 所有 workspace 测试（含覆盖率报告）
 
-`pnpm run verify` 是本地开发入口，与 `verify:ci` 等价。
+`pnpm run verify` 是本地开发入口，覆盖的校验内容与 `verify:ci` 相同
+（构建、lint、测试），但使用本地友好的 formatter 且不包含 `check:packages`。
+`verify:ci` 额外包含包元数据一致性检查并使用面向 GitHub Actions 的 formatter。
 
 ```bash
-# 本地开发使用
+# 本地开发使用（stylish formatter，不含 check:packages）
 pnpm run verify
 
-# CI 环境使用
+# CI 环境使用（GHA formatter，含 check:packages）
 pnpm run verify:ci
 ```
 
@@ -214,7 +216,7 @@ pnpm run verify:ci
 - 各包内部通常也有：
   - `build`
   - `lint`
-  - `test`
+  - `test:coverage`
   - `package`
   - `preversion`
   - `version`
@@ -376,7 +378,9 @@ changesets/action
 pnpm --filter @annangela/eslint-formatter-gha run test:coverage
 ```
 
-测试文件位于 `packages/eslint-formatter-gha/src/` 目录下，以 `.test.ts` 结尾，覆盖 ActionsSummary、command 工具函数以及 formatter 主逻辑。无需真实 GitHub Actions 环境即可验证 formatter 的主要行为。
+单元测试文件位于 `packages/eslint-formatter-gha/src/` 目录下，以 `.test.ts` 结尾；
+smoke test 位于 `packages/eslint-formatter-gha/tests/` 目录下，
+覆盖 ActionsSummary、command 工具函数以及 formatter 主逻辑。无需真实 GitHub Actions 环境即可验证 formatter 的主要行为。
 
 ## 11. 面向维护者的建议
 
