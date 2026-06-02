@@ -5,8 +5,8 @@ import path from "node:path";
 import { readPackageJSON, resolvePackageJSON, writePackageJSON } from "pkg-types";
 import { parse } from "yaml";
 
-const SET_GHA_OUTPUT = process.argv.includes("--set-gha-output");
-const IS_CHECK = process.argv.includes("--check") || process.argv.includes("--dry-run") || SET_GHA_OUTPUT;
+const SET_GHA_OUTPUT = process.env.SET_GHA_OUTPUT === "true";
+const IS_CHECK = process.argv.includes("--check") || process.argv.includes("--dry-run");
 const defaultRepository = {
     type: "git",
     url: "git+https://github.com/AnnAngela/eslint-packages.git",
@@ -258,7 +258,7 @@ if (!globalChanged) {
     console.info("There is no change in package.json.");
 } else if (IS_CHECK) {
     console.error("Package metadata drift detected. Run `pnpm run sync:packages` to update package.json files.");
-    // --set-gha-output 仅负责输出 need_sync=true，不改变退出码，由后续 step 自行决策
+    // SET_GHA_OUTPUT 环境变量：仅输出 need_sync=true，不改变退出码，由后续 step 自行决策
     if (!SET_GHA_OUTPUT) {
         process.exitCode = 1;
     }
@@ -266,7 +266,7 @@ if (!globalChanged) {
     console.info("Package metadata synchronized.");
 }
 
-// 若指定了 --set-gha-output 且检测到需要修改，则向 GitHub Actions 输出 need_sync=true
+// 若 SET_GHA_OUTPUT 环境变量为 true 且检测到需要修改，则向 GitHub Actions 输出 need_sync=true
 if (SET_GHA_OUTPUT && globalChanged) {
     const ghaOutputPath = process.env.GITHUB_OUTPUT;
     if (ghaOutputPath) {

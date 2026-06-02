@@ -64,7 +64,7 @@ jobs:
       matrix:
         node-version: ${{ fromJSON(needs.prepare.outputs.node-versions) }}
     outputs:
-      need_sync: ${{ steps.sync_packages.outputs.need_sync }}
+      need_sync: ${{ steps.verify.outputs.need_sync }}
     name: Verify on Node.js ${{ matrix.node-version }}
     steps:
       - uses: actions/checkout@v6
@@ -89,11 +89,10 @@ jobs:
 
       - name: Check environment
         run: pnpm exec eslint --env-info
-      - name: Sync package metadata
-        id: sync_packages
-        run: pnpm run sync:packages --set-gha-output
       - name: Run workspace verification
+        id: verify
         env:
+          SET_GHA_OUTPUT: "true"
           MATRIX_NODE_VERSION: ${{ matrix.node-version }}
         run: |
           mkdir -p .cache
@@ -120,7 +119,7 @@ jobs:
           show-progress: false
       - uses: actions/cache@v5
         with:
-          key: project-cache-${{ matrix.node-version }}
+          key: project-cache-push
           path: .cache
       - name: Install pnpm
         uses: pnpm/action-setup@v6
@@ -128,7 +127,7 @@ jobs:
           run_install: |
             - args:
                 - --frozen-lockfile
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js from package.json
         uses: actions/setup-node@v6
         with:
           node-version-file: package.json

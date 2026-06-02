@@ -3,7 +3,6 @@ import { ESLint } from "eslint";
 import { fileSync } from "tmp";
 
 describe("eslint-formatter-gha smoke tests", () => {
-    const originalEnv = process.env;
     let summaryFile: string;
 
     beforeEach(() => {
@@ -16,7 +15,7 @@ describe("eslint-formatter-gha smoke tests", () => {
     });
 
     afterEach(() => {
-        process.env = originalEnv;
+        vi.unstubAllEnvs();
     });
 
     it("should load formatter and format lint results", async () => {
