@@ -1,5 +1,10 @@
 /**
- * @fileoverview Forked from https://github.com/sindresorhus/globals/blob/v15.14.0/globals.json
+ * ESLint globals definition: each key is a global variable name, and each
+ * value follows the ESLint `globals` configuration schema:
+ * - `false` means the global is read-only (cannot be overwritten).
+ * - `true`  means the global is writable (can be assigned to).
+ *
+ * Forked from https://github.com/sindresorhus/globals/blob/v15.14.0/globals.json
  */
 
 const globals = {

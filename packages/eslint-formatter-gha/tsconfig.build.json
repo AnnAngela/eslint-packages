@@ -1,3 +1,9 @@
+// Production build configuration.
+// Extends tsconfig.json but excludes test files (*.test.ts) so that only
+// library source code is compiled into dist/. Used by the build script
+// (scripts/build.js) when producing the publishable package output.
+// The base tsconfig.json includes test files so that the IDE, linter, and
+// test runner can discover them via the projectService.
 {
     "$schema": "https://json.schemastore.org/tsconfig",
     "extends": "./tsconfig.json",
