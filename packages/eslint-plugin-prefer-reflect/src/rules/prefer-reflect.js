@@ -137,6 +137,37 @@ export const create = (context) => {
 
     return {
         CallExpression: (node) => {
+            //
+            // Architecture overview:
+            //
+            // This visitor handles four categories of method calls, each with
+            // distinct semantics that prevent naive merging:
+            //
+            // 1. apply: callee is the function, arguments[0] is thisArg,
+            //    arguments[1] (if present) is the argumentsList. The
+            //    spread-at-argsList case is unique to apply (spread in 2nd
+            //    argument position).
+            //
+            // 2. call: callee is the function, arguments[0] is thisArg,
+            //    arguments[1..] are individual args to pack into an
+            //    argumentsList. The spread-at-thisArg handling mirrors apply's
+            //    spread-at-argsList structurally, but operates on a different
+            //    argument position.
+            //
+            // 3. getOwnPropertyNames: semantically inequivalent to
+            //    Reflect.ownKeys (ownKeys also returns Symbols), so always a
+            //    suggestion, never an auto-fix.
+            //
+            // 4. else: trivial Object.X → Reflect.X rename for the remaining
+            //    methods. No argument restructuring needed.
+            //
+            // While apply and call share the "single spread argument" detection
+            // pattern (both produce Reflect.apply(func, x[0], x.slice(1))),
+            // the spread appears in different positions (argsList vs thisArg)
+            // and the non-spread fallback logic differs substantially, so
+            // extracting a shared helper would obscure rather than clarify
+            // the intent.
+            //
             const methodName = node.callee.property?.name;
             const isReflectCall = node.callee.object?.name === "Reflect";
             const hasReflectSubstitute = typeof reflectSubstitutes[methodName] === "string";
