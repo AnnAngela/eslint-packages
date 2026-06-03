@@ -218,7 +218,8 @@ Reflect.deleteProperty(foo, 'bar');
 
 :::
 
-提示：如果你想阻止删除变量，请改用 [no-delete-var](https://eslint.org/docs/latest/rules/no-delete-var)。
+> [!TIP]
+> 如果你想阻止删除变量，请改用 [no-delete-var](https://eslint.org/docs/latest/rules/no-delete-var)。
 
 启用 `{ "exceptions": ["deleteProperty"] }` 时，以下代码会被视为 **正确**：
 
@@ -608,6 +609,7 @@ function createErrorLike(message, code) {
 
 ## 何时不应使用
 
-如果你的代码运行在 ES3 / ES5 环境中，不应启用这条规则。
+> [!WARNING]
+> 如果你的代码运行在 ES3 / ES5 环境中，不应启用这条规则。
 
-如果你的运行环境是 ES2015（ES6）及以上，但你并不希望收到“这里可以改用 Reflect”的提示，也可以安全地关闭这条规则。
+如果你的运行环境是 ES2015（ES6）及以上，但你并不希望收到”这里可以改用 Reflect”的提示，也可以安全地关闭这条规则。
