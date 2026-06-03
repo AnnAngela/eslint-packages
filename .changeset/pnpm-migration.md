@@ -4,8 +4,6 @@
 "@annangela/eslint-plugin-prefer-reflect": none
 ---
 
-### 中文
-
 **包管理器迁移至 pnpm**
 
 - 从 npm 迁移至 pnpm 11.4，通过 corepack 管理版本
@@ -14,8 +12,6 @@
 - 更新 `packageManager` 字段，统一团队开发环境
 
 ---
-
-### English
 
 **Package manager migration to pnpm**
 
