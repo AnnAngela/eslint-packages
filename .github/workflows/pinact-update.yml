@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: "37 23 * * *" # Every 07:37 CST
   workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/*
 
 jobs:
   update:
