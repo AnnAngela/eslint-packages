@@ -13,7 +13,6 @@
   "scripts": {
     "build": "node scripts/build.js",
     "lint": "eslint --exit-on-fatal-error --max-warnings 0 ./src",
-    "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "package": "pnpm run build",
@@ -35,6 +34,9 @@
   ],
   "author": "AnnAngela",
   "license": "MIT",
+  "peerDependencies": {
+    "eslint": "^10.0.0"
+  },
   "bugs": {
     "url": "https://github.com/AnnAngela/eslint-packages/issues"
   },

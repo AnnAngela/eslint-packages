@@ -1,0 +1,38 @@
+name: Pinact Update
+
+on:
+  schedule:
+    - cron: "37 23 * * *" # Every 07:37 CST
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # tag: v6.0.2
+        with:
+          show-progress: false
+
+      - uses: suzuki-shunsuke/pinact-action@3132770ecce73073bcd618342c7f4092ed2f994c # tag: v3.0.0
+        with:
+          fix: "true"
+          update: "true"
+          verify: "true"
+          verify_min_age: "true"
+          skip_push: "true"
+
+      - uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # tag: v8.1.1
+        with:
+          commit-message: "gha: pinact update actions"
+          branch: pinact/update
+          branch-suffix: timestamp
+          title: "chore(deps): update GitHub Actions via pinact"
+          body: |
+            🤖 Automated action version updates by [pinact](https://github.com/suzuki-shunsuke/pinact).
+
+            Updates GitHub Action references to their latest commit SHAs with version annotations.
+
+            Triggered by scheduled workflow.

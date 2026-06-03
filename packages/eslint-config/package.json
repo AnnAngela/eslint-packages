@@ -25,7 +25,6 @@
   "scripts": {
     "build": "node scripts/build.js",
     "lint": "eslint --exit-on-fatal-error --max-warnings 0 ./src",
-    "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "package": "pnpm run build",

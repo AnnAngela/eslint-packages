@@ -138,7 +138,7 @@ pnpm run changeset
 # 将 <package-name> 替换为 eslint-config、eslint-formatter-gha 或 eslint-plugin-prefer-reflect
 pnpm --filter @annangela/<package-name> run build
 pnpm --filter @annangela/<package-name> run lint
-pnpm --filter @annangela/<package-name> run test
+pnpm --filter @annangela/<package-name> run test:coverage
 ```
 
 ## 📚 文档

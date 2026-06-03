@@ -2,6 +2,50 @@
 
 这是 AnnAngela 项目使用的 ESLint 配置包，支持当前维护中的 Node.js LTS 版本。
 
+## 安装
+
+首先请先安装 [ESLint](https://eslint.org/)：
+
+```bash
+npm install eslint --save-dev
+```
+
+然后安装 `@annangela/eslint-config`：
+
+```bash
+npm install @annangela/eslint-config --save-dev
+```
+
+## 使用
+
+### `eslint.config.js`（Flat Config）
+
+```js
+import { configs } from "@annangela/eslint-config";
+
+export default [
+    configs.base,
+    configs.node,
+    // 按需添加其他配置：
+    // configs.browser,
+    // configs.typescript,
+    // configs.eslintPlugin,
+    // configs.mocha,
+];
+```
+
+各配置可以按需组合，例如 TypeScript + Node.js 项目：
+
+```js
+import { configs } from "@annangela/eslint-config";
+
+export default [
+    configs.base,
+    configs.node,
+    configs.typescript,
+];
+```
+
 ## 导出内容
 
 该包同时提供命名导出与默认导出，主要包含两个导出对象：

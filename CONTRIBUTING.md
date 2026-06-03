@@ -81,11 +81,11 @@ pnpm --filter @annangela/eslint-config run build
 # 对单个 workspace 执行 lint
 pnpm --filter @annangela/eslint-formatter-gha run lint
 
-# 对单个 workspace 执行测试
-pnpm --filter @annangela/eslint-plugin-prefer-reflect run test
+# 对单个 workspace 执行测试并生成覆盖率报告
+pnpm --filter @annangela/eslint-plugin-prefer-reflect run test:coverage
 
 # 对所有 workspace 执行同名脚本
-pnpm -r run test
+pnpm -r run test:coverage
 ```
 
 ### 3.3 什么时候用单包命令，什么时候用根命令
@@ -124,7 +124,7 @@ pnpm install
 ```bash
 pnpm --filter @annangela/eslint-plugin-prefer-reflect run build
 pnpm --filter @annangela/eslint-plugin-prefer-reflect run lint
-pnpm --filter @annangela/eslint-plugin-prefer-reflect run test
+pnpm --filter @annangela/eslint-plugin-prefer-reflect run test:coverage
 ```
 
 完成局部验证后，仍然应补跑一次：
@@ -146,9 +146,9 @@ pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run te
 | `pnpm run lint` | 本地 lint 校验 | 本地检查代码质量 |
 | `pnpm run lint:ci` | CI 风格 lint 校验 | 需要验证 GitHub Actions formatter 输出时 |
 | `pnpm run lint:ci:run` | 在前置构建已完成后执行 lint 主体 | 避免重复执行检查或构建 |
-| `pnpm run test` | 运行全部 workspace 测试 | 常规测试入口 |
-| `pnpm run test:coverage` | 运行全部 workspace 测试并生成覆盖率报告 | 需要检查测试覆盖率时 |
-| `pnpm run verify` | 运行完整校验流程 | 仅供 CI 使用 |
+| `pnpm run test:coverage` | 运行全部 workspace 的默认测试集并生成覆盖率报告 | 当前唯一的常规测试入口 |
+| `pnpm run verify:ci` | 运行完整校验流程 | CI 入口 |
+| `pnpm run verify` | 运行完整校验流程 | 本地开发入口（等价于 `verify:ci`） |
 | `pnpm run sync:packages` | 回写派生 package.json 字段 | 根依赖或包元数据变更后 |
 | `pnpm run check:packages` | 检查包元数据是否漂移 | CI 或提交前只读校验 |
 | `pnpm run verify:packages` | `check:packages` 的别名 | 命名统一 |
@@ -157,34 +157,47 @@ pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run te
 | `pnpm run lint:write` | 在根目录执行 ESLint 自动修复 | 修复可自动处理的问题 |
 | `pnpm run ci` | 执行 `pnpm install --frozen-lockfile` | 主要用于 CI 环境 |
 | `pnpm run package` | `build` 的兼容别名 | 兼容旧调用方式 |
-| `pnpm run test:eslint-plugin-prefer-reflect` | 仅运行 prefer-reflect 包测试 | 精确定位该包问题 |
-| `pnpm run test:eslint-formatter-gha:lint` | 仅运行 formatter 的测试脚本 | 精确定位 formatter 问题 |
 
 ## 6. 各脚本之间的关系
 
-### 6.1 `verify` 是 CI 专用总入口
+### 6.1 `verify:ci` 与 `verify`
 
-`pnpm run verify` 会顺序执行：
+`pnpm run verify:ci` 是 CI 专用总入口，会顺序执行：
 
 1. `pnpm run check:packages`
 2. `pnpm run build`
 3. `pnpm run lint:ci:run`
 4. `pnpm run test:coverage`
 
-也就是说，`verify` 覆盖了：
+也就是说，`verify:ci` 覆盖了：
 
 - 包级元数据一致性检查
 - 所有 workspace 构建
 - 所有 workspace lint 与根目录 lint
 - 所有 workspace 测试（含覆盖率报告）
 
-`verify` 仅供 CI 环境使用。本地验证应使用等效命令组合：
+`pnpm run verify` 是本地开发入口，覆盖的校验内容与 `verify:ci` 相同
+（构建、lint、测试），但使用本地友好的 formatter 且不包含 `check:packages`。
+`verify:ci` 额外包含包元数据一致性检查并使用面向 GitHub Actions 的 formatter。
 
 ```bash
-pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run test:coverage
+# 本地开发使用（stylish formatter，不含 check:packages）
+pnpm run verify
+
+# CI 环境使用（GHA formatter，含 check:packages）
+pnpm run verify:ci
 ```
 
-### 6.2 `lint` 与 `lint:ci` 的区别
+### 6.2 `test:coverage` 的定位
+
+- `pnpm run test:coverage`
+  - 当前仓库统一使用它作为根级与包级的常规测试入口
+  - 各 workspace 直接执行 `vitest run --coverage`，会按 Vitest 默认规则收集测试文件，因此现有 `*.test.*` 文件与 `tests/smoke.test.*` 都会被执行
+  - 适合本地提交前验证与 CI 中的统一校验
+
+仓库仍然保留 smoke test 文件本身，但不再为它们提供独立命令入口；这类用例现在作为默认测试集合的一部分随 `test:coverage` 一起执行。
+
+### 6.3 `lint` 与 `lint:ci` 的区别
 
 - `lint`
   - 适合本地开发
@@ -196,14 +209,14 @@ pnpm run check:packages && pnpm run build && pnpm run lint:ci:run && pnpm run te
   - 假设前置检查和构建已完成，只执行 lint 主体
   - `verify` 用它来避免重复执行 `check:packages` 与构建步骤
 
-### 6.3 `build`、`package` 与包内脚本的关系
+### 6.4 `build`、`package` 与包内脚本的关系
 
 - 根级 `build` 通过 pnpm `--filter` 调用各包的 `build`
 - 根级 `package` 是根级 `build` 的兼容别名
 - 各包内部通常也有：
   - `build`
   - `lint`
-  - `test`
+  - `test:coverage`
   - `package`
   - `preversion`
   - `version`
@@ -313,7 +326,7 @@ pnpm run version
 
 1. 检出代码
 2. 安装依赖（通过 `pnpm/action-setup` 的 `run_install` 参数，使用 `--frozen-lockfile`）
-3. 执行 `pnpm run verify`
+3. 执行 `pnpm run verify:ci`
 4. 执行 `changesets/action`
 
 随后会发生两种情况之一：
@@ -342,14 +355,14 @@ pnpm run version
 其核心校验命令是：
 
 ```bash
-pnpm run verify
+pnpm run verify:ci
 ```
 
-`verify` 仅供 CI 环境使用。本地验证应使用等效命令组合，与 CI 校验流程保持一致。
+`verify:ci` 仅供 CI 环境使用。本地验证应使用 `pnpm run verify`，与 CI 校验流程保持一致。
 
 此外，工作流会识别符合命名规则的自动 release commit，并跳过不必要的重复校验。
 
-对于 `master` 上的 push 与手动触发，工作流会在 `pnpm run verify` 通过后继续执行：
+对于 `master` 上的 push 与手动触发，工作流会在 `pnpm run verify:ci` 通过后继续执行：
 
 ```bash
 changesets/action
@@ -362,10 +375,12 @@ changesets/action
 `@annangela/eslint-formatter-gha` 的测试现在通过 vitest 运行：
 
 ```bash
-pnpm --filter @annangela/eslint-formatter-gha run test
+pnpm --filter @annangela/eslint-formatter-gha run test:coverage
 ```
 
-测试文件位于 `packages/eslint-formatter-gha/src/` 目录下，以 `.test.ts` 结尾，覆盖 ActionsSummary、command 工具函数以及 formatter 主逻辑。无需真实 GitHub Actions 环境即可验证 formatter 的主要行为。
+单元测试文件位于 `packages/eslint-formatter-gha/src/` 目录下，以 `.test.ts` 结尾；
+smoke test 位于 `packages/eslint-formatter-gha/tests/` 目录下，
+覆盖 ActionsSummary、command 工具函数以及 formatter 主逻辑。无需真实 GitHub Actions 环境即可验证 formatter 的主要行为。
 
 ## 11. 面向维护者的建议
 

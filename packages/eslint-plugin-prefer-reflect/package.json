@@ -31,7 +31,6 @@
   "scripts": {
     "build": "node scripts/build.js",
     "lint": "eslint --exit-on-fatal-error --max-warnings 0 ./src ./tests",
-    "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "package": "pnpm run build",
@@ -39,6 +38,7 @@
     "version": "pnpm run package"
   },
   "devDependencies": {
+    "@annangela/eslint-config": "^13.0.0",
     "@vitest/coverage-v8": "^4.1.7",
     "eslint": "^10.4.0",
     "eslint-plugin-eslint-plugin": "^7.3.3",
@@ -47,6 +47,9 @@
   },
   "engines": {
     "node": "^22.21 || ^24.11"
+  },
+  "peerDependencies": {
+    "eslint": "^10.0.0"
   },
   "license": "MIT"
 }
