@@ -9,6 +9,8 @@ related_rules:
 - no-delete-var
 ---
 
+> 本文档也有 [English version](./prefer-reflect.en.md)。
+
 这是 ESLint 原始 `prefer-reflect` 思路的现代化版本。
 
 ES6 的 Reflect API 提供了一组方法，可用于替代旧构造器或旧语法中的对应写法：
