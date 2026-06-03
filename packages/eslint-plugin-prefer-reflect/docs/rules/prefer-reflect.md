@@ -218,7 +218,7 @@ Reflect.deleteProperty(foo, 'bar');
 
 :::
 
-提示：如果你想阻止删除变量，请改用 [no-delete-var](no-delete-var)。
+提示：如果你想阻止删除变量，请改用 [no-delete-var](https://eslint.org/docs/latest/rules/no-delete-var)。
 
 启用 `{ "exceptions": ["deleteProperty"] }` 时，以下代码会被视为 **正确**：
 
