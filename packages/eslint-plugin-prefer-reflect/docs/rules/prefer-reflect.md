@@ -10,7 +10,7 @@ related_rules:
 ---
 
 > [!TIP]
-> 本文档也有 [English version](./prefer-reflect.en.md)。
+> This document is also available in [English](./prefer-reflect.en.md).
 
 这是 ESLint 原始 `prefer-reflect` 思路的现代化版本。
 
