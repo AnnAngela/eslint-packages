@@ -19,7 +19,7 @@ jobs:
         with:
           show-progress: false
 
-      - uses: suzuki-shunsuke/pinact-action@3132770ecce73073bcd618342c7f4092ed2f994c # tag: v3.0.0
+      - uses: suzuki-shunsuke/pinact-action@896d595f299e71d65b9d28349d6956abe144390a # tag: v3.0.0
         with:
           fix: "true"
           update: "true"
