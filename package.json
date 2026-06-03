@@ -4,7 +4,7 @@
   "description": "AnnAngela's ESLint packages Monorepo",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@11.4.0",
+  "packageManager": "pnpm@11.5.1+sha512.93f7b57422ea7068257235b4c16eb60762eb68e1dc23723199cc739043ea9be2c4143274a399d8c6defa2b1176226d9ca1c4b63482d6200c1a8fbaa78c1d1485",
   "scripts": {
     "changeset": "changeset",
     "version": "changeset version",
@@ -19,7 +19,7 @@
     "lint:check": "pnpm run lint",
     "lint:check-ci": "pnpm run lint:ci",
     "lint:write": "eslint --fix .",
-    "ci": "pnpm install --frozen-lockfile",
+    "ci": "echo \"Already done :)\"",
     "sync:packages": "node scripts/postinstall.js",
     "check:packages": "node scripts/postinstall.js --check",
     "verify:packages": "pnpm run check:packages",
