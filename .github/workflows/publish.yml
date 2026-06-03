@@ -5,6 +5,11 @@ name: Publish
 # 这样确保发布流程与校验流程保持严格的调用关系，避免绕过校验直接发布。
 on:
   workflow_call:
+    inputs:
+      ref:
+        description: 'Commit SHA checked out and verified by the caller'
+        required: true
+        type: string
 
 jobs:
   publish:
@@ -17,6 +22,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # tag: v6.0.2
         with:
+          # 使用调用方传入的 ref（github.sha），而非默认的 master HEAD，
+          # 避免在 verify 完成后、publish 执行前有新的 commit 推入 master，
+          # 导致发布未经校验的代码
+          ref: ${{ inputs.ref }}
           show-progress: false
       - name: Install pnpm
         uses: pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093 # tag: v6.0.8

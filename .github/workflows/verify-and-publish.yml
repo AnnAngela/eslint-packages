@@ -164,3 +164,7 @@ jobs:
       (needs.prepare.outputs.skip_steps == 'true' || needs.verify.result == 'success') &&
       (needs.push-changes.result == 'success' || needs.push-changes.result == 'skipped')
     uses: ./.github/workflows/publish.yml
+    with:
+      # 传递触发本次 workflow 的 commit SHA，确保 publish 发布的是被校验过的代码，
+      # 而非 master 上可能已推进的最新 commit
+      ref: ${{ github.sha }}
