@@ -9,6 +9,7 @@ related_rules:
 - no-delete-var
 ---
 
+> [!TIP]
 > 本文档也有 [English version](./prefer-reflect.en.md)。
 
 这是 ESLint 原始 `prefer-reflect` 思路的现代化版本。
