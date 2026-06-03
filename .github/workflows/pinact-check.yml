@@ -22,3 +22,5 @@ jobs:
           verify: "true"
           verify_min_age: "true"
           review: "true"
+          config: ".pinact.yaml"
+          separator: " # tag: "
