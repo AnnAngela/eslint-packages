@@ -318,16 +318,19 @@ pnpm run version
 
 ## 9. 发布流程
 
-发布由 [`.github/workflows/npm-publish.yml`](.github/workflows/npm-publish.yml) 驱动。
+发布由 [`verify-and-publish.yml`](.github/workflows/verify-and-publish.yml) 和 [`publish.yml`](.github/workflows/publish.yml) 协同驱动：
+
+- **`verify-and-publish.yml`**：负责校验（verify）与元数据同步（push-changes），通过后在 `master` 分支上调用 `publish.yml`
+- **`publish.yml`**：仅接受 `workflow_call` 事件，只能被 `verify-and-publish.yml` 调用，无法通过 push/PR 等直接触发，确保发布不会绕过校验
 
 ### 9.1 `master` 上的自动流程
 
-当变更进入 `master` 后，统一工作流会：
+当变更进入 `master` 后，统一工作流会按以下阶段执行：
 
-1. 检出代码
-2. 安装依赖（通过 `pnpm/action-setup` 的 `run_install` 参数，使用 `--frozen-lockfile`）
-3. 执行 `pnpm run verify:ci`
-4. 执行 `changesets/action`
+1. **prepare** — 检出代码，检测是否为版本发布 commit，提取 Node.js 版本矩阵
+2. **verify** — 安装依赖，运行 `pnpm run verify:ci` 在矩阵中的各 Node.js 版本上
+3. **push-changes** — 同步 workspace 包元数据并自动提交漂移
+4. **call-publish** — 满足条件时调用 [`publish.yml`](.github/workflows/publish.yml) 执行 `changesets/action`
 
 随后会发生两种情况之一：
 
@@ -342,9 +345,9 @@ pnpm run version
 
 ## 10. CI 与自动化说明
 
-### 10.1 统一校验与发布工作流
+### 10.1 校验工作流
 
-[`.github/workflows/npm-publish.yml`](.github/workflows/npm-publish.yml) 会在以下场景触发：
+[`verify-and-publish.yml`](.github/workflows/verify-and-publish.yml) 会在以下场景触发：
 
 - push
 - pull request
@@ -362,11 +365,7 @@ pnpm run verify:ci
 
 此外，工作流会识别符合命名规则的自动 release commit，并跳过不必要的重复校验。
 
-对于 `master` 上的 push 与手动触发，工作流会在 `pnpm run verify:ci` 通过后继续执行：
-
-```bash
-changesets/action
-```
+对于 `master` 上的 push 与手动触发，工作流会在 `pnpm run verify:ci` 通过后调用独立的 [`publish.yml`](.github/workflows/publish.yml) 工作流执行 `changesets/action`。
 
 这意味着发布链路不会绕过标准校验流程，而是否创建 release PR 或直接发布则完全交由 Changesets 自行判断。
 

@@ -1,6 +1,6 @@
 # AnnAngela 的 ESLint Packages
 
-[![CI / Publish](https://github.com/AnnAngela/eslint-packages/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/AnnAngela/eslint-packages/actions/workflows/npm-publish.yml)
+[![CI / Publish](https://github.com/AnnAngela/eslint-packages/actions/workflows/verify-and-publish.yml/badge.svg)](https://github.com/AnnAngela/eslint-packages/actions/workflows/verify-and-publish.yml)
 [![CodeQL](https://github.com/AnnAngela/eslint-packages/actions/workflows/CodeQL.yaml/badge.svg)](https://github.com/AnnAngela/eslint-packages/actions/workflows/CodeQL.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
