@@ -94,9 +94,15 @@ describe("eslint-config", () => {
 
         test("should have stylistic rules", () => {
             const rules = configs.base.rules;
-            expect(rules["@stylistic/indent"]).toBeDefined();
+            // @stylistic/indent: 4-space indent with SwitchCase
+            expect(Array.isArray(rules["@stylistic/indent"])).toBe(true);
+            expect(rules["@stylistic/indent"][0]).toBe("warn");
+            expect(rules["@stylistic/indent"][1]).toBe(4);
             expect(rules["@stylistic/linebreak-style"]).toBe("error");
-            expect(rules["@stylistic/quotes"]).toBeDefined();
+            // @stylistic/quotes: double quotes with avoidEscape
+            expect(Array.isArray(rules["@stylistic/quotes"])).toBe(true);
+            expect(rules["@stylistic/quotes"][0]).toBe("error");
+            expect(rules["@stylistic/quotes"][1]).toBe("double");
         });
 
         test("should have promise rules", () => {
@@ -136,6 +142,12 @@ describe("eslint-config", () => {
         test("should have security plugin rules", () => {
             const rules = configs.node.rules;
             expect(rules["security/detect-object-injection"]).toBeDefined();
+            // eslint-plugin-security rules should have string or array severity values
+            const severity = rules["security/detect-object-injection"];
+            expect(
+                typeof severity === "string" || Array.isArray(severity),
+                "security/detect-object-injection should have a valid rule severity",
+            ).toBe(true);
         });
     });
 
@@ -158,9 +170,14 @@ describe("eslint-config", () => {
     describe("forkedGlobals exports", () => {
         test("should export forkedGlobals", () => {
             expect(forkedGlobals).toBeDefined();
-            expect(forkedGlobals.jquery).toBeDefined();
-            expect(forkedGlobals.greasemonkey).toBeDefined();
-            expect(forkedGlobals.mocha).toBeDefined();
+            expect(typeof forkedGlobals).toBe("object");
+            expect(typeof forkedGlobals.jquery).toBe("object");
+            expect(typeof forkedGlobals.greasemonkey).toBe("object");
+            expect(typeof forkedGlobals.mocha).toBe("object");
+            // Each should have actual entries
+            expect(Object.keys(forkedGlobals.jquery).length).toBeGreaterThan(0);
+            expect(Object.keys(forkedGlobals.greasemonkey).length).toBeGreaterThan(0);
+            expect(Object.keys(forkedGlobals.mocha).length).toBeGreaterThan(0);
         });
 
         test("should have jquery globals", () => {
@@ -205,23 +222,30 @@ describe("eslint-config", () => {
     });
 
     describe("config plugins", () => {
-        test("base config should have correct plugins", () => {
+        test("base config should have correct plugins with rules", () => {
             const plugins = configs.base.plugins;
-            expect(plugins["@annangela/prefer-reflect"]).toBeDefined();
-            expect(plugins.promise).toBeDefined();
-            expect(plugins["@eslint-community/eslint-comments"]).toBeDefined();
-            expect(plugins["prefer-arrow-functions"]).toBeDefined();
+            for (const name of ["@annangela/prefer-reflect", "promise", "@eslint-community/eslint-comments", "prefer-arrow-functions"]) {
+                expect(plugins[name], `${name} plugin should be defined`).toBeDefined();
+                // ESLint plugins are objects with rules
+                expect(typeof plugins[name], `${name} plugin should be an object`).toBe("object");
+                expect(typeof plugins[name].rules, `${name} plugin should have rules`).toBe("object");
+            }
         });
 
-        test("node config should have correct plugins", () => {
+        test("node config should have correct plugins with rules", () => {
             const plugins = configs.node.plugins;
-            expect(plugins.n).toBeDefined();
-            expect(plugins.security).toBeDefined();
+            for (const name of ["n", "security"]) {
+                expect(plugins[name], `${name} plugin should be defined`).toBeDefined();
+                expect(typeof plugins[name], `${name} plugin should be an object`).toBe("object");
+                expect(typeof plugins[name].rules, `${name} plugin should have rules`).toBe("object");
+            }
         });
 
-        test("typescript config should have correct plugins", () => {
+        test("typescript config should have correct plugins with rules", () => {
             const plugins = configs.typescript.plugins;
             expect(plugins["@typescript-eslint"]).toBeDefined();
+            expect(typeof plugins["@typescript-eslint"]).toBe("object");
+            expect(typeof plugins["@typescript-eslint"].rules).toBe("object");
         });
     });
 
@@ -229,25 +253,45 @@ describe("eslint-config", () => {
         test("base config should have builtin and es2024 globals", () => {
             const globals = configs.base.languageOptions.globals;
             expect(globals).toBeDefined();
-            expect(typeof globals).toBe("object");
+            // Well-known builtin globals from globals.builtin
+            expect(globals.Array).toBe(false);
+            expect(globals.Object).toBe(false);
+            // Well-known es2024 globals from globals.es2024
+            expect(globals.Promise).toBe(false);
+            expect(globals.Map).toBe(false);
+            expect(globals.Set).toBe(false);
         });
 
         test("browser config should have browser and jquery globals", () => {
             const globals = configs.browser.languageOptions.globals;
             expect(globals).toBeDefined();
-            expect(typeof globals).toBe("object");
+            // Well-known browser globals from globals.browser
+            expect(globals.window).toBe(false);
+            expect(globals.document).toBe(false);
+            // Well-known jquery globals from forkedGlobals.jquery
+            expect(globals.$).toBe(false);
+            expect(globals.jQuery).toBe(false);
         });
 
         test("node config should have node and nodeBuiltin globals", () => {
             const globals = configs.node.languageOptions.globals;
             expect(globals).toBeDefined();
-            expect(typeof globals).toBe("object");
+            // Well-known node globals from globals.node
+            expect(globals.process).toBe(false);
+            expect(globals.__dirname).toBe(false);
+            // Well-known nodeBuiltin globals from globals.nodeBuiltin
+            expect(globals.Buffer).toBe(false);
+            expect(globals.console).toBe(false);
         });
 
         test("mocha config should have mocha globals", () => {
             const globals = configs.mocha.languageOptions.globals;
             expect(globals).toBeDefined();
-            expect(typeof globals).toBe("object");
+            // Well-known mocha globals from forkedGlobals.mocha
+            expect(globals.describe).toBe(false);
+            expect(globals.it).toBe(false);
+            expect(globals.before).toBe(false);
+            expect(globals.after).toBe(false);
         });
     });
 });

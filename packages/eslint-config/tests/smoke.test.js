@@ -3,58 +3,77 @@ import { ESLint } from "eslint";
 import configs from "../src/index.js";
 
 describe("eslint-config smoke tests", () => {
-    it("should load base config and lint JavaScript code", async () => {
+    it("should load base config and lint valid JavaScript code without errors", async () => {
         const eslint = new ESLint({
             overrideConfigFile: true,
             overrideConfig: configs.configs.base,
         });
 
-        const results = await eslint.lintText("const x = 1;\n");
+        // `_x` prefix allows unused vars per ESLint default no-unused-vars config
+        const results = await eslint.lintText("const _x = 1;\n");
 
         expect(results).toHaveLength(1);
-        expect(results[0].messages).toBeDefined();
+        expect(results[0].errorCount).toBe(0);
+        expect(results[0].warningCount).toBe(0);
     });
 
-    it("should load node config and lint Node.js code", async () => {
+    it("should load node config and detect CJS require of bare specifier", async () => {
         const eslint = new ESLint({
             overrideConfigFile: true,
             overrideConfig: configs.configs.node,
         });
 
+        // `require('fs')` should trigger n/prefer-node-protocol (use node:fs instead)
         const results = await eslint.lintText("const fs = require('fs');\n");
 
         expect(results).toHaveLength(1);
-        expect(results[0].messages).toBeDefined();
+        const nodeProtocolErrors = results[0].messages.filter(
+            (m) => m.ruleId === "n/prefer-node-protocol",
+        );
+        expect(nodeProtocolErrors.length).toBeGreaterThan(0);
     });
 
-    it("should load typescript config without errors", () => {
-        const eslint = new ESLint({
-            overrideConfigFile: true,
-            overrideConfig: configs.configs.typescript,
-        });
+    it("should load typescript config with valid parser and parserOptions", () => {
+        const config = configs.configs.typescript;
 
-        // The TypeScript config references @typescript-eslint/parser which
-        // may not be installed in the test environment (it is a transitive
-        // peer dependency). We verify the config loads without throwing,
-        // confirming that the config structure is valid. Full TS linting
-        // is verified by the formatter-gha smoke test which has the parser
-        // available in its workspace environment.
-        expect(eslint).toBeDefined();
+        // Verify parser module is loaded and has expected API
+        expect(config.languageOptions.parser).toBeDefined();
+        expect(typeof config.languageOptions.parser.parseForESLint).toBe("function");
+
+        // Verify parserOptions structure
+        expect(config.languageOptions.parserOptions).toBeDefined();
+        expect(config.languageOptions.parserOptions.ecmaVersion).toBe(2024);
+        expect(config.languageOptions.parserOptions.projectService).toBe(true);
+
+        // Verify TS plugin and rules are present
+        expect(config.plugins["@typescript-eslint"]).toBeDefined();
+        expect(config.rules).toBeDefined();
+        // Verify at least one known TS rule exists
+        expect(typeof config.rules["@typescript-eslint/prefer-nullish-coalescing"]).toBe("object");
     });
 
-    it("should export all expected configs", () => {
-        expect(configs.configs.base).toBeDefined();
-        expect(configs.configs.browser).toBeDefined();
-        expect(configs.configs.node).toBeDefined();
-        expect(configs.configs.typescript).toBeDefined();
-        expect(configs.configs.eslintPlugin).toBeDefined();
-        expect(configs.configs.mocha).toBeDefined();
+    it("should export all expected configs as objects", () => {
+        const expectedConfigs = ["base", "browser", "eslintPlugin", "mocha", "node", "typescript"];
+        for (const name of expectedConfigs) {
+            const config = configs.configs[name];
+            expect(config, `configs.${name} should be defined`).toBeDefined();
+            expect(typeof config, `configs.${name} should be an object`).toBe("object");
+        }
     });
 
-    it("should export forkedGlobals", () => {
-        expect(configs.forkedGlobals).toBeDefined();
-        expect(configs.forkedGlobals.jquery).toBeDefined();
-        expect(configs.forkedGlobals.greasemonkey).toBeDefined();
-        expect(configs.forkedGlobals.mocha).toBeDefined();
+    it("should export forkedGlobals with actual global entries", () => {
+        expect(typeof configs.forkedGlobals, "forkedGlobals should be an object").toBe("object");
+
+        const expectedGlobals = ["jquery", "greasemonkey", "mocha"];
+        for (const name of expectedGlobals) {
+            const globals = configs.forkedGlobals[name];
+            expect(globals, `forkedGlobals.${name} should be defined`).toBeDefined();
+            expect(typeof globals, `forkedGlobals.${name} should be an object`).toBe("object");
+            // Each global set should contain actual entries
+            expect(
+                Object.keys(globals).length,
+                `forkedGlobals.${name} should have at least one entry`,
+            ).toBeGreaterThan(0);
+        }
     });
 });

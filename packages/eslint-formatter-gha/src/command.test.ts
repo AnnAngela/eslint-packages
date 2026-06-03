@@ -93,10 +93,16 @@ describe("command", () => {
 
         test("should handle all severity types", () => {
             const severities: logSeverity[] = ["debug", "notice", "warning", "error"];
+            const expectedPrefixes: Record<logSeverity, string> = {
+                debug: "::debug::",
+                notice: "::notice::",
+                warning: "::warning::",
+                error: "::error::",
+            };
             for (const severity of severities) {
                 consoleInfoSpy.mockClear();
                 log(severity, "test");
-                expect(consoleInfoSpy).toHaveBeenCalled();
+                expect(consoleInfoSpy).toHaveBeenCalledWith(`${expectedPrefixes[severity]}test`);
             }
         });
 

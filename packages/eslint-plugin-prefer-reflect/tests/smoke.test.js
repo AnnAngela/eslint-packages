@@ -21,7 +21,8 @@ describe("eslint-plugin-prefer-reflect smoke tests", () => {
         );
 
         expect(results).toHaveLength(1);
-        expect(results[0].messages).toBeDefined();
+        // Reflect.apply() is the correct/preferred form, so no violations
+        expect(results[0].messages).toHaveLength(0);
     });
 
     it("should detect violations when using legacy APIs", async () => {
@@ -48,9 +49,15 @@ describe("eslint-plugin-prefer-reflect smoke tests", () => {
         );
     });
 
-    it("should export plugin with rules", () => {
+    it("should export plugin with a valid rule object", () => {
         expect(plugin.rules).toBeDefined();
-        expect(plugin.rules["prefer-reflect"]).toBeDefined();
+        expect(typeof plugin.rules).toBe("object");
+        const rule = plugin.rules["prefer-reflect"];
+        expect(rule).toBeDefined();
+        // ESLint rule modules export an object with create and meta
+        expect(typeof rule).toBe("object");
+        expect(typeof rule.create).toBe("function");
+        expect(typeof rule.meta).toBe("object");
     });
 
     it("should support exceptions option", async () => {

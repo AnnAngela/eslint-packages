@@ -70,6 +70,10 @@ describe("ActionsSummary", () => {
         test("should add empty line", () => {
             summary.addEOL();
             expect(summary.isEmptyBuffer()).toBe(false);
+            // EOL should add an empty string to the buffer
+            const output = summary.stringify();
+            // After addEOL, the buffer contains [""] which stringifies to an empty line
+            expect(output).toBe("");
         });
     });
 
@@ -306,11 +310,17 @@ describe("ActionsSummary", () => {
     });
 
     describe("clear", () => {
-        test("should clear the buffer and write", () => {
+        test("should clear the buffer and overwrite file with empty content", () => {
+            // First write some content that should be cleared
             summary.addRaw("test");
+            summary.write();
+            // Now clear — empties buffer then overwrites file with empty content
             const result = summary.clear();
             expect(result).toBe(summary);
             expect(summary.isEmptyBuffer()).toBe(true);
+            // clear() overwrites the file with empty content, so "test" should be gone
+            const fileContent = fs.readFileSync(testFilePath, "utf-8");
+            expect(fileContent).toBe("");
         });
     });
 
