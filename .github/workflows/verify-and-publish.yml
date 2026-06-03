@@ -154,6 +154,14 @@ jobs:
   # 调用独立的 publish workflow，避免绕过校验直接发布。
   # publish.yml 仅接受 workflow_call 事件，无法通过 push/PR 等直接触发。
   call-publish:
+    # 权限声明是调用可重用 workflow 所必需的：被调用 workflow（publish.yml）
+    # 中 publish job 请求了 contents:write、pull-requests:write、id-token:write，
+    # 但调用方 job 若不显式声明 permissions，GitHub Actions 会使用默认的严格限制
+    # （contents:read、pull-requests:none、id-token:none），导致调用失败。
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
     needs:
       - prepare
       - verify
