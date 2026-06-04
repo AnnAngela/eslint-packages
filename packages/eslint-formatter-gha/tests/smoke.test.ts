@@ -1,7 +1,9 @@
 import { describe, it, expect, vi, beforeAll, afterAll, beforeEach, afterEach } from "vitest";
 import { ESLint } from "eslint";
 import fs from "node:fs";
+import { createRequire } from "node:module";
 import { fileSync } from "tmp";
+import ActionsSummary from "../src/ActionsSummary.js";
 
 describe("eslint-formatter-gha smoke tests", () => {
     let consoleInfoSpy: ReturnType<typeof vi.spyOn<typeof console, "info">>;
@@ -111,5 +113,21 @@ describe("eslint-formatter-gha smoke tests", () => {
         // Summary file should indicate no issues
         const summaryContent = fs.readFileSync(summaryFile, "utf-8");
         expect(summaryContent).toContain("Nothing is broken, everything is fine.");
+    });
+
+    it("should export formatter as a callable function for CJS consumers", () => {
+        // Verify the `;module.exports=module.exports.default;` appended by build.js
+        // produces a valid CJS module where the default export is the formatter function
+        const distRequire = createRequire(import.meta.url);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- CJS require returns unknown type by design
+        const distCJS = distRequire("../dist/index.js");
+        expect(typeof distCJS).toBe("function");
+    });
+
+    it("should provide addSeparator as the correctly spelled alias for addSeperator", () => {
+        const summary = new ActionsSummary();
+        summary.addSeparator();
+        // addSeparator delegates to addSeperator, which appends "*******" followed by an empty line
+        expect(summary.stringify()).toBe("*******\n");
     });
 });

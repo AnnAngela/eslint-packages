@@ -8,6 +8,20 @@
 // Rule Definition
 // ------------------------------------------------------------------------------
 
+/** Supported method names for the `exceptions` schema enum */
+const EXCEPTION_NAMES = [
+    "apply",
+    "defineProperty",
+    "deleteProperty",
+    "getOwnPropertyDescriptor",
+    "getPrototypeOf",
+    "has",
+    "isExtensible",
+    "ownKeys",
+    "preventExtensions",
+    "setPrototypeOf",
+];
+
 /**
  * @type { import('eslint').Rule.RuleMetaData }
  */
@@ -29,18 +43,7 @@ export const meta = {
                 exceptions: {
                     type: "array",
                     items: {
-                        "enum": [
-                            "apply",
-                            "defineProperty",
-                            "deleteProperty",
-                            "getOwnPropertyDescriptor",
-                            "getPrototypeOf",
-                            "has",
-                            "isExtensible",
-                            "ownKeys",
-                            "preventExtensions",
-                            "setPrototypeOf",
-                        ],
+                        "enum": EXCEPTION_NAMES,
                     },
                     uniqueItems: true,
                     description: "Exceptions",

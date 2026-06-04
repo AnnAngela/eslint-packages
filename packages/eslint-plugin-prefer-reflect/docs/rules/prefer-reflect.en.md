@@ -453,6 +453,8 @@ function safeAddProperty(obj, key, value) {
 
 Replaces `Object.getOwnPropertyNames()`.
 
+> ⚠️ **Semantic difference**: `Object.getOwnPropertyNames` only returns string keys, while `Reflect.ownKeys` returns both string and Symbol keys. This rule provides a **suggestion** (not an auto-fix) for this replacement — please verify your code does not depend on receiving only string keys before accepting the suggestion.
+
 With no exceptions configured, the following is considered **incorrect**:
 
 ::: incorrect

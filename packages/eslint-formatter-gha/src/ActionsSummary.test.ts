@@ -187,8 +187,17 @@ describe("ActionsSummary", () => {
         });
     });
 
-    describe("addSeperator", () => {
+    describe("addSeparator", () => {
         test("should add separator", () => {
+            const result = summary.addSeparator();
+            expect(result).toBe(summary);
+            const output = summary.stringify();
+            expect(output).toContain("*******");
+        });
+
+        test("should provide addSeperator as deprecated alias", () => {
+            summary.emptyBuffer();
+            // eslint-disable-next-line @typescript-eslint/no-deprecated -- Intentionally testing the deprecated alias
             const result = summary.addSeperator();
             expect(result).toBe(summary);
             const output = summary.stringify();

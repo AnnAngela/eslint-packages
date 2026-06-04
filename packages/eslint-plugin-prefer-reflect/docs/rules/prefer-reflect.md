@@ -453,6 +453,8 @@ function safeAddProperty(obj, key, value) {
 
 用于替代 `Object.getOwnPropertyNames()`。
 
+> ⚠️ **语义差异警告**：`Object.getOwnPropertyNames` 只返回字符串键，而 `Reflect.ownKeys` 同时返回字符串键和 Symbol 键。本规则对此替换仅提供 **suggestion**（非 auto-fix），请在接受建议前确认你的代码不依赖仅返回字符串键的行为。
+
 未配置例外时，以下代码会被视为 **错误**：
 
 ::: incorrect

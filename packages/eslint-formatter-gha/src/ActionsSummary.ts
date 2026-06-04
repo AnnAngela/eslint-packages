@@ -96,7 +96,14 @@ export default class ActionsSummary {
         return this._filePath;
     }
     private wrap = ({ tag, content, attributes = {}, contentOnSeparateLine = false }: ActionsSummaryWrapOptions) => {
-        const htmlAttributes = Object.entries(attributes).map(([key, value]) => value === undefined ? false : `${key}="${value}"`).filter((attribute): attribute is string => typeof attribute === "string").join(" ");
+        const htmlAttributes = Object.entries(attributes).map(([key, value]) => {
+            if (value === undefined) {
+                return false;
+            }
+            // Escape HTML entities in attribute values to prevent XSS via injected double-quotes etc.
+            const escaped = value.replaceAll("&", "&amp;").replaceAll("\"", "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+            return `${key}="${escaped}"`;
+        }).filter((attribute): attribute is string => typeof attribute === "string").join(" ");
         const output = htmlAttributes ? [`<${tag} ${htmlAttributes}>`] : [`<${tag}>`];
         if (content) {
             output.push(content, `</${tag}>`);
@@ -181,7 +188,13 @@ export default class ActionsSummary {
         this.summary.push(`${"#".repeat(level)} ${text}`);
         return this.addEOL();
     }
+    /**
+     * @deprecated Use {@link addSeparator} instead. Will be removed in the next major version.
+     */
     addSeperator() {
+        return this.addSeparator();
+    }
+    addSeparator() {
         this.summary.push("*".repeat(7));
         return this.addEOL();
     }
