@@ -185,6 +185,9 @@ for (const [pkg, { pkgJSONPath, pkgJSON }] of Object.entries(packagesList)) {
         }
         for (const [dependencyName, dependencyVersionString] of Object.entries(pkgJSON[property])) {
             unusedDependencies.delete(dependencyName);
+            // 跳过 workspace: 协议依赖 —— pnpm 在 publish 时自动处理版本替换，
+            // 将其转为 npm 版本范围会破坏本地 workspace 链接能力
+            if (/^workspace:/.test(dependencyVersionString)) continue;
             const lockVersion = pnpmLockVersions[dependencyName];
             if (typeof lockVersion === "string") {
                 const targetVersion = `^${lockVersion}`;
