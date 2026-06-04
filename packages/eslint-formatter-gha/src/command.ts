@@ -2,9 +2,8 @@ import type { notice } from "@actions/core";
 import type { Linter } from "eslint";
 
 export type logSeverity = "debug" | "notice" | "warning" | "error";
-type annotationPropertiesTypeNullable = Parameters<typeof notice>[1];
 // Strip outer `| undefined` from the optional parameter, then strip `undefined` from each ?-optional field
-type CoreAnnotationProperties = NonNullable<annotationPropertiesTypeNullable>;
+type CoreAnnotationProperties = NonNullable<Parameters<typeof notice>[1]>;
 export type annotationPropertiesType = {
     [K in keyof CoreAnnotationProperties]: NonNullable<CoreAnnotationProperties[K]>;
 };
