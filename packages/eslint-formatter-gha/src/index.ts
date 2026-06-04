@@ -22,7 +22,7 @@ const formatter: ESLint.FormatterFunction = (results, data) => {
         if (deprecatedRulesSeverities.includes(deprecatedRulesSeverityFromEnv)) {
             deprecatedRulesSeverity = deprecatedRulesSeverityFromEnv as logSeverity;
         } else {
-            actionsSummary.addRaw(`${ActionsSummary.EMOJI.warning} The env \`ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY\` it is not a valid severity - \`${deprecatedRulesSeverityFromEnv}\`, so the severity of deprecated rules report is set to \`${deprecatedRulesSeverity}\` instead.`);
+            actionsSummary.addRaw(`${ActionsSummary.EMOJI.warning} The env \`ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY\` is not a valid severity - \`${deprecatedRulesSeverityFromEnv}\`, so the severity of deprecated rules report is set to \`${deprecatedRulesSeverity}\` instead.`);
         }
     }
     const deprecatedRules: string[] = [];

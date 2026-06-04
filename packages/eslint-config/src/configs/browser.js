@@ -13,7 +13,6 @@ const config = { // `browserConfig`: For files used in browser
         sourceType: "script",
         parserOptions: {
             ecmaVersion: "latest",
-            sourceType: "module",
         },
         globals: {
             ...globals.browser,

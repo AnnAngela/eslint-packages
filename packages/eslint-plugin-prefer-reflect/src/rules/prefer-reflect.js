@@ -43,7 +43,7 @@ export const meta = {
                         ],
                     },
                     uniqueItems: true,
-                    description: "Execptions",
+                    description: "Exceptions",
                 },
             },
             additionalProperties: false,

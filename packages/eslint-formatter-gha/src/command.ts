@@ -10,7 +10,8 @@ export const eslintSeverityToAnnotationSeverity: Record<Linter.Severity, logSeve
     2: "error",
 };
 
-// Code from @actions/core/lib/command.js to prevent unnecessary dependencies from being included in dist file due to insufficient tree shaking functionality of esbuild
+// Inlined from @actions/core/lib/command.js to avoid adding @actions/core as a runtime dependency.
+// Only `import type` (L1) references it, so zero runtime code from @actions/core lands in dist.
 const escapeProperty = (s: string | number) => `${s}`.replaceAll("%", "%25").replaceAll("\r", "%0D").replaceAll("\n", "%0A").replaceAll(":", "%3A").replaceAll(",", "%2C");
 const escapeData = (s: string | number) => `${s}`.replaceAll("%", "%25").replaceAll("\r", "%0D").replaceAll("\n", "%0A");
 export const log = (severity: logSeverity, msg: string, annotationProperties?: annotationPropertiesTypeNullable) => {

@@ -27,7 +27,10 @@ const config = { // `typescriptConfig`: For TypeScript files
         "@typescript-eslint": typescriptPlugin,
     },
     rules: {
-        ...typescriptPlugin.configs["eslint-recommended"].rules,
+        // `eslint-recommended` (eslintrc format) uses `overrides`, not `rules`, so this spread is a no-op.
+        // `strict-type-checked` already includes `"no-unused-vars": "off"` and
+        // `"@typescript-eslint/no-unused-vars": "error"`.
+        // ...typescriptPlugin.configs["eslint-recommended"].rules,
         ...typescriptPlugin.configs["strict-type-checked"].rules,
         ...typescriptPlugin.configs["stylistic-type-checked"].rules,
         "@typescript-eslint/prefer-nullish-coalescing": [
