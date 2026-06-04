@@ -34,7 +34,7 @@ describe("eslint-formatter-gha", () => {
     fs.closeSync(tmpFile.fd);
 
     /** Helper: get all console.info calls as strings */
-    const getCalls = () => consoleInfoSpy.mock.calls.map(c => c[0] as string);
+    const getCalls = () => consoleInfoSpy.mock.calls.map((c) => c[0] as string);
 
     beforeEach(() => {
         consoleInfoSpy = vi.spyOn(console, "info").mockImplementation(() => { /* noop */ });
@@ -97,14 +97,14 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const errorCalls = getCalls().filter(c => c.startsWith("::error"));
+            const errorCalls = getCalls().filter((c) => c.startsWith("::error"));
             expect(errorCalls.length).toBe(1);
             expect(errorCalls[0]).toContain("title=ESLint Annotation");
             expect(errorCalls[0]).toContain("file=/path/to/file.js");
             expect(errorCalls[0]).toContain("startLine=10,startColumn=5");
             expect(errorCalls[0]).toContain("Unexpected var, use let or const instead");
             expect(errorCalls[0]).toContain("(no-var) - https://eslint.org/docs/rules/no-var");
-            expect(errorCalls[0]).toContain(`https://github.com/owner/repo/blob/${process.env.GITHUB_SHA!.slice(0, 7)}/`);
+            expect(errorCalls[0]).toContain(`https://github.com/owner/repo/blob/${process.env.GITHUB_SHA?.slice(0, 7) ?? ""}/`);
         });
 
         test("should format warning messages with ::warning workflow command", () => {
@@ -134,7 +134,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const warningCalls = getCalls().filter(c => c.startsWith("::warning"));
+            const warningCalls = getCalls().filter((c) => c.startsWith("::warning"));
             expect(warningCalls.length).toBe(1);
             expect(warningCalls[0]).toContain("title=ESLint Annotation");
             expect(warningCalls[0]).toContain("Missing semicolon");
@@ -168,7 +168,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const noticeCalls = getCalls().filter(c => c.startsWith("::notice"));
+            const noticeCalls = getCalls().filter((c) => c.startsWith("::notice"));
             expect(noticeCalls.length).toBe(1);
             expect(noticeCalls[0]).toContain("Info message");
             expect(noticeCalls[0]).toContain("(info-rule)");
@@ -204,7 +204,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const errorCalls = getCalls().filter(c => c.startsWith("::error"));
+            const errorCalls = getCalls().filter((c) => c.startsWith("::error"));
             expect(errorCalls.length).toBe(1);
             expect(errorCalls[0]).toContain("[maybe fixable]");
         });
@@ -240,7 +240,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const errorCalls = getCalls().filter(c => c.startsWith("::error"));
+            const errorCalls = getCalls().filter((c) => c.startsWith("::error"));
             expect(errorCalls.length).toBe(1);
             expect(errorCalls[0]).toContain("endLine=5,endColumn=2");
             expect(errorCalls[0]).toContain("no-inline-comments");
@@ -277,7 +277,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const errorCalls = getCalls().filter(c => c.startsWith("::error"));
+            const errorCalls = getCalls().filter((c) => c.startsWith("::error"));
             expect(errorCalls.length).toBe(1);
             // Annotation properties use original values
             expect(errorCalls[0]).toContain("endLine=5,endColumn=1");
@@ -315,7 +315,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const errorCalls = getCalls().filter(c => c.startsWith("::error"));
+            const errorCalls = getCalls().filter((c) => c.startsWith("::error"));
             expect(errorCalls.length).toBe(1);
             // Link should only have single line hash, not a range
             expect(errorCalls[0]).toContain("#L5");
@@ -353,7 +353,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const warningCalls = getCalls().filter(c => c.startsWith("::warning"));
+            const warningCalls = getCalls().filter((c) => c.startsWith("::warning"));
             expect(warningCalls.length).toBe(1);
             // Deprecated rule annotation uses "ESLint Annotation" title without file/line properties
             expect(warningCalls[0]).toContain("title=ESLint Annotation");
@@ -386,7 +386,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const warningCalls = getCalls().filter(c => c.startsWith("::warning"));
+            const warningCalls = getCalls().filter((c) => c.startsWith("::warning"));
             expect(warningCalls.length).toBe(1);
             expect(warningCalls[0]).toContain("Deprecated rule: old-rule");
             // Should NOT contain "replaced by" since replacedBy is empty
@@ -421,7 +421,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const warningCalls = getCalls().filter(c => c.startsWith("::warning"));
+            const warningCalls = getCalls().filter((c) => c.startsWith("::warning"));
             // Deprecated rule should only appear once despite two files using it
             expect(warningCalls.length).toBe(1);
         });
@@ -450,7 +450,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const noticeCalls = getCalls().filter(c => c.startsWith("::notice"));
+            const noticeCalls = getCalls().filter((c) => c.startsWith("::notice"));
             expect(noticeCalls.length).toBe(1);
             expect(noticeCalls[0]).toContain("Deprecated rule: old-rule");
         });
@@ -478,11 +478,11 @@ describe("eslint-formatter-gha", () => {
             void formatter(results, data);
 
             // debug severity uses ::debug prefix, not shown as annotation
-            const debugCalls = getCalls().filter(c => c.startsWith("::debug"));
-            const deprecatedDebugCall = debugCalls.find(c => c.includes("Deprecated rule: old-rule"));
+            const debugCalls = getCalls().filter((c) => c.startsWith("::debug"));
+            const deprecatedDebugCall = debugCalls.find((c) => c.includes("Deprecated rule: old-rule"));
             expect(deprecatedDebugCall).toBeDefined();
             // Should NOT produce ::warning annotation for deprecated rules
-            const warningCalls = getCalls().filter(c => c.startsWith("::warning::Deprecated"));
+            const warningCalls = getCalls().filter((c) => c.startsWith("::warning::Deprecated"));
             expect(warningCalls.length).toBe(0);
         });
 
@@ -508,7 +508,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const errorCalls = getCalls().filter(c => c.startsWith("::error"));
+            const errorCalls = getCalls().filter((c) => c.startsWith("::error"));
             expect(errorCalls.length).toBe(1);
             expect(errorCalls[0]).toContain("Deprecated rule: old-rule");
         });
@@ -536,8 +536,8 @@ describe("eslint-formatter-gha", () => {
             void formatter(results, data);
 
             // Should fall back to default "warning" severity
-            const warningCalls = getCalls().filter(c => c.startsWith("::warning"));
-            const deprecatedWarning = warningCalls.find(c => c.includes("Deprecated rule: old-rule"));
+            const warningCalls = getCalls().filter((c) => c.startsWith("::warning"));
+            const deprecatedWarning = warningCalls.find((c) => c.includes("Deprecated rule: old-rule"));
             expect(deprecatedWarning).toBeDefined();
             // Summary should report the invalid env value
             const summaryContent = fs.readFileSync(testFilePath, "utf-8");
@@ -573,7 +573,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const errorCalls = getCalls().filter(c => c.startsWith("::error"));
+            const errorCalls = getCalls().filter((c) => c.startsWith("::error"));
             expect(errorCalls.length).toBe(1);
             // Without GITHUB_SHA, should output relative path prefixed with @
             expect(errorCalls[0]).toContain("@");
@@ -607,7 +607,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const errorCalls = getCalls().filter(c => c.startsWith("::error"));
+            const errorCalls = getCalls().filter((c) => c.startsWith("::error"));
             expect(errorCalls.length).toBe(1);
             expect(errorCalls[0]).toContain("@");
             expect(errorCalls[0]).not.toContain("https://github.com/owner");
@@ -639,7 +639,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const errorCalls = getCalls().filter(c => c.startsWith("::error"));
+            const errorCalls = getCalls().filter((c) => c.startsWith("::error"));
             expect(errorCalls.length).toBe(1);
             // Should fall back to default https://github.com
             expect(errorCalls[0]).toContain("https://github.com/owner/repo/blob/");
@@ -665,7 +665,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const errorCalls = getCalls().filter(c => c.startsWith("::error"));
+            const errorCalls = getCalls().filter((c) => c.startsWith("::error"));
             expect(errorCalls.length).toBe(1);
             expect(errorCalls[0]).toContain("Parsing error");
             // Should NOT contain rule link since there's no ruleId
@@ -688,7 +688,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const errorCalls = getCalls().filter(c => c.startsWith("::error"));
+            const errorCalls = getCalls().filter((c) => c.startsWith("::error"));
             expect(errorCalls.length).toBe(1);
             expect(errorCalls[0]).toContain("File-level error");
             // When line/column are undefined, they appear as "undefined" in annotation properties
@@ -721,7 +721,7 @@ describe("eslint-formatter-gha", () => {
 
             void formatter(results, data);
 
-            const errorCalls = getCalls().filter(c => c.startsWith("::error"));
+            const errorCalls = getCalls().filter((c) => c.startsWith("::error"));
             expect(errorCalls.length).toBe(1);
             expect(errorCalls[0]).toContain("(test-rule)");
             // Should use ruleId as text (no URL), so there should be "test-rule" after the closing paren

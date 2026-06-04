@@ -111,7 +111,7 @@ const config = [
             "n/no-unsupported-features/es-syntax": ["error", { version: packageJSON.engines.node }],
         },
     },
-    // Test files: allow non-literal fs filenames for testing purposes
+    // Test files: allow non-literal fs filenames and object injection for testing purposes
     {
         files: [
             "**/*.test.ts",
@@ -121,6 +121,7 @@ const config = [
         ],
         rules: {
             "security/detect-non-literal-fs-filename": "off",
+            "security/detect-object-injection": "off",
         },
     },
 ];

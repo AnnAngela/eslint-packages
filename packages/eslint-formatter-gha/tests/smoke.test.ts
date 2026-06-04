@@ -4,7 +4,7 @@ import fs from "node:fs";
 import { fileSync } from "tmp";
 
 describe("eslint-formatter-gha smoke tests", () => {
-    let consoleInfoSpy: ReturnType<typeof vi.spyOn>;
+    let consoleInfoSpy: ReturnType<typeof vi.spyOn<typeof console, "info">>;
     // Use a single tmp file because ActionsSummary lazily caches _filePath
     // and reuses it across all formatter.format() calls within the same process
     const tmpFile = fileSync({ postfix: ".md" });
@@ -52,10 +52,10 @@ describe("eslint-formatter-gha smoke tests", () => {
         // Formatter returns empty string (output goes via console.info + summary file)
         expect(formatted).toBe("");
 
-        const calls = consoleInfoSpy.mock.calls.map(call => call[0] as string);
+        const calls = consoleInfoSpy.mock.calls.map((call) => call[0] as string);
 
         // Should have ::debug call with structured annotation details
-        const debugCall = calls.find(c => c.startsWith("::debug::"));
+        const debugCall = calls.find((c) => c.startsWith("::debug::"));
         expect(debugCall).toBeDefined();
         expect(debugCall).toContain("ESLint Annotation");
         expect(debugCall).toContain("no-unused-vars");
@@ -66,7 +66,7 @@ describe("eslint-formatter-gha smoke tests", () => {
         expect(debugCall).toContain('"endColumn": 8');
 
         // Should have ::error workflow command with correct annotation properties
-        const errorCall = calls.find(c => c.startsWith("::error"));
+        const errorCall = calls.find((c) => c.startsWith("::error"));
         expect(errorCall).toBeDefined();
         // Annotation properties (comma-separated, order: title,file,startLine,startColumn,endLine,endColumn)
         expect(errorCall).toContain("title=ESLint Annotation");
@@ -102,9 +102,9 @@ describe("eslint-formatter-gha smoke tests", () => {
         expect(formatted).toBe("");
 
         // Verify no ::error, ::warning, or ::notice workflow commands were emitted
-        const calls = consoleInfoSpy.mock.calls.map(call => call[0] as string);
-        const annotationCalls = calls.filter(c =>
-            /^::(error|warning|notice)/.test(c)
+        const calls = consoleInfoSpy.mock.calls.map((call) => call[0] as string);
+        const annotationCalls = calls.filter((c) =>
+            /^::(error|warning|notice)/.test(c),
         );
         expect(annotationCalls).toHaveLength(0);
 
