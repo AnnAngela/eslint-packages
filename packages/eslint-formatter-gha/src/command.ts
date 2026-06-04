@@ -3,11 +3,10 @@ import type { Linter } from "eslint";
 
 export type logSeverity = "debug" | "notice" | "warning" | "error";
 type annotationPropertiesTypeNullable = Parameters<typeof notice>[1];
-// Strip `undefined` from every field inherited from @actions/core's AnnotationProperties (?-optional fields)
+// Strip outer `| undefined` from the optional parameter, then strip `undefined` from each ?-optional field
+type CoreAnnotationProperties = NonNullable<annotationPropertiesTypeNullable>;
 export type annotationPropertiesType = {
-    [K in keyof NonNullable<annotationPropertiesTypeNullable>]: NonNullable<
-        NonNullable<annotationPropertiesTypeNullable>[K]
-    >;
+    [K in keyof CoreAnnotationProperties]: NonNullable<CoreAnnotationProperties[K]>;
 };
 export const eslintSeverityToAnnotationSeverity: Record<Linter.Severity, logSeverity> = {
     0: "notice",
