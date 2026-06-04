@@ -2,4 +2,4 @@
 // 参见 https://eslint.org/docs/latest/extend/plugin-migration-flat-config
 export const name = "@annangela/eslint-plugin-prefer-reflect";
 export const namespace = "@annangela/prefer-reflect";
-export const version = "6.0.0";
+export const version = "6.1.0";
