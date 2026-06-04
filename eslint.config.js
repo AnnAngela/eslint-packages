@@ -80,6 +80,17 @@ const config = [
         ],
         ignores,
     },
+    // prefer-reflect 插件源码在分析 AST 时不可避免地使用动态属性访问，
+    // 所有键来自 ESLint 解析器而非用户输入，不存在注入风险。
+    {
+        files: [
+            "packages/eslint-plugin-prefer-reflect/src/**",
+        ],
+        ignores,
+        rules: {
+            "security/detect-object-injection": "off",
+        },
+    },
     // formatter still requires CommonJS, so there is no top-level async/await and we have to use `Sync` methods
     {
         files: [
@@ -88,6 +99,17 @@ const config = [
         ignores,
         rules: {
             "n/no-sync": "off",
+        },
+    },
+    // formatter 处理 ESLint 输出的数据结构，动态键来自 ESLint core，
+    // 非用户输入，不存在注入风险。
+    {
+        files: [
+            "packages/eslint-formatter-gha/src/**",
+        ],
+        ignores,
+        rules: {
+            "security/detect-object-injection": "off",
         },
     },
     {

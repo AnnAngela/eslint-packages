@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-object-injection */
 import type { ESLint } from "eslint";
 import path from "node:path";
 import ActionsSummary from "./ActionsSummary.js";

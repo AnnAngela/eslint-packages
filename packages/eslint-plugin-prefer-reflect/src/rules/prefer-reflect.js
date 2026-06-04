@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-object-injection */
 /**
  * @fileoverview Modern version of original "prefer-reflect" rules in eslint
  * @author AnnAngela

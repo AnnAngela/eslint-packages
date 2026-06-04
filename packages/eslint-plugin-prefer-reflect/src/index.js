@@ -9,7 +9,13 @@
 
 // import all rules in lib/rules
 import preferReflect from "./rules/prefer-reflect.js";
+import { name, namespace, version } from "./meta.generated.js";
+
 export const rules = {
     "prefer-reflect": preferReflect,
 };
-export default { rules };
+
+export default {
+    meta: { name, namespace, version },
+    rules,
+};
