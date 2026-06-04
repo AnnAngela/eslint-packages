@@ -8,7 +8,7 @@
   "scripts": {
     "changeset": "changeset",
     "version": "changeset version && pnpm install --no-frozen-lockfile",
-    "release": "pnpm run build && changeset publish",
+    "release": "pnpm run build && pnpm publish -r --provenance --access public --no-git-checks",
     "build": "pnpm --filter @annangela/eslint-plugin-prefer-reflect --filter @annangela/eslint-formatter-gha --filter @annangela/eslint-config run build",
     "lint": "pnpm run check:packages && pnpm --filter @annangela/eslint-plugin-prefer-reflect run build && pnpm -r --reporter append-only --aggregate-output run lint && eslint --exit-on-fatal-error --max-warnings 0 .",
     "lint:ci": "pnpm run check:packages && pnpm --filter @annangela/eslint-plugin-prefer-reflect --filter @annangela/eslint-formatter-gha run build && pnpm run lint:ci:run",

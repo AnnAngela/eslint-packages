@@ -2,6 +2,10 @@
   "name": "@annangela/eslint-formatter-gha",
   "version": "6.1.0",
   "description": "A better ESLint formatter used in GitHub Actions",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "main": "./dist/index.js",
   "exports": {
     ".": "./dist/index.js"

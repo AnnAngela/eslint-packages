@@ -2,6 +2,10 @@
   "name": "@annangela/eslint-plugin-prefer-reflect",
   "version": "6.1.0",
   "description": "Modern version of original \"prefer-reflect\" rules in eslint",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "keywords": [
     "eslint",
     "eslintplugin",
