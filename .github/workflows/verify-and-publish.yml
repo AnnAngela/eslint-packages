@@ -26,7 +26,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # tag: v6.0.2
         with:
-          depth: 1
+          fetch-depth: 1
           show-progress: false
 
       - name: Detect versioning commit
@@ -72,12 +72,12 @@ jobs:
     # Node.js versions, all variants produce the same `need_sync` value.
     outputs:
       need_sync: ${{ steps.verify.outputs.need_sync }}
-    name: Verify on Node.js ${{ matrix.node-version }}
+    name: Verify on Node.js ${{ matrix.node-version || '' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # tag: v6.0.2
         with:
-          depth: 1
+          fetch-depth: 1
           show-progress: false
       - name: Restore project cache
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # tag: v5.0.5

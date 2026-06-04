@@ -35,7 +35,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # tag: v6.0.2
       with:
-        depth: 1
+        fetch-depth: 1
         show-progress: false
 
     - name: Initialize CodeQL
