@@ -190,6 +190,11 @@ for (const [pkg, { pkgJSONPath, pkgJSON }] of Object.entries(packagesList)) {
             if (/^workspace:/.test(dependencyVersionString)) {
                 continue;
             }
+            // 跳过 catalog: 协议依赖 —— 版本由 pnpm-workspace.yaml 集中管理，
+            // 覆盖为 lockfile 版本会破坏 catalog: 引用模式
+            if (/^catalog:/.test(dependencyVersionString)) {
+                continue;
+            }
             const lockVersion = pnpmLockVersions[dependencyName];
             if (typeof lockVersion === "string") {
                 const targetVersion = `^${lockVersion}`;

@@ -43,10 +43,10 @@
   },
   "devDependencies": {
     "@annangela/eslint-config": "workspace:*",
-    "@vitest/coverage-v8": "^4.1.8",
-    "eslint": "^10.4.1",
+    "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
     "eslint-plugin-eslint-plugin": "^7.4.0",
-    "vitest": "^4.1.8"
+    "vitest": "catalog:"
   },
   "engines": {
     "node": "^22.21 || ^24.11"

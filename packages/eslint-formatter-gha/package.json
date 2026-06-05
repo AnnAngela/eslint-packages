@@ -47,13 +47,13 @@
   "homepage": "https://github.com/AnnAngela/eslint-packages/tree/master/packages/eslint-formatter-gha#readme",
   "devDependencies": {
     "@actions/core": "^3.0.1",
-    "@types/node": "^25.9.1",
+    "@types/node": "catalog:",
     "@types/tmp": "^0.2.6",
-    "@vitest/coverage-v8": "^4.1.8",
-    "eslint": "^10.4.1",
+    "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
     "semver": "^7.8.1",
     "tmp": "^0.2.7",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.8"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

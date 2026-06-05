@@ -54,11 +54,11 @@
     "eslint": "^10.0.0"
   },
   "devDependencies": {
-    "@types/node": "^25.9.1",
-    "@vitest/coverage-v8": "^4.1.8",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
     "semver": "^7.8.1",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.8"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "dependencies": {
     "@annangela/eslint-plugin-prefer-reflect": "workspace:^",
