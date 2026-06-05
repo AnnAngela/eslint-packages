@@ -197,8 +197,17 @@ for (const [pkg, { pkgJSONPath, pkgJSON }] of Object.entries(packagesList)) {
             }
             const lockVersion = pnpmLockVersions[dependencyName];
             if (typeof lockVersion === "string") {
-                const targetVersion = `^${lockVersion}`;
-                if (dependencyVersionString !== targetVersion) {
+                // 接受三种等价写法：
+                //   "10.4.1"      — Renovate :pinDevDependencies 的精确版本
+                //   "^10.4.1"     — pnpm 默认的 caret range
+                //   "~10.4.1"     — tilde range（极少用，但语义等价）
+                const equivalentVersions = new Set([
+                    lockVersion,
+                    `^${lockVersion}`,
+                    `~${lockVersion}`,
+                ]);
+                if (!equivalentVersions.has(dependencyVersionString)) {
+                    const targetVersion = `^${lockVersion}`;
                     console.warn(`[${pkg}]`, `[${property}]`, `Version mismatch for ${dependencyName}: ${dependencyVersionString} vs ${targetVersion} by dependency`);
                     pkgChanged = true;
                     pkgJSON[property][dependencyName] = targetVersion;
