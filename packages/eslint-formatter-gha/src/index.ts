@@ -1,9 +1,35 @@
 import type { ESLint } from "eslint";
 import path from "node:path";
 import ActionsSummary from "./ActionsSummary.js";
-import { annotationPropertiesType, eslintSeverityToAnnotationSeverity, log, logSeverity } from "./command.js";
+import { annotationPropertiesType, eslintSeverityToAnnotationSeverity, log } from "./command.js";
 
 const actionsSummary = new ActionsSummary();
+
+/** Valid values for the ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY env var */
+type DeprecatedSeverity = "debug" | "notice" | "warning" | "error";
+
+/**
+ * Parse ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY env var into a typed value.
+ * Returns the parsed severity along with the original invalid input for warning display.
+ */
+const parseDeprecatedSeverity = (
+    value: string | undefined,
+): { severity: DeprecatedSeverity; invalidInput?: string } => {
+    if (!value) {
+        return { severity: "warning" };
+    }
+    const normalized = value.toLowerCase();
+    const valid: readonly DeprecatedSeverity[] = [
+        "debug",
+        "notice",
+        "warning",
+        "error",
+    ];
+    if (valid.includes(normalized as DeprecatedSeverity)) {
+        return { severity: normalized as DeprecatedSeverity };
+    }
+    return { severity: "warning", invalidInput: normalized };
+};
 
 const formatter: ESLint.FormatterFunction = (results, data) => {
     const generateESLintRuleLink = (ruleId: string, md: boolean) => {
@@ -14,15 +40,12 @@ const formatter: ESLint.FormatterFunction = (results, data) => {
         .addEOL()
         .addHeading({ text: "ESLint Annotation", level: 1 })
         .addRaw(`ESLint Annotation from ${actionsSummary.wrapLink({ text: "@annangela/eslint-formatter-gha", href: "https://www.npmjs.com/package/@annangela/eslint-formatter-gha" })}`);
-    const deprecatedRulesSeverityFromEnv = process.env.ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY?.toLowerCase();
-    const deprecatedRulesSeverities = ["debug", "notice", "warning", "error"];
-    let deprecatedRulesSeverity: logSeverity = "warning";
-    if (deprecatedRulesSeverityFromEnv) {
-        if (deprecatedRulesSeverities.includes(deprecatedRulesSeverityFromEnv)) {
-            deprecatedRulesSeverity = deprecatedRulesSeverityFromEnv as logSeverity;
-        } else {
-            actionsSummary.addRaw(`${ActionsSummary.EMOJI.warning} The env \`ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY\` is not a valid severity - \`${deprecatedRulesSeverityFromEnv}\`, so the severity of deprecated rules report is set to \`${deprecatedRulesSeverity}\` instead.`);
-        }
+    const parsed = parseDeprecatedSeverity(
+        process.env.ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY,
+    );
+    const deprecatedRulesSeverity = parsed.severity;
+    if (parsed.invalidInput) {
+        actionsSummary.addRaw(`${ActionsSummary.EMOJI.warning} The env \`ESLINT_FORMATTER_GHA_DEPRECATED_RULES_SEVERITY\` is not a valid severity - \`${parsed.invalidInput}\`, so the severity of deprecated rules report is set to \`warning\` instead.`);
     }
     const deprecatedRules: string[] = [];
     const deprecatedRulesSummary: string[] = [];

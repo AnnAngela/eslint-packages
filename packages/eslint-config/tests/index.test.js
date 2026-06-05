@@ -4,6 +4,7 @@
  */
 
 import { describe, test, expect } from "vitest";
+import { ESLint } from "eslint";
 import { configs, forkedGlobals } from "../src/index.js";
 
 describe("eslint-config", () => {
@@ -292,6 +293,49 @@ describe("eslint-config", () => {
             expect(globals.it).toBe(false);
             expect(globals.before).toBe(false);
             expect(globals.after).toBe(false);
+        });
+    });
+
+    describe("integration tests", () => {
+        test("base config should detect no-var violation", async () => {
+            const eslint = new ESLint({
+                overrideConfigFile: true,
+                overrideConfig: [configs.base],
+            });
+            const [result] = await eslint.lintText("var x = 1;\n");
+            expect(result.messages.some((m) => m.ruleId === "no-var")).toBe(true);
+        });
+
+        test("node config should detect n/no-sync", async () => {
+            const eslint = new ESLint({
+                overrideConfigFile: true,
+                overrideConfig: [configs.node],
+            });
+            const [result] = await eslint.lintText(
+                "const fs = require('node:fs'); fs.readFileSync('/x');\n",
+            );
+            expect(result.messages.some((m) => m.ruleId === "n/no-sync")).toBe(true);
+        });
+
+        test("typescript config should accept valid TS code", async () => {
+            const eslint = new ESLint({
+                overrideConfigFile: true,
+                overrideConfig: [{
+                    ...configs.typescript,
+                    languageOptions: {
+                        ...configs.typescript.languageOptions,
+                        parserOptions: {
+                            ...configs.typescript.languageOptions.parserOptions,
+                            projectService: false,
+                        },
+                    },
+                }],
+            });
+            const [result] = await eslint.lintText(
+                "const x: number = 1;\n",
+                { filePath: "test.ts" },
+            );
+            expect(result.errorCount).toBe(0);
         });
     });
 });

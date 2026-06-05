@@ -7,6 +7,8 @@
 // Rule Definition
 // ------------------------------------------------------------------------------
 
+import { version } from "../meta.generated.js";
+
 /** Supported method names for the `exceptions` schema enum */
 const EXCEPTION_NAMES = [
     "apply",
@@ -28,6 +30,7 @@ export const meta = {
     type: "suggestion",
     fixable: "code",
     hasSuggestions: true,
+    version,
 
     docs: {
         description: "Modern version of original `prefer-reflect` rules in eslint",
