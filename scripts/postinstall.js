@@ -207,7 +207,11 @@ for (const [pkg, { pkgJSONPath, pkgJSON }] of Object.entries(packagesList)) {
                     `~${lockVersion}`,
                 ]);
                 if (!equivalentVersions.has(dependencyVersionString)) {
-                    const targetVersion = `^${lockVersion}`;
+                    // devDependencies 与 Renovate :pinDevDependencies 保持一致，使用精确版本
+                    // dependencies 使用 caret range（与 Renovate 对非 devDep 的行为一致）
+                    const targetVersion = property === "devDependencies"
+                        ? lockVersion
+                        : `^${lockVersion}`;
                     console.warn(`[${pkg}]`, `[${property}]`, `Version mismatch for ${dependencyName}: ${dependencyVersionString} vs ${targetVersion} by dependency`);
                     pkgChanged = true;
                     pkgJSON[property][dependencyName] = targetVersion;
