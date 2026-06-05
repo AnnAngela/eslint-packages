@@ -1,7 +1,8 @@
 import type { ESLint } from "eslint";
 import path from "node:path";
 import ActionsSummary from "./ActionsSummary.js";
-import { annotationPropertiesType, eslintSeverityToAnnotationSeverity, log } from "./command.js";
+import type { annotationPropertiesType } from "./command.js";
+import { eslintSeverityToAnnotationSeverity, log } from "./command.js";
 
 const actionsSummary = new ActionsSummary();
 

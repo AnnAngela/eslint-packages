@@ -39,6 +39,19 @@ const config = { // `typescriptConfig`: For TypeScript files
         // `@stylistic` 对齐，不会产生重复或冲突的规则。
         // 参见：https://typescript-eslint.io/users/what-about-formatting
         ...typescriptPlugin.configs["stylistic-type-checked"].rules,
+        "@typescript-eslint/consistent-type-imports": [
+            "error",
+            {
+                prefer: "type-imports",
+                fixStyle: "separate-type-imports",
+            },
+        ],
+        "@typescript-eslint/consistent-type-exports": [
+            "error",
+            {
+                fixMixedExportsWithInlineTypeSpecifier: false,
+            },
+        ],
         "@typescript-eslint/prefer-nullish-coalescing": [
             "error",
             {
