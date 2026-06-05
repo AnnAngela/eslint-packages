@@ -13,5 +13,8 @@
   "vulnerabilityAlerts": {
     "minimumReleaseAge": "1 day"
   },
+  "lockFileMaintenance": {
+    "automerge": true
+  },
   "prHourlyLimit": 0
 }
