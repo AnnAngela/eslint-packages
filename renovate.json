@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:best-practices"],
+  "schedule": ["* 7-8 * * *"],
+  "timezone": "Asia/Shanghai",
+  "labels": ["dependencies"],
+  "assignees": ["AnnAngela"],
+  "reviewersFromCodeOwners": true,
+  "dependencyDashboardTitle": "📦 Dependency Dashboard",
+  "osvVulnerabilityAlerts": true,
+  "dependencyDashboardOSVVulnerabilitySummary": "unresolved",
+  "postUpdateOptions": ["pnpmDedupe"],
+  "vulnerabilityAlerts": {
+    "minimumReleaseAge": "1 day"
+  },
+  "prHourlyLimit": 0
+}
