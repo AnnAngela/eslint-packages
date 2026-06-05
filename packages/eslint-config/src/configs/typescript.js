@@ -4,6 +4,7 @@ import typescriptParser from "@typescript-eslint/parser";
  * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> & { languageOptions: import("eslint").Linter.Config["languageOptions"] & { parserOptions: import("@typescript-eslint/parser").ParserOptions } } }
  */
 const config = { // `typescriptConfig`: For TypeScript files
+    name: "annangela/typescript",
     linterOptions: {
         reportUnusedDisableDirectives: "error",
     },
@@ -32,6 +33,11 @@ const config = { // `typescriptConfig`: For TypeScript files
         // `"@typescript-eslint/no-unused-vars": "error"`.
         // ...typescriptPlugin.configs["eslint-recommended"].rules,
         ...typescriptPlugin.configs["strict-type-checked"].rules,
+        // `stylistic-type-checked` 预设中的规则对应 `@typescript-eslint` 尚未
+        // 迁移到 `@stylistic/eslint-plugin` 的剩余 formatting 规则
+        // （如 member-delimiter-style、method-signature-style）。该预设已与
+        // `@stylistic` 对齐，不会产生重复或冲突的规则。
+        // 参见：https://typescript-eslint.io/users/what-about-formatting
         ...typescriptPlugin.configs["stylistic-type-checked"].rules,
         "@typescript-eslint/prefer-nullish-coalescing": [
             "error",

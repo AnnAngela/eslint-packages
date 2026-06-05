@@ -10,6 +10,9 @@
         "resolveJsonModule": true,
         "resolvePackageJsonExports": true,
         // Language and Environment
+        // lib 对照 @tsconfig/node22 (https://github.com/tsconfig/bases/blob/main/bases/node22.json)
+        // ESNext.Error (error.cause) 和 ESNext.Promise (Promise.withResolvers)
+        // 在 Node 22 中不可用，因此排除。
         "lib": [ // Node 22 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
             "es2024",
             "ESNext.Array",

@@ -35,6 +35,7 @@ const [commentsPlugin, commentsPluginRules] = transferLegacyPluginIntoFlatConfig
  * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> }
  */
 const config = { // `baseConfig`: Default config
+    name: "annangela/base",
     linterOptions: {
         reportUnusedDisableDirectives: "error",
         reportUnusedInlineConfigs: "error",
@@ -149,6 +150,10 @@ const config = { // `baseConfig`: Default config
         ...promisePluginRules,
         "promise/no-multiple-resolved": "error",
         "promise/prefer-await-to-callbacks": "error",
+        // `promise/always-return` 与 `@typescript-eslint/no-floating-promises`
+        // （来自 strict-type-checked）是互补关系，并非冗余：
+        //   - no-floating-promises：防止 Promise 未被处理（忘记 await/return）
+        //   - always-return：防止 .then() 回调中忘记返回值（Promise 链断裂）
         "promise/always-return": [
             "error",
             { ignoreLastCallback: true },

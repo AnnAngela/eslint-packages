@@ -4,6 +4,7 @@ import eslintPlugin from "eslint-plugin-eslint-plugin";
  * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> }
  */
 const config = {
+    name: "annangela/eslint-plugin",
     linterOptions: {
         reportUnusedDisableDirectives: "error",
     },

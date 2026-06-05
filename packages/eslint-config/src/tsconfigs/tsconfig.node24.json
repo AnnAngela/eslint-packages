@@ -10,10 +10,14 @@
         "resolveJsonModule": true,
         "resolvePackageJsonExports": true,
         // Language and Environment
+        // lib 对照 @tsconfig/node24 (https://github.com/tsconfig/bases/blob/main/bases/node24.json)
+        // 相比 Node 22 新增：ESNext.Error (Error.cause, Error.isError)、
+        // ESNext.Promise (Promise.withResolvers, Promise.try)
         "lib": [ // Node 24 - https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases
             "es2024",
             "ESNext.Array",
             "ESNext.Collection",
+            "ESNext.Error",
             "ESNext.Iterator",
             "ESNext.Promise",
         ],

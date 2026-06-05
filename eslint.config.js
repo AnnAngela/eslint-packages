@@ -1,4 +1,5 @@
 // import packageJSON from "./package.json" with { type: "json" };
+import { defineConfig } from "eslint/config";
 import fs from "node:fs";
 import { configs } from "./packages/eslint-config/src/index.js";
 
@@ -8,19 +9,9 @@ import { configs } from "./packages/eslint-config/src/index.js";
 const packageJSON = JSON.parse(await fs.promises.readFile("./package.json", "utf-8"));
 
 /**
- * @type { import("eslint").Linter.Config["ignores"] }
- */
-const ignores = [
-    "**/dist/**",
-    "**/.*/**",
-    "**/coverage/**",
-    "**/vitest.config.*",
-    "node_modules",
-];
-/**
  * @type { import("eslint").Linter.Config[] }
  */
-const config = [
+const config = defineConfig([
     // Global ignores
     {
         ignores: [
@@ -38,7 +29,6 @@ const config = [
             "**/*.js",
             "**/*.ts",
         ],
-        ignores,
     },
     {
         ...configs.node,
@@ -46,7 +36,6 @@ const config = [
             "**/*.js",
             "**/*.ts",
         ],
-        ignores,
     },
     // plugins
     {
@@ -54,13 +43,11 @@ const config = [
         files: [
             "packages/eslint-plugin-prefer-reflect/**",
         ],
-        ignores,
     },
     {
         files: [
             "packages/eslint-plugin-prefer-reflect/**",
         ],
-        ignores,
         rules: {
             "n/no-sync": "off",
         },
@@ -70,7 +57,6 @@ const config = [
         files: [
             "packages/eslint-plugin-prefer-reflect/tests/**",
         ],
-        ignores,
     },
     // For TypeScript files
     {
@@ -78,36 +64,37 @@ const config = [
         files: [
             "**/*.ts",
         ],
-        ignores,
     },
-    // prefer-reflect 插件源码在分析 AST 时不可避免地使用动态属性访问，
-    // 所有键来自 ESLint 解析器而非用户输入，不存在注入风险。
+    // prefer-reflect 插件源码在分析 AST 时不可避免地使用动态属性访问
+    // （如 node.callee.property?.name, sourceCode.getScope(node), exceptions.includes() 等），
+    // 所有键来自 ESLint 解析器 (estree AST nodes) 和硬编码常量 (EXCEPTION_NAMES)，
+    // 而非用户输入，不存在注入风险。
     {
         files: [
             "packages/eslint-plugin-prefer-reflect/src/**",
         ],
-        ignores,
         rules: {
             "security/detect-object-injection": "off",
         },
     },
-    // formatter still requires CommonJS, so there is no top-level async/await and we have to use `Sync` methods
+    // formatter uses sync fs methods (ActionsSummary needs sync writes
+    // for GHA step summary capture; tests use tmp file ops synchronously)
     {
         files: [
             "packages/eslint-formatter-gha/**",
         ],
-        ignores,
         rules: {
             "n/no-sync": "off",
         },
     },
-    // formatter 处理 ESLint 输出的数据结构，动态键来自 ESLint core，
+    // formatter 在迭代中动态访问 ESLint LintResult/LintMessage 结构：
+    // results[].messages[], ruleId, replacedBy, severity, line, column 等属性。
+    // 所有键来自 ESLint core 的标准 API (ESLint.Linter.LintMessage)，
     // 非用户输入，不存在注入风险。
     {
         files: [
             "packages/eslint-formatter-gha/src/**",
         ],
-        ignores,
         rules: {
             "security/detect-object-injection": "off",
         },
@@ -146,5 +133,5 @@ const config = [
             "security/detect-object-injection": "off",
         },
     },
-];
+]);
 export default config;

@@ -5,6 +5,7 @@ import forkedGlobals from "../forkedGlobals.js";
  * @type { Omit<import("eslint").Linter.Config, "files" | "ignores"> }
  */
 const config = { // `browserConfig`: For files used in browser
+    name: "annangela/browser",
     linterOptions: {
         reportUnusedDisableDirectives: "error",
     },
