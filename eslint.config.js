@@ -112,7 +112,6 @@ const config = defineConfig([
             "security/detect-non-literal-fs-filename": "off",
             "security/detect-non-literal-regexp": "off",
             "security/detect-child-process": "off",
-            "n/no-extraneous-import": "off",
             "n/no-process-exit": "off",
 
             "n/no-unsupported-features/node-builtins": ["error", { version: packageJSON.engines.node }],

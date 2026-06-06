@@ -45,7 +45,7 @@
     "@annangela/eslint-config": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
-    "eslint-plugin-eslint-plugin": "7.4.0",
+    "eslint-plugin-eslint-plugin": "catalog:",
     "vitest": "catalog:"
   },
   "engines": {

@@ -20,8 +20,8 @@
     "lint:check-ci": "pnpm run lint:ci",
     "lint:write": "eslint --fix .",
     "ci": "echo \"Already done :)\"",
-    "sync:packages": "node scripts/postinstall.js",
-    "check:packages": "node scripts/postinstall.js --check",
+    "sync:packages": "node scripts/sync-metadata.js",
+    "check:packages": "node scripts/sync-metadata.js --check",
     "verify:packages": "pnpm run check:packages",
     "package": "pnpm run build"
   },
@@ -60,7 +60,6 @@
     "@changesets/cli": "2.31.0",
     "@vitest/coverage-v8": "4.1.8",
     "tmp": "0.2.7",
-    "vitest": "4.1.8",
-    "yaml": "2.9.0"
+    "vitest": "4.1.8"
   }
 }
