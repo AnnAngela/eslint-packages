@@ -1,5 +1,20 @@
 # @annangela/eslint-config
 
+## 15.0.0
+
+### Major Changes
+
+- 35f609c: feat(typescript)!: add @typescript-eslint/consistent-type-imports (separate-type-imports) and consistent-type-exports (fixMixedExportsWithInlineTypeSpecifier=false) rules, enforcing type-only imports/exports with the `type` keyword using separate import statements
+
+### Patch Changes
+
+- ba64b46: improve: extract typed env var parser in formatter, add meta.version to plugin rule, add integration tests for config package
+- 49f2044: refactor: add name property to config objects, adopt defineConfig(), remove duplicate ignores, add explanatory comments
+- e3bce70: chore: adopt pnpm catalog for centralized devDependency management, relocate @actions/core to formatter package
+- Updated dependencies [ba64b46]
+- Updated dependencies [e3bce70]
+  - @annangela/eslint-plugin-prefer-reflect@6.1.1
+
 ## 14.0.0
 
 ### Major Changes

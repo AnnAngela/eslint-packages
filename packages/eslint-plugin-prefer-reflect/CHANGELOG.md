@@ -1,5 +1,12 @@
 # @annangela/eslint-plugin-prefer-reflect
 
+## 6.1.1
+
+### Patch Changes
+
+- ba64b46: improve: extract typed env var parser in formatter, add meta.version to plugin rule, add integration tests for config package
+- e3bce70: chore: adopt pnpm catalog for centralized devDependency management, relocate @actions/core to formatter package
+
 ## 6.1.0
 
 ### Minor Changes
