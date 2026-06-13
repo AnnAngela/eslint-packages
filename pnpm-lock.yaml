@@ -35,7 +35,7 @@ catalogs:
       version: 7.4.0
     eslint-plugin-n:
       specifier: ^18.0.1
-      version: 18.0.1
+      version: 18.1.0
     eslint-plugin-prefer-arrow-functions:
       specifier: ^3.9.1
       version: 3.9.1
@@ -88,7 +88,7 @@ importers:
         version: 7.4.0(eslint@10.4.1)
       eslint-plugin-n:
         specifier: ^18.0.1
-        version: 18.0.1(eslint@10.4.1)(typescript@6.0.3)
+        version: 18.1.0(eslint@10.4.1)(typescript@6.0.3)
       eslint-plugin-prefer-arrow-functions:
         specifier: ^3.9.1
         version: 3.9.1(eslint@10.4.1)(typescript@6.0.3)
@@ -152,7 +152,7 @@ importers:
         version: 7.4.0(eslint@10.4.1)
       eslint-plugin-n:
         specifier: 'catalog:'
-        version: 18.0.1(eslint@10.4.1)(typescript@6.0.3)
+        version: 18.1.0(eslint@10.4.1)(typescript@6.0.3)
       eslint-plugin-prefer-arrow-functions:
         specifier: 'catalog:'
         version: 3.9.1(eslint@10.4.1)(typescript@6.0.3)
@@ -803,8 +803,8 @@ packages:
     peerDependencies:
       eslint: '>=9.0.0'
 
-  eslint-plugin-n@18.0.1:
-    resolution: {integrity: sha512-q3ARhk+eZRc7myR0KHx+R3/GJeOHF+Ir6PK95Pu2tEX8Sl/4BIpmmVLva2kPrjC2gCmn6WHlHm+3yeo6Rxhycw==}
+  eslint-plugin-n@18.1.0:
+    resolution: {integrity: sha512-hkUm9EtnFV2h2fE16jNVUfCVUqvPzI7fGLsFdun5lFt/pbmf2kCgDx6ymi9rx+NCUSggBmurJCZOfG20JBs/kg==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     peerDependencies:
       eslint: '>=8.57.1'
@@ -2201,7 +2201,7 @@ snapshots:
       eslint: 10.4.1
       estraverse: 5.3.0
 
-  eslint-plugin-n@18.0.1(eslint@10.4.1)(typescript@6.0.3):
+  eslint-plugin-n@18.1.0(eslint@10.4.1)(typescript@6.0.3):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.4.1)
       enhanced-resolve: 5.23.0
