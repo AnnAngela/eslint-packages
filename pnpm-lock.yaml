@@ -4,60 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-catalogs:
-  default:
-    '@eslint-community/eslint-plugin-eslint-comments':
-      specifier: ^4.7.2
-      version: 4.7.2
-    '@eslint/js':
-      specifier: ^10.0.1
-      version: 10.0.1
-    '@stylistic/eslint-plugin':
-      specifier: ^5.10.0
-      version: 5.10.0
-    '@types/node':
-      specifier: ^25.9.1
-      version: 25.9.3
-    '@typescript-eslint/eslint-plugin':
-      specifier: ^8.60.1
-      version: 8.61.0
-    '@typescript-eslint/parser':
-      specifier: ^8.60.1
-      version: 8.61.0
-    '@vitest/coverage-v8':
-      specifier: ^4.1.8
-      version: 4.1.8
-    eslint:
-      specifier: ^10.4.1
-      version: 10.5.0
-    eslint-plugin-eslint-plugin:
-      specifier: ^7.4.0
-      version: 7.4.0
-    eslint-plugin-n:
-      specifier: ^18.0.1
-      version: 18.1.0
-    eslint-plugin-prefer-arrow-functions:
-      specifier: ^3.9.1
-      version: 3.9.1
-    eslint-plugin-promise:
-      specifier: ^7.3.0
-      version: 7.3.0
-    eslint-plugin-security:
-      specifier: ^4.0.0
-      version: 4.0.1
-    globals:
-      specifier: ^17.6.0
-      version: 17.6.0
-    semver:
-      specifier: ^7.8.1
-      version: 7.8.4
-    typescript:
-      specifier: ^6.0.3
-      version: 6.0.3
-    vitest:
-      specifier: ^4.1.8
-      version: 4.1.8
-
 importers:
 
   .:
@@ -104,9 +50,6 @@ importers:
       pkg-types:
         specifier: ^2.3.1
         version: 2.3.1
-      semver:
-        specifier: ^7.8.1
-        version: 7.8.4
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -117,9 +60,6 @@ importers:
       '@vitest/coverage-v8':
         specifier: 4.1.8
         version: 4.1.8(vitest@4.1.8)
-      tmp:
-        specifier: 0.2.7
-        version: 0.2.7
       vitest:
         specifier: 4.1.8
         version: 4.1.8(@types/node@25.9.3)(@vitest/coverage-v8@4.1.8)(vite@8.0.16(@types/node@25.9.3))
