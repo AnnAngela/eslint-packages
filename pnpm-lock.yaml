@@ -35,7 +35,7 @@ catalogs:
       version: 7.4.1
     eslint-plugin-n:
       specifier: ^18.0.1
-      version: 18.2.1
+      version: 18.2.2
     eslint-plugin-prefer-arrow-functions:
       specifier: ^3.9.1
       version: 3.10.1
@@ -88,7 +88,7 @@ importers:
         version: 7.4.1(eslint@10.7.0)
       eslint-plugin-n:
         specifier: ^18.0.1
-        version: 18.2.1(eslint@10.7.0)(typescript@6.0.3)
+        version: 18.2.2(eslint@10.7.0)(typescript@6.0.3)
       eslint-plugin-prefer-arrow-functions:
         specifier: ^3.9.1
         version: 3.10.1(eslint@10.7.0)(typescript@6.0.3)
@@ -146,7 +146,7 @@ importers:
         version: 7.4.1(eslint@10.7.0)
       eslint-plugin-n:
         specifier: 'catalog:'
-        version: 18.2.1(eslint@10.7.0)(typescript@6.0.3)
+        version: 18.2.2(eslint@10.7.0)(typescript@6.0.3)
       eslint-plugin-prefer-arrow-functions:
         specifier: 'catalog:'
         version: 3.10.1(eslint@10.7.0)(typescript@6.0.3)
@@ -764,8 +764,8 @@ packages:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
     engines: {node: '>=8'}
 
-  enhanced-resolve@5.24.1:
-    resolution: {integrity: sha512-7DdUaTjmNwMcH2gLr1qycesKII3BK4RLy/mdAb7x10Lq7bR4aNKHt1BR1ZALSv0rPM/hF5wYF0PhGop/rJm8vw==}
+  enhanced-resolve@5.24.2:
+    resolution: {integrity: sha512-rpsZEGT1jFuve6QlpyRp9ckQ+kN61hvF9BzCPyMdaKTm8UJce96KBn3sorXOFXlzjPrs3Vc4T1NsSroZ3PxlFw==}
     engines: {node: '>=10.13.0'}
 
   enquirer@2.4.1:
@@ -797,8 +797,8 @@ packages:
     peerDependencies:
       eslint: '>=9.0.0'
 
-  eslint-plugin-n@18.2.1:
-    resolution: {integrity: sha512-aO3C9//yq8JIvYOi/T+jPvcZ9hZzpwzbR8esrYpFtgE9vpbyM8kn42AQOtIqYspVmpaSWr8X+nrlQuAJYxXAaw==}
+  eslint-plugin-n@18.2.2:
+    resolution: {integrity: sha512-gOO0lIqwEjZ750kv9/SptCWArUoAZXJoBr0vYWTO2dCBxctHUXlBIigiC8xuxxr/NKqgIT6Ehz1xRcilj8a5cA==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     peerDependencies:
       eslint: '>=8.57.1'
@@ -2163,7 +2163,7 @@ snapshots:
     dependencies:
       path-type: 4.0.0
 
-  enhanced-resolve@5.24.1:
+  enhanced-resolve@5.24.2:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.3.3
@@ -2195,10 +2195,10 @@ snapshots:
       eslint: 10.7.0
       estraverse: 5.3.0
 
-  eslint-plugin-n@18.2.1(eslint@10.7.0)(typescript@6.0.3):
+  eslint-plugin-n@18.2.2(eslint@10.7.0)(typescript@6.0.3):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.7.0)
-      enhanced-resolve: 5.24.1
+      enhanced-resolve: 5.24.2
       eslint: 10.7.0
       eslint-plugin-es-x: 7.8.0(eslint@10.7.0)
       get-tsconfig: 4.14.0
