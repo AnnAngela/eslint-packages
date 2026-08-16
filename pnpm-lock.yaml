@@ -38,7 +38,7 @@ catalogs:
       version: 18.3.0
     eslint-plugin-prefer-arrow-functions:
       specifier: ^3.9.1
-      version: 3.10.1
+      version: 3.10.2
     eslint-plugin-promise:
       specifier: ^7.3.0
       version: 7.3.0
@@ -91,7 +91,7 @@ importers:
         version: 18.3.0(eslint@10.8.1(supports-color@7.2.0))(typescript@6.0.3)
       eslint-plugin-prefer-arrow-functions:
         specifier: ^3.9.1
-        version: 3.10.1(eslint@10.8.1(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+        version: 3.10.2(eslint@10.8.1(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
       eslint-plugin-promise:
         specifier: ^7.3.0
         version: 7.3.0(eslint@10.8.1(supports-color@7.2.0))
@@ -149,7 +149,7 @@ importers:
         version: 18.3.0(eslint@10.8.1(supports-color@7.2.0))(typescript@6.0.3)
       eslint-plugin-prefer-arrow-functions:
         specifier: 'catalog:'
-        version: 3.10.1(eslint@10.8.1(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+        version: 3.10.2(eslint@10.8.1(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
       eslint-plugin-promise:
         specifier: 'catalog:'
         version: 7.3.0(eslint@10.8.1(supports-color@7.2.0))
@@ -787,8 +787,8 @@ packages:
       typescript:
         optional: true
 
-  eslint-plugin-prefer-arrow-functions@3.10.1:
-    resolution: {integrity: sha512-wutwnNG0S/wqNhqryS7ee2yX01dkvgFMDvdaXcdEfSGcxz37FRfJUCD0YL2Jur0ANCKocgplF7n6GBPhe+DNNg==}
+  eslint-plugin-prefer-arrow-functions@3.10.2:
+    resolution: {integrity: sha512-vy4neIgDcqHNTEohqUXQH6WD7S4rJBDm9I1hoHYCc7ytMMCZ0+MgYcre+ZRP13W/1nYdL/ZtbrGKjhoz/UvhMg==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24.0.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
@@ -2150,7 +2150,7 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
-  eslint-plugin-prefer-arrow-functions@3.10.1(eslint@10.8.1(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3):
+  eslint-plugin-prefer-arrow-functions@3.10.2(eslint@10.8.1(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3):
     dependencies:
       '@typescript-eslint/types': 8.67.0
       '@typescript-eslint/utils': 8.67.0(eslint@10.8.1(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
