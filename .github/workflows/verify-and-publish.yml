@@ -194,7 +194,17 @@ jobs:
       - name: Create release PR or publish packages
         uses: changesets/action@198f833dd7d863100ea6e28967bc9a9fdefadb0a # v2.1.0
         with:
-          version: pnpm run version
-          publish: pnpm run release
-          commit: "ci: version packages"
-          title: "ci: version packages"
+          # v2 起 token 仅从 github-token 输入读取；显式传入与顶层 env.GITHUB_TOKEN
+          # 同值的 token（两者不一致时 action 会直接报错）
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # v2 输入重命名：version -> version-script、publish -> publish-script、
+          # commit -> commit-message、title -> pr-title
+          version-script: pnpm run version
+          publish-script: pnpm run release
+          commit-message: "ci: version packages"
+          pr-title: "ci: version packages"
+          # v2 默认均为 true，显式声明以固化意图：tag 与 Release 由 action 基于
+          # release 脚本产出的 CHANGESETS_OUTPUT 事件创建（依赖 release 脚本中的
+          # changeset git-tag，见 #440）
+          create-github-releases: true
+          push-git-tags: true
