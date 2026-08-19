@@ -32,7 +32,7 @@ catalogs:
       version: 10.8.1
     eslint-plugin-eslint-plugin:
       specifier: ^7.4.0
-      version: 7.6.1
+      version: 7.6.2
     eslint-plugin-n:
       specifier: ^18.0.1
       version: 18.3.0
@@ -85,7 +85,7 @@ importers:
         version: 10.8.1(supports-color@7.2.0)
       eslint-plugin-eslint-plugin:
         specifier: ^7.4.0
-        version: 7.6.1(eslint@10.8.1(supports-color@7.2.0))
+        version: 7.6.2(eslint@10.8.1(supports-color@7.2.0))
       eslint-plugin-n:
         specifier: ^18.0.1
         version: 18.3.0(eslint@10.8.1(supports-color@7.2.0))(typescript@6.0.3)
@@ -143,7 +143,7 @@ importers:
         version: 10.8.1(supports-color@7.2.0)
       eslint-plugin-eslint-plugin:
         specifier: 'catalog:'
-        version: 7.6.1(eslint@10.8.1(supports-color@7.2.0))
+        version: 7.6.2(eslint@10.8.1(supports-color@7.2.0))
       eslint-plugin-n:
         specifier: 'catalog:'
         version: 18.3.0(eslint@10.8.1(supports-color@7.2.0))(typescript@6.0.3)
@@ -219,7 +219,7 @@ importers:
         version: 10.8.1(supports-color@7.2.0)
       eslint-plugin-eslint-plugin:
         specifier: 'catalog:'
-        version: 7.6.1(eslint@10.8.1(supports-color@7.2.0))
+        version: 7.6.2(eslint@10.8.1(supports-color@7.2.0))
       vitest:
         specifier: 'catalog:'
         version: 4.1.10(@types/node@25.9.5)(@vitest/coverage-v8@4.1.10)(vite@8.2.1(@types/node@25.9.5)(yaml@2.9.0))
@@ -727,8 +727,8 @@ packages:
     peerDependencies:
       eslint: '>=8'
 
-  eslint-plugin-eslint-plugin@7.6.1:
-    resolution: {integrity: sha512-Knh3EFP4T9K/hIu/V7LE29P/wkwfodITf8b5Zcv+YVTvpb1LIlO44NZzZ7MHMEkD9alxeDmXiR462mgMYL2Odg==}
+  eslint-plugin-eslint-plugin@7.6.2:
+    resolution: {integrity: sha512-MWE0tzCq0VatvFzELsTfmnMZHFZEQc2lK7HjeLLFiQDUPD8M1pCDlpOuQxGBzjbFvyvz4bfYjI03HQlbS5qdQQ==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24.0.0}
     peerDependencies:
       eslint: '>=9.0.0'
@@ -1859,7 +1859,7 @@ snapshots:
       eslint: 10.8.1(supports-color@7.2.0)
       eslint-compat-utils: 0.5.1(eslint@10.8.1(supports-color@7.2.0))
 
-  eslint-plugin-eslint-plugin@7.6.1(eslint@10.8.1(supports-color@7.2.0)):
+  eslint-plugin-eslint-plugin@7.6.2(eslint@10.8.1(supports-color@7.2.0)):
     dependencies:
       '@eslint-community/eslint-utils': 4.10.1(eslint@10.8.1(supports-color@7.2.0))
       eslint: 10.8.1(supports-color@7.2.0)
