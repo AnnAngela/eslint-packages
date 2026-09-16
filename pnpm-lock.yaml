@@ -109,7 +109,7 @@ catalogs:
   default:
     '@eslint-community/eslint-plugin-eslint-comments':
       specifier: ^4.7.2
-      version: 4.8.0
+      version: 4.8.1
     '@eslint/js':
       specifier: ^10.0.1
       version: 10.0.1
@@ -165,7 +165,7 @@ importers:
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments':
         specifier: ^4.7.2
-        version: 4.8.0(eslint@10.10.0)
+        version: 4.8.1(eslint@10.10.0)
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.10.0)
@@ -226,7 +226,7 @@ importers:
         version: link:../eslint-plugin-prefer-reflect
       '@eslint-community/eslint-plugin-eslint-comments':
         specifier: 'catalog:'
-        version: 4.8.0(eslint@10.10.0)
+        version: 4.8.1(eslint@10.10.0)
       '@eslint/js':
         specifier: 'catalog:'
         version: 10.0.1(eslint@10.10.0)
@@ -435,8 +435,8 @@ packages:
     resolution: {integrity: sha512-PXzLZ8N34rxmuo4dJg3xtOXhcBse94qGjDqsteoEYrFrrZ5FSjIGwMAuOcv64ln8rHVBBD06XeVGr+/JX+plcA==}
     engines: {node: '>= 20.12.0'}
 
-  '@eslint-community/eslint-plugin-eslint-comments@4.8.0':
-    resolution: {integrity: sha512-bzGg2H83F9p55TKzlNUS/LWb1WF2OqdVX67FK1OadDPLVOhabFRERC7TiDJzk//LedaVnRS5uqK/2f/AZ/+VyA==}
+  '@eslint-community/eslint-plugin-eslint-comments@4.8.1':
+    resolution: {integrity: sha512-vafrdi15JHBFh1qWOAucyJwlEEuhdoMof28jOdKdgnwZ7bXwd6v4wzHYSmAVLwnx0yc7bqAtfJ0EZQV1WAzV/Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -1593,7 +1593,7 @@ snapshots:
       fast-wrap-ansi: 0.2.2
       sisteransi: 1.0.5
 
-  '@eslint-community/eslint-plugin-eslint-comments@4.8.0(eslint@10.10.0)':
+  '@eslint-community/eslint-plugin-eslint-comments@4.8.1(eslint@10.10.0)':
     dependencies:
       escape-string-regexp: 4.0.0
       eslint: 10.10.0
