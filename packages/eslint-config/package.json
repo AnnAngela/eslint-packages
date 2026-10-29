@@ -32,7 +32,7 @@
     "version": "pnpm run package"
   },
   "engines": {
-    "node": "^22.21 || ^24.11"
+    "node": "^22.21 || ^24.11 || ^26.0.0"
   },
   "repository": {
     "type": "git",
