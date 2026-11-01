@@ -26,7 +26,7 @@
     "package": "pnpm run build"
   },
   "engines": {
-    "node": "^22.21 || ^24.11 || ^26.0.0"
+    "node": "^22.11 || ^24.11 || ^26.13"
   },
   "repository": {
     "type": "git",

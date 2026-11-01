@@ -89,7 +89,7 @@ export default {
 
 ### 环境要求
 
-- Node.js：当前 LTS 版本（2026 年 5 月：`^22.21 || ^24.11`）
+- Node.js：当前 LTS 版本（2026 年 11 月：`^22.11 || ^24.11 || ^26.13`）
 - pnpm：通过 corepack 启用，版本由 `package.json` 的 `packageManager` 字段指定
 
 ### 使用这些包
