@@ -24,7 +24,7 @@ jobs:
       node-versions: ${{ steps.versions.outputs.node-versions }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 1
           show-progress: false
@@ -75,23 +75,23 @@ jobs:
     name: Verify on Node.js ${{ matrix.node-version || '' }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 1
           show-progress: false
       - name: Restore project cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        uses: actions/cache@v6.1.0
         with:
           key: project-cache-${{ matrix.node-version }}
           path: .cache
       - name: Install pnpm
-        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        uses: pnpm/action-setup@v6.1.1
         with:
           run_install: |
             - args:
                 - --no-frozen-lockfile
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        uses: actions/setup-node@v7.1.0
         with:
           node-version: ${{ matrix.node-version }}
           check-latest: true
@@ -125,22 +125,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           show-progress: false
       - name: Restore project cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        uses: actions/cache@v6.1.0
         with:
           key: project-cache-push
           path: .cache
       - name: Install pnpm
-        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        uses: pnpm/action-setup@v6.1.1
         with:
           run_install: |
             - args:
                 - --no-frozen-lockfile
       - name: Use Node.js from package.json
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        uses: actions/setup-node@v7.1.0
         with:
           node-version-file: package.json
           check-latest: true
@@ -170,7 +170,7 @@ jobs:
       (needs.push-changes.result == 'success' || needs.push-changes.result == 'skipped')
     steps:
       - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 1
           # 使用触发本次 workflow 的 commit SHA，而非默认的 master HEAD，
@@ -180,19 +180,19 @@ jobs:
           show-progress: false
 
       - name: Install pnpm
-        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        uses: pnpm/action-setup@v6.1.1
         with:
           run_install: true
 
       - name: Use Node.js
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        uses: actions/setup-node@v7.1.0
         with:
           node-version-file: package.json
           check-latest: true
           cache: pnpm
 
       - name: Create release PR or publish packages
-        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        uses: changesets/action@v2.1.2
         with:
           # v2 起 token 仅从 github-token 输入读取；显式传入与顶层 env.GITHUB_TOKEN
           # 同值的 token（两者不一致时 action 会直接报错）

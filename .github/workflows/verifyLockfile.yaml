@@ -1,0 +1,28 @@
+name: Verify Lockfile
+# 校验 actions.lock 与 workflow 引用一致且上游 commit 仍可达，失败即阻塞合并
+# 模板来源：github/gh-actions-lock 仓库 .github/workflows/verify-lockfile.yml
+permissions:
+  contents: read
+on:
+  pull_request:
+  # 与 verify-and-publish.yml 一致：启用合并队列时，队列中的合并提交也要通过校验
+  merge_group:
+  push:
+    branches:
+      - master
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          show-progress: false
+          persist-credentials: false
+      - name: Install gh-actions-lock extension
+        run: gh extension install github/gh-actions-lock
+      - name: Verify lockfile
+        run: gh actions-lock --verify
