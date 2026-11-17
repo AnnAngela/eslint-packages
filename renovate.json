@@ -6,9 +6,11 @@
   "labels": ["dependencies"],
   "assignees": ["AnnAngela"],
   "reviewersFromCodeOwners": true,
-  "dependencyDashboardTitle": "📦 Dependency Dashboard",
+  "dependencyDashboard": {
+    "title": "📦 Dependency Dashboard",
+    "osvVulnerabilitySummary": "unresolved"
+  },
   "osvVulnerabilityAlerts": true,
-  "dependencyDashboardOSVVulnerabilitySummary": "unresolved",
   "postUpdateOptions": ["pnpmDedupe"],
   "vulnerabilityAlerts": {
     "minimumReleaseAge": "1 day"
