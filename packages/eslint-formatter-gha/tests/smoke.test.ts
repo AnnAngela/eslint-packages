@@ -106,8 +106,7 @@ describe("eslint-formatter-gha smoke tests", () => {
         // Verify no ::error, ::warning, or ::notice workflow commands were emitted
         const calls = consoleInfoSpy.mock.calls.map((call) => call[0] as string);
         const annotationCalls = calls.filter((c) =>
-            /^::(error|warning|notice)/.test(c),
-        );
+            /^::(error|warning|notice)/.test(c));
         expect(annotationCalls).toHaveLength(0);
 
         // Summary file should indicate no issues
