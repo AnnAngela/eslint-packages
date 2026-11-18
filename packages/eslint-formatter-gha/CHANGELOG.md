@@ -1,5 +1,14 @@
 # @annangela/eslint-formatter-gha
 
+## 6.2.0
+
+### Minor Changes
+
+- fix(deps): update node.js to v26
+  
+  - engines.node: ^22.21 || ^24.11 → ^22.11 || ^24.11 || ^26.13
+  - 新增 Node.js 26 支持,并将 22.x 下限从 22.21 放宽至 22.11
+
 ## 6.1.1
 
 ### Patch Changes
