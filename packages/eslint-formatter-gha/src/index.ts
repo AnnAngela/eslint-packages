@@ -52,7 +52,9 @@ const formatter: ESLint.FormatterFunction = (results, data) => {
     const deprecatedRulesSummary: string[] = [];
     const annotationSummary: string[] = [];
     for (const {
-        filePath, messages, usedDeprecatedRules,
+        filePath,
+        messages,
+        usedDeprecatedRules,
         // suppressedMessages, errorCount, fatalErrorCount, warningCount, fixableErrorCount, fixableWarningCount, output, source,
     } of results) {
         for (const { ruleId, replacedBy } of usedDeprecatedRules) {
@@ -78,7 +80,14 @@ const formatter: ESLint.FormatterFunction = (results, data) => {
             }
         }
         for (const {
-            message, severity, line, column, endLine, endColumn, ruleId, fix,
+            message,
+            severity,
+            line,
+            column,
+            endLine,
+            endColumn,
+            ruleId,
+            fix,
             // messageId, nodeType, fatal, source, suggestions,
         } of messages) {
             let hash = "";
